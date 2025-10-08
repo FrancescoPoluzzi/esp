@@ -53,3 +53,6 @@
 [submodule "soft/common/drivers/common/utils/eigen"]
 	path = soft/common/drivers/common/utils/eigen
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "accelerators/third-party/x-heep/ip/x-heep"]
+	path = accelerators/third-party/x-heep/ip/x-heep
+	url = https://github.com/esl-epfl/x-heep.git

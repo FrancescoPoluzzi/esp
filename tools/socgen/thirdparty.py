@@ -16,5 +16,9 @@ THIRDPARTY_IRQ_TYPE = dict()  # IRQ line types: 0 (edge-sensitive), 1
 THIRDPARTY_COMPATIBLE["nv_nvdla"] = "nv_small"
 THIRDPARTY_IRQ_TYPE["nv_nvdla"] = "1"
 
+# X-HEEP
+THIRDPARTY_COMPATIBLE["xheep"] = "epfl,200"
+THIRDPARTY_IRQ_TYPE["xheep"]   = "1"            # 1 = level-sensitive IRQ
+
 #
 ######

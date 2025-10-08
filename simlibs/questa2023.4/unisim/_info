@@ -1,0 +1,11277 @@
+m255
+K4
+z2
+!s11e vcom 2023.4 2023.10, Oct  9 2023
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/poluzzi/esp/simlibs/questa2023.4
+Eand2b1l
+Z1 w1573089664
+Z2 DPx4 ieee 16 vital_primitives 0 22 Y]H?Y_]z4@VoaWAGJ=36m1
+Z3 DPx4 ieee 12 vital_timing 0 22 6STbz=m1W[80IE06h_el^0
+Z4 DPx6 unisim 4 vpkg 0 22 946TcP6=<VYUj`3fBRa5M2
+Z5 DPx4 ieee 11 numeric_std 0 22 F8@]:i<mFK7<TjIzKcTGi0
+Z6 DPx6 unisim 11 vcomponents 0 22 3W5a6]<ZCQE5EDUUJ4]`i0
+Z7 DPx3 std 6 textio 0 22 LS[?81n5ZHWBI9JkBZTV<2
+Z8 DPx4 ieee 14 std_logic_1164 0 22 6<US`=mgl_dFdCEFF7J=m1
+!i122 2
+R0
+Z9 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AND2B1L.vhd
+Z10 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AND2B1L.vhd
+l0
+Z11 L32 1
+VnR1LgWY_h_BH5Tka<?@A51
+!s100 S2K_VoWFb>VAbPhPY5F6N0
+Z12 OE;C;2023.4;77
+33
+Z13 !s110 1759777946
+!i10b 1
+Z14 !s108 1759777946.000000
+Z15 !s90 -quiet|-2008|-work|unisim|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AND2B1L.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AUTOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BIBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BSCANE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_LEAF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_ROW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE_DIV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_PS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFHCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFH.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFIO.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMRCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CAPTUREE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CFGLUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCIRESET.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_SP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DPHY_DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_A_B_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_ALU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_C_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_M_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_MULTIPLIER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_OUTPUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/EFUSE_USR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDRE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDSE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GLBL_VHD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GND.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HARD_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HPIO_VREF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR_2CLK.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES_NODELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/JTAG_SIME2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/KEEPER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6_2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MASTER_JTAG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF9.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OR2L.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PHASER_REF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PS7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLDOWN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLUP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M16.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X16DR8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM512X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X8SW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RIU_OR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRL16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC32E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/USR_ACCESSE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XADC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XORCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ZHOLD_DELAY.vhd|
+!s107 /softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ZHOLD_DELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XORCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XADC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/USR_ACCESSE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC32E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRL16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RIU_OR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X8SW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM512X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X16DR8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M16.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLUP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLDOWN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PS7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PHASER_REF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OR2L.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF9.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MASTER_JTAG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6_2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/KEEPER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/JTAG_SIME2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES_NODELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR_2CLK.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HPIO_VREF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HARD_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GND.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GLBL_VHD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDSE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDRE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/EFUSE_USR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_OUTPUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_MULTIPLIER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_M_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_C_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_ALU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_A_B_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DPHY_DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_SP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCIRESET.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CFGLUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CAPTUREE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMRCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFIO.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFH.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFHCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_PS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE_DIV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_ROW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_LEAF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BSCANE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BIBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AUTOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AND2B1L.vhd|
+!i113 0
+Z16 o-quiet -2008 -work unisim
+Z17 tExplicit 1 CvgOpt 0
+Aand2b1l_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 7 and2b1l 0 22 nR1LgWY_h_BH5Tka<?@A51
+!i122 2
+l52
+Z18 L45 15
+V?M1Ye@GoL<LWLkX;]6cdf0
+!s100 DoA;[b>VmOoz2j?<Qg`NE2
+R12
+33
+R13
+!i10b 1
+R14
+R15
+Z19 !s107 /softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ZHOLD_DELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XORCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XADC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/USR_ACCESSE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC32E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRL16E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RIU_OR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD64E.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD32.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X8SW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM512X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X16DR8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M16.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1S.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1D.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLUP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLDOWN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PS7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PHASER_REF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OR2L.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF9.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF7.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXCY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_BASE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MASTER_JTAG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6_2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/KEEPER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/JTAG_SIME2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES_NODELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDESE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_DCIEN.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2_FINEDELAY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDRE1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR_2CLK.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE_INT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDSE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DPHY.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_INTERMDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_IBUFDISABLE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_ANALOG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HPIO_VREF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HARD_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GND.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GLBL_VHD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE3.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDSE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDRE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDPE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/EFUSE_USR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_OUTPUT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_MULTIPLIER.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_M_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_C_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_ALU.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_A_B_DATA.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E1.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DPHY_DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORTE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DIFFINBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_SP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_ADV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCIRESET.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CFGLUT5.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY8.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY4.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CAPTUREE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMR.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMRCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFIO.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFH.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFHCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGP.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_PS.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT_SYNC.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCTRL.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE_DIV.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_ROW.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_LEAF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BSCANE2.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BIBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AUTOBUF.vhd|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AND2B1L.vhd|
+!i113 0
+R16
+R17
+Eautobuf
+R1
+R7
+R8
+!i122 2
+R0
+Z20 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AUTOBUF.vhd
+Z21 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/AUTOBUF.vhd
+l0
+Z22 L27 1
+VHE=^1032SH69eTZmam=9l2
+!s100 D0Zol?e6;Fj]MJ1Qi0NLm1
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aautobuf_v
+R7
+R8
+DEx4 work 7 autobuf 0 22 HE=^1032SH69eTZmam=9l2
+!i122 2
+l39
+L38 26
+VW98YjlSRa=Y1eWE`46Ab^3
+!s100 M7iVj4IWgaSQkNaGUNCRF0
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebibuf
+R1
+R7
+R8
+!i122 2
+R0
+Z23 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BIBUF.vhd
+Z24 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BIBUF.vhd
+l0
+L21 1
+VBTF_XAe6QJ>2G<o:F@UV<2
+!s100 YoXM2RGi[5fEF_X:WWf:A3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abibuf_v
+R7
+R8
+DEx4 work 5 bibuf 0 22 BTF_XAe6QJ>2G<o:F@UV<2
+!i122 2
+l32
+L28 24
+VJck8dZ>a1iJmX?:n=fEmf3
+!s100 6gRGdG6W2DYcIEz1SGLf01
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebscane2
+R1
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z25 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BSCANE2.vhd
+Z26 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BSCANE2.vhd
+l0
+Z27 L28 1
+V2_H0Kfca0bV0_T;iLVKbd1
+!s100 O8J8RlVTF]g226H:?1mb@3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abscane2_v
+R5
+R6
+R7
+R8
+DEx4 work 7 bscane2 0 22 2_H0Kfca0bV0_T;iLVKbd1
+!i122 2
+l56
+L51 89
+V@gWF]V1b_^PM]_@28f:8n3
+!s100 eP=OInoc3BNd8AXScUZX70
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebscntrl
+Z28 w1573089658
+R5
+R6
+R2
+R3
+R4
+Z29 DPx4 ieee 15 std_logic_arith 0 22 B[jVX6I8iRX2o6WYW0BB>3
+R7
+R8
+!i122 2
+R0
+Z30 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES.vhd
+Z31 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES.vhd
+l0
+Z32 L40 1
+V[NUb9PVcnW[_mOV7dSA4W3
+!s100 Xk^]i7=F[VYnK7Ph4S=W90
+R12
+33
+Z33 !s110 1759777949
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abscntrl_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 7 bscntrl 0 22 [NUb9PVcnW[_mOV7dSA4W3
+!i122 2
+l84
+L63 295
+VkJlM=2`^;JQ4K<mm5oiS?2
+!s100 iS0>O5ZLQFQQDEl^]X:[:3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebscntrl_iserdese1_vhd
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z34 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDESE1.vhd
+Z35 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDESE1.vhd
+l0
+Z36 L42 1
+VJ6PM8:oYdJA>9RnRHQWMX3
+!s100 6f@hD7BQ3nJ<g?;6?_Bi[1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abscntrl_iserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 21 bscntrl_iserdese1_vhd 0 22 J6PM8:oYdJA>9RnRHQWMX3
+!i122 2
+l86
+L65 295
+VQEOK@e?5:1BzGAlQMCgcD0
+!s100 Ack6F8ziTa_H@eQ4bn9;51
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebscntrl_nodelay
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z37 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES_NODELAY.vhd
+Z38 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ISERDES_NODELAY.vhd
+l0
+Z39 L41 1
+VJSgOnFY92m1j:ch0GBNDG3
+!s100 >mjo_T0lH3=IzkX1Boj6K0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abscntrl_nodelay_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 15 bscntrl_nodelay 0 22 JSgOnFY92m1j:ch0GBNDG3
+!i122 2
+l85
+L64 295
+VZkg5TQNfS[<mZ5V_L_<000
+!s100 ^>FKm:TRW;ni`UjEiLkAZ2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebuf
+Z40 w1560832359
+R7
+R8
+!i122 2
+R0
+Z41 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUF.vhd
+Z42 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUF.vhd
+l0
+Z43 L24 1
+V=lneaJol9beRfj8d`D``D1
+!s100 oDH=Y4@aPhcBP`hLRZ0Bj2
+R12
+33
+Z44 !s110 1759777947
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abuf_v
+R7
+R8
+DEx4 work 3 buf 0 22 =lneaJol9beRfj8d`D``D1
+!i122 2
+l33
+Z45 L32 4
+VBHY@CS3_S1UF[8[nU2A4K3
+!s100 [QYIefiemEeFOeXnB>N:@0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufce_leaf
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z46 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_LEAF.vhd
+Z47 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_LEAF.vhd
+l0
+Z48 L35 1
+Vb[Pmh7G?cj^XmW@kd2^0n2
+!s100 HBeK:I>kzk@83?4e7P1[e1
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufce_leaf_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 bufce_leaf 0 22 b[Pmh7G?cj^XmW@kd2^0n2
+!i122 2
+l79
+Z49 L49 104
+VHB95Q:YVV65O<CP@CM87h3
+!s100 PK96N]3[D:RXJF1A5cNCQ3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufce_row
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z50 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_ROW.vhd
+Z51 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFCE_ROW.vhd
+l0
+R48
+V?n876O@XY@a53l_MLGT:g2
+!s100 zmjXVLd>>O87HShLhS`]@3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufce_row_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 bufce_row 0 22 ?n876O@XY@a53l_MLGT:g2
+!i122 2
+l80
+L49 109
+V`8G<XJoPhcMQ<Y_FVgK;I1
+!s100 BjekV7Tl@HUR]A0zbS]gb2
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufg
+R1
+R7
+R8
+!i122 2
+R0
+Z52 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG.vhd
+Z53 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG.vhd
+l0
+Z54 L26 1
+V^kT;J^JcaJ@kDd3JcbmW30
+!s100 @Y7R:PISzF6T:Pa8beX]]3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufg_v
+R7
+R8
+DEx4 work 4 bufg 0 22 ^kT;J^JcaJ@kDd3JcbmW30
+!i122 2
+l35
+L33 8
+VQ[2zzOV=QWdn9fXBz;4zF2
+!s100 CH9ceXR;>WCAFM_ODIeKc1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufg_gt
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z55 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT.vhd
+Z56 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT.vhd
+l0
+Z57 L34 1
+V;Sf_V:J?9l<m0U`^4>7LJ2
+!s100 NG_2c`VelO6f2mkQTYRm71
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufg_gt_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 bufg_gt 0 22 ;Sf_V:J?9l<m0U`^4>7LJ2
+!i122 2
+l117
+L51 347
+V`;R?kIYf5FnUADl::FS_F0
+!s100 =f;kMX^65SWz5j@==C7aL1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufg_gt_sync
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z58 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT_SYNC.vhd
+Z59 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_GT_SYNC.vhd
+l0
+R57
+VECZ`A82OhU8l[dR0a:hbJ1
+!s100 A2R[^AWdm;j@0hinMRgGY2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufg_gt_sync_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 12 bufg_gt_sync 0 22 ECZ`A82OhU8l[dR0a:hbJ1
+!i122 2
+l62
+L44 31
+V9kUHgQ`L5kCEh[dD]m]<M0
+!s100 cECDb>;>?Be`BD7zNhVIN3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufg_ps
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z60 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_PS.vhd
+Z61 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFG_PS.vhd
+l0
+R57
+Vd<MjA_SAXjSi9ncmgXDcA0
+!s100 XNLcAB:kLHeOYDDm^BL7Y1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufg_ps_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 bufg_ps 0 22 d<MjA_SAXjSi9ncmgXDcA0
+!i122 2
+l88
+L46 167
+VcnX1hYlclLa0mIPNfC<^R0
+!s100 M64?O]2Bea^eU:C7U725:3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufgce
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z62 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE.vhd
+Z63 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE.vhd
+l0
+R57
+V;gYOVZUWS2J3e5Yod62<`3
+!s100 4DAcGJ8z:BWWdn=MRJ;?E1
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufgce_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 bufgce 0 22 ;gYOVZUWS2J3e5Yod62<`3
+!i122 2
+l108
+L50 245
+VO1Ti<blCTH_3e<11PZ[Uh2
+!s100 hCY3WG=JmacfXgKR1hRLB2
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufgce_div
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z64 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE_DIV.vhd
+Z65 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCE_DIV.vhd
+l0
+R57
+VcK8Lf3b[`:GdJP1Zn:7?i2
+!s100 oAAJN33]W_EzoM^DnSQmB3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufgce_div_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 bufgce_div 0 22 cK8Lf3b[`:GdJP1Zn:7?i2
+!i122 2
+l115
+L54 383
+V@e`UA^ZFNnQ2k0CSaH2CT1
+!s100 =P`]96Ti=X=lPI`RZMH^j3
+R12
+33
+R13
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufgctrl
+R1
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z66 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCTRL.vhd
+Z67 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGCTRL.vhd
+l0
+R57
+VJ6:@m]z>d0]GN9F`6MfUC1
+!s100 8]LTOnKi_cE^cA]Sj]V3h2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufgctrl_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 bufgctrl 0 22 J6:@m]z>d0]GN9F`6MfUC1
+!i122 2
+l163
+L66 615
+VfIA0Wm`aFP`Cd:JHfd[353
+!s100 H37zn=8LP`V72?[OT3UK60
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufgp
+R1
+R7
+R8
+!i122 2
+R0
+Z68 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGP.vhd
+Z69 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFGP.vhd
+l0
+R43
+V=Q6XODdbDEjkYle7Z;K5j1
+!s100 53f^:CEhSU6lz1f8Z:1Se3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufgp_v
+R7
+R8
+DEx4 work 5 bufgp 0 22 =Q6XODdbDEjkYle7Z;K5j1
+!i122 2
+l33
+R45
+VkchLM2>MGRneGAGh1^Ggn0
+!s100 RM3SmJUh^SV29:o`WmO4]1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufh
+Z70 w1560832364
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z71 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFH.vhd
+Z72 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFH.vhd
+l0
+Z73 L31 1
+VAF2BR]BD51dSFSzNBDaJ]3
+!s100 :[OZ0Rcl]lS@gPXKT7lIF3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufh_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 4 bufh 0 22 AF2BR]BD51dSFSzNBDaJ]3
+!i122 2
+l40
+L39 6
+V>X2SQb91:4=`bAV=:BSPc2
+!s100 YC3B3W>`8k74B?OlffbXP2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufhce
+R1
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z74 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFHCE.vhd
+Z75 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFHCE.vhd
+l0
+R73
+Vn4;:oWe1C_9n1IGL?Bm[N1
+!s100 BSlVLoD9XL:H_3o8G?j;W2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufhce_v
+R5
+R6
+R7
+R8
+DEx4 work 6 bufhce 0 22 n4;:oWe1C_9n1IGL?Bm[N1
+!i122 2
+l57
+L45 79
+VzP;PdHa7mC^KLYVjM[LhH2
+!s100 BNk2bZ^]H:96Id`?:kJan0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufio
+R1
+R7
+R8
+!i122 2
+R0
+Z76 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFIO.vhd
+Z77 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFIO.vhd
+l0
+R43
+Vf_1?kC:ilAURf;DM_Z2lB3
+!s100 <ZId=jMW>kcHhOc6ODF?N3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufio_v
+R7
+R8
+DEx4 work 5 bufio 0 22 f_1?kC:ilAURf;DM_Z2lB3
+!i122 2
+l34
+Z78 L33 4
+VFg;LgE5K:_;oDfmdTlbR82
+!s100 Ih>1mJ9M;3P9g_cgg;>3A0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufmr
+R1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z79 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMR.vhd
+Z80 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMR.vhd
+l0
+Z81 L30 1
+Vc[6zm5V<J:C76Z<j^@XJj3
+!s100 c[K?<;9^2oSP`mHOE03UG0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufmr_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 5 bufmr 0 22 c[6zm5V<J:C76Z<j^@XJj3
+!i122 2
+l39
+L37 7
+VD96PFE`bkJPLWTVYBCC<K0
+!s100 <QLWH`dO<]H[Ye@6Wg[>O2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufmrce
+R1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z82 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMRCE.vhd
+Z83 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFMRCE.vhd
+l0
+R73
+VT0K<]76a>h=_:O26e8?A93
+!s100 8=VkzL<XkhcV5IPC5mbRU2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufmrce_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 7 bufmrce 0 22 T0K<]76a>h=_:O26e8?A93
+!i122 2
+l57
+L45 81
+VPRk?a`offYjcO0E8O7@4]1
+!s100 V<BQmBoC[h4h:]D<z1[c40
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ebufr
+R1
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z84 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFR.vhd
+Z85 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/BUFR.vhd
+l0
+L45 1
+VcTllMMW:^:h=Ym:KRm3<g2
+!s100 cA;3K6R`CiF19`cEMR<Qb1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Abufr_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 bufr 0 22 cTllMMW:^:h=Ym:KRm3<g2
+!i122 2
+l92
+L63 269
+VE^66B3J;I]G87_THVSML[2
+!s100 OLEM=GC><]YB0JE^P9V5b3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ecapturee2
+Z86 w1560832365
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z87 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CAPTUREE2.vhd
+Z88 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CAPTUREE2.vhd
+l0
+R73
+VJ`K0=R3DKHDK7mTkai=VY0
+!s100 KYLDR;83>Ik>lW`>bY>8Q1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Acapturee2_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 9 capturee2 0 22 J`K0=R3DKHDK7mTkai=VY0
+!i122 2
+l89
+L42 71
+VUSOal?7]Mf;fHdVQm0QZ:1
+!s100 B8k<Ea7S1>7cYj`0EW@hk3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ecarry4
+R1
+R7
+R8
+!i122 2
+R0
+Z89 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY4.vhd
+Z90 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY4.vhd
+l0
+Z91 L25 1
+VSEYe5H0kUYYYiT^RLAU=?3
+!s100 Q6kYXfkWoDFk^A:NWbA<l0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Acarry4_v
+R7
+R8
+DEx4 work 6 carry4 0 22 SEYe5H0kUYYYiT^RLAU=?3
+!i122 2
+l43
+L39 32
+VEMgMCh_AiQWY5akQeKFaB0
+!s100 EJ^0Pe?Eka1XaQ=Uc7cM42
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ecarry8
+Z92 w1573089657
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z93 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY8.vhd
+Z94 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CARRY8.vhd
+l0
+R57
+VQi^_a_;OlF4WR3]^8E>;22
+!s100 79Xfde[lADfXhP[UKhILR3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Acarry8_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 carry8 0 22 Qi^_a_;OlF4WR3]^8E>;22
+!i122 2
+l78
+R49
+V:F3A;?_WRfRcNX__^5QDN2
+!s100 Z<gUC=S`BdfGM63EM@6`m1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ecfglut5
+R92
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z95 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CFGLUT5.vhd
+Z96 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/CFGLUT5.vhd
+l0
+R11
+Vh34Yag5gB3kVdK>iUi1K80
+!s100 KFen2cPGfRH=HK8iLo6h_2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Acfglut5_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 cfglut5 0 22 h34Yag5gB3kVdK>iUi1K80
+!i122 2
+l63
+L54 52
+Vi1gMXPOSLHH:zGHUelO8F0
+!s100 _>:nznzm6SSWTVebH8IhC1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcireset
+R70
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z97 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCIRESET.vhd
+Z98 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCIRESET.vhd
+l0
+R81
+VAcSEaINmk_6F>QB711Edd2
+!s100 mlBkV=8SbK^An>UO;18aU3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcireset_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 dcireset 0 22 AcSEaINmk_6F>QB711Edd2
+!i122 2
+l42
+L40 53
+V:jBL>DYRF47hU3G[]Z@>T0
+!s100 THBiYMISIgZbi[8l3XP4a0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_adv
+R92
+R6
+R2
+R3
+R4
+R5
+R7
+R8
+!i122 2
+R0
+Z99 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_ADV.vhd
+Z100 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_ADV.vhd
+l0
+L370 1
+Vz2Lb6hoAW_iR=n56aG<fj3
+!s100 F<e@bF7B5NF7cIoOeb8DM0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_adv_v
+R6
+R2
+R3
+R4
+R5
+R7
+R8
+DEx4 work 7 dcm_adv 0 22 z2Lb6hoAW_iR=n56aG<fj3
+!i122 2
+l637
+L433 1789
+V2>bDVN]EVabRmE?f3;P]U3
+!s100 HTGH6=@E1^LN;V;4P59^Y0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_adv_clock_divide_by_2
+R92
+R7
+R8
+!i122 2
+R0
+R99
+R100
+l0
+L65 1
+V7JX8j8:;85ob;MEU7bMQ:3
+!s100 Q2alOYLn8C]OmzKQ>M^g?1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_adv_clock_divide_by_2_v
+R7
+R8
+DEx4 work 25 dcm_adv_clock_divide_by_2 0 22 7JX8j8:;85ob;MEU7bMQ:3
+!i122 2
+l79
+L75 41
+VG[PlIVJkl[lI9SRRKGPOl0
+!s100 nZ_N>_0zhO@GQSIQT5HCD3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_adv_clock_lost
+R92
+R7
+R8
+!i122 2
+R0
+R99
+R100
+l0
+L177 1
+V=>Ml<;`HfMQ<ZeQBJSPDe2
+!s100 XEn]cXWO<0J1UM^SAMkk[3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_adv_clock_lost_v
+R7
+R8
+DEx4 work 18 dcm_adv_clock_lost 0 22 =>Ml<;`HfMQ<ZeQBJSPDe2
+!i122 2
+l199
+L187 165
+VXnngGf1oDNh4[LT=L<b2Z1
+!s100 JzNDld8^@Z@DcC>JW@A5k0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_adv_maximum_period_check
+R92
+R7
+R8
+!i122 2
+R0
+R99
+R100
+l0
+L124 1
+VaMQnOFWWklVmenTJ>iJID0
+!s100 CSK6nda:<@]68AWDP=E5k3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_adv_maximum_period_check_v
+R7
+R8
+DEx4 work 28 dcm_adv_maximum_period_check 0 22 aMQnOFWWklVmenTJ>iJID0
+!i122 2
+l137
+L136 36
+VJ^P[BfEmEb?o?5`>BEVP60
+!s100 lZl0Y<U?5GmSRjY23G@=a0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_sp
+R92
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z101 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_SP.vhd
+Z102 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DCM_SP.vhd
+l0
+L342 1
+V;>VQfkoBcGHgEgm][>]EV0
+!s100 ^ROF2;7Cdod4J;SiCZliC2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_sp_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 dcm_sp 0 22 ;>VQfkoBcGHgEgm][>]EV0
+!i122 2
+l550
+L396 1474
+Vl8TRJnSPa:A1b3WXgFjDU0
+!s100 67eGNZD8`QVo6SSbI8DM@0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_sp_clock_divide_by_2
+R92
+R7
+R8
+!i122 2
+R0
+R101
+R102
+l0
+Z103 L48 1
+V7ooHLZ32Mz[M?9]fC9QR90
+!s100 9z`A3Z_WM?733aYN::fTm3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_sp_clock_divide_by_2_v
+R7
+R8
+DEx4 work 24 dcm_sp_clock_divide_by_2 0 22 7ooHLZ32Mz[M?9]fC9QR90
+!i122 2
+l62
+L58 40
+VoUJzX=cDAD;kP<XRTCR8j1
+!s100 PFcF=O7V`?dIj0bi<cCR32
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_sp_clock_lost
+R92
+R7
+R8
+!i122 2
+R0
+R101
+R102
+l0
+L160 1
+VCnJNAOeZ5IBVKGhmFe2nK2
+!s100 jNiCiZoQSnTER8NS>zUDe0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_sp_clock_lost_v
+R7
+R8
+DEx4 work 17 dcm_sp_clock_lost 0 22 CnJNAOeZ5IBVKGhmFe2nK2
+!i122 2
+l182
+L170 156
+VJ1d4ofTH@>b@4EkLb[97m2
+!s100 FC_:fD8HDPJ<FAQW5D3lA1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edcm_sp_maximum_period_check
+R92
+R7
+R8
+!i122 2
+R0
+R101
+R102
+l0
+L106 1
+VCI44KJQ0W5hdBg;<DbGTO2
+!s100 oD]58:z;RMgY3K=`J0@VT3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adcm_sp_maximum_period_check_v
+R7
+R8
+DEx4 work 27 dcm_sp_maximum_period_check 0 22 CI44KJQ0W5hdBg;<DbGTO2
+!i122 2
+l119
+L118 37
+V@2nL7_onVAcXWCDP7caoA1
+!s100 El7NQI5aRlGoiFjoO;i@E0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ediffinbuf
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z104 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DIFFINBUF.vhd
+Z105 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DIFFINBUF.vhd
+l0
+R57
+VY`Fd3TV>Wh_Hf5HMl6:jQ1
+!s100 g;[R9IFW`ZgWUi9YW?gm61
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adiffinbuf_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 diffinbuf 0 22 Y`Fd3TV>Wh_Hf5HMl6:jQ1
+!i122 2
+l118
+Z106 L54 222
+Vc;Z_>==R2X@RETRE[ZV191
+!s100 ?4BU@eZGm3mhOVjdY^KAo2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edna_port
+R92
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z107 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORT.vhd
+Z108 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORT.vhd
+l0
+Z109 L37 1
+VWEoWl?__8FC>@4F2l@@hU1
+!s100 ;dFN1;T]LH2J@Y3RH[h492
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adna_port_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 dna_port 0 22 WEoWl?__8FC>@4F2l@@hU1
+!i122 2
+l105
+L54 109
+V=6mlgR^]RoB]U5l<_[Ja03
+!s100 9Za9<_K8WWl_;0emf^02D3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edna_porte2
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z110 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORTE2.vhd
+Z111 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DNA_PORTE2.vhd
+l0
+Z112 L36 1
+V]BgUk?[m@f75[j[0`VTQ_3
+!s100 BF=@VXVmQ`KXUdoY6IR@F1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adna_porte2_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 dna_porte2 0 22 ]BgUk?[m@f75[j[0`VTQ_3
+!i122 2
+l87
+L50 81
+Vh;Lm1@b`Ozg2eNHA_:4z^1
+!s100 Lj43?2M[=V;1_8kI0a5fZ0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edout_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z113 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDESE1.vhd
+Z114 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDESE1.vhd
+l0
+L2320 1
+V`8MY1W@GL^ROU_9CB3f=`0
+!s100 ]=M_:bG@i^FKh4MI0LLY=2
+R12
+33
+Z115 !s110 1759777951
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adout_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 dout_oserdese1_vhd 0 22 `8MY1W@GL^ROU_9CB3f=`0
+!i122 2
+l2394
+L2344 286
+VJb8QJenk]f@fm66H_d8B@2
+!s100 =LEMo70P[b^lQBeVPW]@03
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edphy_diffinbuf
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z116 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DPHY_DIFFINBUF.vhd
+Z117 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DPHY_DIFFINBUF.vhd
+l0
+R57
+V>E7?Y6L]NlHD?2F]i8^nX3
+!s100 P;QemlPHQec4_UzaWTa1m2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adphy_diffinbuf_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 14 dphy_diffinbuf 0 22 >E7?Y6L]NlHD?2F]i8^nX3
+!i122 2
+l88
+L51 159
+VJHOzWNf<g7ZJ]952YZQe91
+!s100 EGo]Rk8M6B26INccH9dkh2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp48e1
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+Z118 DPx4 ieee 16 std_logic_signed 0 22 33nZVN1bfI5lKJc7clY>c0
+R7
+R8
+!i122 2
+R0
+Z119 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E1.vhd
+Z120 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E1.vhd
+l0
+L56 1
+Ve:TPgVIG<KfiWO]aMi6_B1
+!s100 CM:]Y7?6WRS]^lVHXXAY83
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp48e1_v
+R5
+R6
+R2
+R3
+R4
+R29
+R118
+R7
+R8
+DEx4 work 7 dsp48e1 0 22 e:TPgVIG<KfiWO]aMi6_B1
+!i122 2
+l542
+L142 3724
+VSHZ1@Cl`[R<0:3=IT2?M@2
+!s100 ed:9`jV1KTm>E^9_fm^P]2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp48e2
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z121 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E2.vhd
+Z122 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP48E2.vhd
+l0
+R103
+V<UN_H:ZZ`I_Zmdh@i9]<E3
+!s100 QP^zDJbBPk:g5keL93kZg2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp48e2_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 dsp48e2 0 22 <UN_H:ZZ`I_Zmdh@i9]<E3
+!i122 2
+l574
+L152 2147
+VcMQXDXo0d=SJ4H@MnCVKD0
+!s100 A16TQRhoLn8@chiakbzI>0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_a_b_data
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z123 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_A_B_DATA.vhd
+Z124 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_A_B_DATA.vhd
+l0
+Z125 L39 1
+V_oL1Y__Hz8<JYH2Ug0@fk0
+!s100 Sc>dgmWZN^_a[M<3mao<I1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_a_b_data_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 12 dsp_a_b_data 0 22 _oL1Y__Hz8<JYH2Ug0@fk0
+!i122 2
+l151
+L75 483
+V`7]^?d6o>MQ513KP?U[Di2
+!s100 PkD@Pbe3?MPCXH=MI;ZaM2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_alu
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z126 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_ALU.vhd
+Z127 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_ALU.vhd
+l0
+R39
+V=k^3nKn[;X58G]GhCT:YM3
+!s100 5g3VQg=n4D:?TN4QSN:;U1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_alu_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 dsp_alu 0 22 =k^3nKn[;X58G]GhCT:YM3
+!i122 2
+l280
+L95 775
+VeRWBALUNd_QCiUBeR]L@b1
+!s100 X4hc=2Ea?2D;HeWFh?QFo1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_c_data
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z128 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_C_DATA.vhd
+Z129 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_C_DATA.vhd
+l0
+R109
+V]g=;A8I47]dKg1ZD3B1QU2
+!s100 4W3>lHhhJdj8@SX2giG9E1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_c_data_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 dsp_c_data 0 22 ]g=;A8I47]dKg1ZD3B1QU2
+!i122 2
+l84
+L53 149
+VAM3fRkGJDLk=7[8E`O2<<2
+!s100 @>XTN?PF;9hYQPjhS<LLJ2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_m_data
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z130 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_M_DATA.vhd
+Z131 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_M_DATA.vhd
+l0
+Z132 L38 1
+VAEEWDoU[CM?bfhRP4=k@G2
+!s100 i7RL90_H;>LZljSiQ_VPY1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_m_data_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 dsp_m_data 0 22 AEEWDoU[CM?bfhRP4=k@G2
+!i122 2
+l89
+L56 112
+VFgzK7=71[X=>c5dhH=LES3
+!s100 NgIcT`mA^fNl3i]DgA>R81
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_multiplier
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z133 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_MULTIPLIER.vhd
+Z134 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_MULTIPLIER.vhd
+l0
+R48
+VT`EgD[bJUJQ6oL:PikkCF1
+!s100 Mh37^g1=n3bBQdz`dT9o[3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_multiplier_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 14 dsp_multiplier 0 22 T`EgD[bJUJQ6oL:PikkCF1
+!i122 2
+l96
+L53 164
+V[OSTCWd0CbDO[M4aMiIXL1
+!s100 TzRAF=<SYDT=LI6a_WDI>2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_output
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z135 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_OUTPUT.vhd
+Z136 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_OUTPUT.vhd
+l0
+R125
+Vmf8Ldk1UUl@:1T[Hn5OF12
+!s100 RL4g;;CcGa;`jC5`:mUea1
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_output_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 dsp_output 0 22 mf8Ldk1UUl@:1T[Hn5OF12
+!i122 2
+l168
+L79 425
+V^>c]AaO3P`d;D1BhhdS6T3
+!s100 n0HcWMig^_:;X_g;F_B]k0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_preadd
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z137 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD.vhd
+Z138 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD.vhd
+l0
+Z139 L33 1
+V^Q2DEJ1bmQhP;L964IDPA0
+!s100 DLU9HED?d;A^3d_^X0Aef2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_preadd_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 dsp_preadd 0 22 ^Q2DEJ1bmQhP;L964IDPA0
+!i122 2
+l69
+L44 45
+VVGU3O6UPS]QaT5hhW<W712
+!s100 hga>c1DD=l<`5dMH6dM1I3
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Edsp_preadd_data
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z140 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD_DATA.vhd
+Z141 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/DSP_PREADD_DATA.vhd
+l0
+R132
+Vn_e5DoKn;]a_0TOlfd4oV3
+!s100 QcVGLWc7_ggn7:214JOgT2
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Adsp_preadd_data_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 15 dsp_preadd_data 0 22 n_e5DoKn;]a_0TOlfd4oV3
+!i122 2
+l152
+L77 374
+VR;Qi46Ol_^[WLk0QiDbae1
+!s100 BjE5_9ObQnm[khYV22ocd0
+R12
+33
+R44
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eefuse_usr
+R92
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z142 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/EFUSE_USR.vhd
+Z143 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/EFUSE_USR.vhd
+l0
+R81
+VV;mWgoNmIFj2Gb?>GTkm]0
+!s100 acHH_SJhlWY`Q98?R^;bB1
+R12
+33
+Z144 !s110 1759777948
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aefuse_usr_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 9 efuse_usr 0 22 V;mWgoNmIFj2Gb?>GTkm]0
+!i122 2
+l44
+L40 9
+VR<^5oRjWincL[H:Q0G=K03
+!s100 V:F51VQCG1nm^5bXQgH>f2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efdce
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z145 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDCE.vhd
+Z146 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDCE.vhd
+l0
+R109
+VOSl`FeKJXi3hU9b;n^`6?2
+!s100 ZNhibl>6z^6g_dFWWi[bZ3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afdce_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 4 fdce 0 22 OSl`FeKJXi3hU9b;n^`6?2
+!i122 2
+l76
+Z147 L54 40
+VSD`DBPTM`<9XFE?H]C2an1
+!s100 BJIik^b30AUI]_TEE9aH^2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efdpe
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z148 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDPE.vhd
+Z149 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDPE.vhd
+l0
+R109
+Vhee>G[_BN47z]2oJijM6D1
+!s100 7YWMhPO<`8EAjf68m]0?P1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afdpe_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 4 fdpe 0 22 hee>G[_BN47z]2oJijM6D1
+!i122 2
+l76
+R147
+V_nD<QO1H9E_B]R<F0k3H40
+!s100 j@S7QBT[3G7Tk`dWYGL0f3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efdre
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z150 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDRE.vhd
+Z151 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDRE.vhd
+l0
+R132
+V<[9Z10`3M`N?;53kBJUMR0
+!s100 Af^^]]7hXDO2_6<9blTFe3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afdre_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 4 fdre 0 22 <[9Z10`3M`N?;53kBJUMR0
+!i122 2
+l77
+Z152 L55 40
+ViPT[YSY^^::8agG30d?Y82
+!s100 YL2MfU<K7WiSV0M>o4d1o0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efdse
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z153 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDSE.vhd
+Z154 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FDSE.vhd
+l0
+R132
+VJMI7T0SXdiS=z`Vi^0CMg1
+!s100 `>T`E[JnCdbgDM@W8c;1J2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afdse_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 4 fdse 0 22 JMI7T0SXdiS=z`Vi^0CMg1
+!i122 2
+l77
+R152
+VNj2]Q>e4kIR=SgYJ;Td2Z1
+!s100 M>UGODEN_DQPiS@G:hAB72
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eff18_internal_vhdl
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z155 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E1.vhd
+Z156 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E1.vhd
+l0
+L78 1
+VN^?9g08h1aN0:3mAJblXG0
+!s100 69SER__iPYBQffknOWmMQ2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aff18_internal_vhdl_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 ff18_internal_vhdl 0 22 N^?9g08h1aN0:3mAJblXG0
+!i122 2
+l362
+L129 4294
+V1WbX=9GY2^`4Z?[0PGCBG0
+!s100 RA3JQ_>28iO<=;gbI@`e;2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eff36_internal_vhdl
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z157 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E1.vhd
+Z158 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E1.vhd
+l0
+L85 1
+V97lDbokG1GHKdSnSd7_U[0
+!s100 :hPU=FJZK1EnJPW^K_59X1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aff36_internal_vhdl_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 ff36_internal_vhdl 0 22 97lDbokG1GHKdSnSd7_U[0
+!i122 2
+l369
+L136 4293
+VoQ@BbVdO=aDV6k=kiik1]2
+!s100 6Ao^Y5a;?d25gkK]nQ7zh3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo18e1
+R92
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+R155
+R156
+l0
+L4441 1
+V=YzWDUb]I>MYljXk3Rhm]1
+!s100 @1k_LdFnYBB>gC_m=7R;31
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo18e1_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 8 fifo18e1 0 22 =YzWDUb]I>MYljXk3Rhm]1
+!i122 2
+l4596
+L4490 237
+V9`e9hH[cG:n5IhTMfS73M2
+!s100 0;KzUUk4FdoDRB?0c7Y;_1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo18e2
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z159 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E2.vhd
+Z160 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO18E2.vhd
+l0
+R36
+VmjC^hKW]z7`j>KPJ>nkZh3
+!s100 N6<PIQZG>0@Nl8c]VQz8C2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo18e2_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 fifo18e2 0 22 mjC^hKW]z7`j>KPJ>nkZh3
+!i122 2
+l418
+L104 1558
+V;L0ScdQzIRcRT2N]=8j3;3
+!s100 ;GA6P6T04j7C2HUzRzRoe1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo36e1
+R92
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+R157
+R158
+l0
+L4447 1
+VGcQWI5SoaJ=8ALcA`mMz:0
+!s100 >;aL26=?_GUaL>U8Q[MQ63
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo36e1_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 8 fifo36e1 0 22 GcQWI5SoaJ=8ALcA`mMz:0
+!i122 2
+l4603
+L4502 230
+VD[O`P<=FzGCN8cDe8SVU>2
+!s100 PnMZ8IWEk]L^P32N]h=m22
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo36e2
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z161 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E2.vhd
+Z162 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FIFO36E2.vhd
+l0
+R36
+V`VCNl5gW_7_e5G6_Sjf>`1
+!s100 dm[;3M36X8DaVOVRQHFJ@2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo36e2_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 fifo36e2 0 22 `VCNl5gW_7_e5G6_Sjf>`1
+!i122 2
+l599
+L112 2039
+VC0^DPCWi1AKcKLbEbWe473
+!s100 a@z?E4Kc3;z7:@BhT<U]D2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo_addr_oserdese1_vhd
+R92
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L1870 1
+VXkBjEPc?CDoZO_fb7T5WL3
+!s100 JXg`KLB`WRZdg:0f6Y70o0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo_addr_oserdese1_vhd_v
+R29
+R7
+R8
+DEx4 work 23 fifo_addr_oserdese1_vhd 0 22 XkBjEPc?CDoZO_fb7T5WL3
+!i122 2
+l1944
+L1888 212
+VSIU9cI[CA?z8XE8L;CodG1
+!s100 iZ3LlG4EbhHDS=lgiF?861
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo_reset_oserdese1_vhd
+R92
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L1689 1
+VBLn0ldNF7B?Y_^RUhJ3i:0
+!s100 07M4mBB<fGndUG`SXOK:?0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo_reset_oserdese1_vhd_v
+R29
+R7
+R8
+DEx4 work 24 fifo_reset_oserdese1_vhd 0 22 BLn0ldNF7B?Y_^RUhJ3i:0
+!i122 2
+l1737
+L1708 153
+VXHNI4]WhDj4PP?J3TM<WN3
+!s100 =Wg<mF_T1aN6VLP8L;n3a0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Efifo_tdpipe_oserdese1_vhd
+R92
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L1510 1
+VB08T4BI_I=S8EgPSkofNN2
+!s100 6Mf=acWaj<[CE`T8foH4Z2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Afifo_tdpipe_oserdese1_vhd_v
+R29
+R7
+R8
+DEx4 work 25 fifo_tdpipe_oserdese1_vhd 0 22 B08T4BI_I=S8EgPSkofNN2
+!i122 2
+l1556
+L1530 149
+VXZ>1<]kHIkAXzO?mZCkd32
+!s100 W7g4Wj8VB0M[4NUjZ;]CM2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eframe_ecce2
+R92
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+!i122 2
+R0
+Z163 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE2.vhd
+Z164 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE2.vhd
+l0
+R109
+V2`IG<Y_YDoZ@;jV<1URYQ3
+!s100 h1MzP1e??[M=M>h[zHBPA3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aframe_ecce2_v
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+DEx4 work 11 frame_ecce2 0 22 2`IG<Y_YDoZ@;jV<1URYQ3
+!i122 2
+l224
+L56 555
+VmhB0L3HWF]<8QG^Rd:f3l3
+!s100 d[gOd^@505zgmSFYEjMaJ3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eframe_ecce3
+R92
+R2
+R3
+R4
+R6
+R8
+R7
+R5
+!i122 2
+R0
+Z165 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE3.vhd
+Z166 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE3.vhd
+l0
+R139
+VUjOQAQABG><45JaLR?GAb1
+!s100 2M?Rm>;A?S1SX`b9;kFF_1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aframe_ecce3_v
+R2
+R3
+R4
+R6
+R8
+R7
+R5
+DEx4 work 11 frame_ecce3 0 22 UjOQAQABG><45JaLR?GAb1
+!i122 2
+l52
+L48 9
+VXF`Fib:?iLKki7HGeUi4_3
+!s100 M37@bUDJncNzjV0S]IEIA2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eframe_ecce4
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z167 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE4.vhd
+Z168 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/FRAME_ECCE4.vhd
+l0
+R57
+VOQ5_:IFLE0Ia]jni<Y:SZ0
+!s100 7`YU>ACE^b@RLd6W;1D4_2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aframe_ecce4_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 frame_ecce4 0 22 OQ5_:IFLE0Ia]jni<Y:SZ0
+!i122 2
+l49
+L48 3
+VR3@lSf<ERgPkiQ>`lX2X`3
+!s100 ObNG[;_FFHOhDoQ8=72H60
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eglbl_vhd
+R92
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z169 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GLBL_VHD.vhd
+Z170 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GLBL_VHD.vhd
+l0
+R27
+VUB<JP4jKYO:nLZUf4`;J42
+!s100 TbV?6LlBJ]KC1AmJRV]a_3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aglbl_vhd_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 8 glbl_vhd 0 22 UB<JP4jKYO:nLZUf4`;J42
+!i122 2
+l39
+L36 31
+VmJoTQEkZ;cJf]C[zXAjm@3
+!s100 8GW7zm?]fJahX1HzL2]131
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Egnd
+R28
+R7
+R8
+!i122 2
+R0
+Z171 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GND.vhd
+Z172 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/GND.vhd
+l0
+R43
+V2`J^K2mBQjDQ2[c>1ZQ<c0
+!s100 zB>859ReMR<zPJ`C>INzA1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Agnd_v
+R7
+R8
+DEx4 work 3 gnd 0 22 2`J^K2mBQjDQ2[c>1ZQ<c0
+!i122 2
+l31
+L30 5
+V:kLQWB@Q2MX`<[DF^V6_90
+!s100 @hhAZ4kbVU;e9Y;T7e9RJ0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ehard_sync
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z173 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HARD_SYNC.vhd
+Z174 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HARD_SYNC.vhd
+l0
+R48
+VAbbBgmRb36CS_Xa7A;RNT3
+!s100 L_]N5K6gHYDdR[LNchM843
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ahard_sync_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 hard_sync 0 22 AbbBgmRb36CS_Xa7A;RNT3
+!i122 2
+l77
+L49 86
+Vc_8j4GHJYJ3MRH77>7C2;0
+!s100 leRAX231NBEL`76_=S5mX2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ehpio_vref
+R28
+R6
+R2
+R3
+R4
+Z175 DPx4 ieee 16 std_logic_textio 0 22 C8j>g0lzF^EAA]5<S6PY32
+R8
+R7
+R5
+!i122 2
+R0
+Z176 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HPIO_VREF.vhd
+Z177 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/HPIO_VREF.vhd
+l0
+R112
+VKnZAbU;?;LWVSFBhGYZUB2
+!s100 0MIGT`X?<VMA_]OWJWGVm3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ahpio_vref_v
+R6
+R2
+R3
+R4
+R175
+R8
+R7
+R5
+DEx4 work 9 hpio_vref 0 22 KnZAbU;?;LWVSFBhGYZUB2
+!i122 2
+l75
+L47 94
+VVU8n8[2N8`]WlNGO0bQdZ1
+!s100 NYiRcH3FGK<E<zb2PPWm82
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibuf
+R28
+R7
+R8
+!i122 2
+R0
+Z178 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF.vhd
+Z179 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF.vhd
+l0
+R54
+V>L_Z^]6>=S^QHAXWb2RP_1
+!s100 oiONXPFK4WOb5NJOIdPe63
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibuf_v
+R7
+R8
+DEx4 work 4 ibuf 0 22 >L_Z^]6>=S^QHAXWb2RP_1
+!i122 2
+l44
+L43 66
+VB9[e733nPlU9431jVz1b92
+!s100 4HP9liK7QKQ6R7=4;Gg`Q0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibuf_analog
+R28
+R8
+R7
+R5
+!i122 2
+R0
+Z180 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_ANALOG.vhd
+Z181 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_ANALOG.vhd
+l0
+R27
+VBaLN1zdNDn>DC^zjJ<=ad0
+!s100 NbT>maKmmBC:FVjbAC5NS0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibuf_analog_v
+R8
+R7
+R5
+DEx4 work 11 ibuf_analog 0 22 BaLN1zdNDn>DC^zjJ<=ad0
+!i122 2
+l39
+L35 9
+Vj3>RMb`2iNeziPibgbiU]0
+!s100 8XUJPTgEKP3DlnV>4@dCf2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibuf_ibufdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z182 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_IBUFDISABLE.vhd
+Z183 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_IBUFDISABLE.vhd
+l0
+R57
+V5]PfGFSLg@QPDYQWkoQh72
+!s100 Ud>ZUKn[o=98B^AHh>Ln`2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibuf_ibufdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 16 ibuf_ibufdisable 0 22 5]PfGFSLg@QPDYQWkoQh72
+!i122 2
+l99
+L49 233
+V8PV7VC9KAdCQMHzR3l;n_3
+!s100 z[M3`a]E;bO3V:F_L><=50
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibuf_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z184 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_INTERMDISABLE.vhd
+Z185 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUF_INTERMDISABLE.vhd
+l0
+R57
+VNc?G`h;5?:?5CUb3N95hb0
+!s100 AEz:<8oPiGcXzk4ZdANFE0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibuf_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 18 ibuf_intermdisable 0 22 Nc?G`h;5?:?5CUb3N95hb0
+!i122 2
+l101
+L50 234
+VhGNZn9^UfD]ofOH[5547^3
+!s100 c6ofG5C[P9XGNN8i?J7YE1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufctrl
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z186 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFCTRL.vhd
+Z187 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFCTRL.vhd
+l0
+R57
+VWLKRhNM5naeQj7HfIaJ<z2
+!s100 <M8zGRA]Aj7CmJTjJBlYX3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufctrl_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 ibufctrl 0 22 WLKRhNM5naeQj7HfIaJ<z2
+!i122 2
+l82
+L49 99
+Va?]6XnRH^N;C;U[hI8X`h0
+!s100 `@o^eHI@3WKfATl;]ill`3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds
+R28
+R7
+R8
+!i122 2
+R0
+Z188 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS.vhd
+Z189 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS.vhd
+l0
+R11
+VkLL:Pg?PM4RodbCD[mC[M0
+!s100 h`PB`z7[Ek5Xcfg:R8C961
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_v
+R7
+R8
+DEx4 work 6 ibufds 0 22 kLL:Pg?PM4RodbCD[mC[M0
+!i122 2
+l58
+L52 116
+VKQ=L0z;7BmLSd:f?V<08Y3
+!s100 ozn1RF_MjAe]EF<]FVnJO0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_diff_out
+R28
+R7
+R8
+!i122 2
+R0
+Z190 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT.vhd
+Z191 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT.vhd
+l0
+Z192 L29 1
+V5d]P25lD35]RBK_3eDmP93
+!s100 YPIoVl4EQ3BnNKZ9zbN>23
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_diff_out_v
+R7
+R8
+DEx4 work 15 ibufds_diff_out 0 22 5d]P25lD35]RBK_3eDmP93
+!i122 2
+l49
+L46 71
+VDeVK[f26HF[XOgK:2L:UV1
+!s100 c?jkD9jVO7>DIQd2173V^3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_diff_out_ibufdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z193 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_IBUFDISABLE.vhd
+Z194 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_IBUFDISABLE.vhd
+l0
+R57
+VQ@`gfI_Y5fD>Ao3Y^i6:;1
+!s100 R;OfAeQ?<X^ZUWN<hmF7G2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_diff_out_ibufdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 27 ibufds_diff_out_ibufdisable 0 22 Q@`gfI_Y5fD>Ao3Y^i6:;1
+!i122 2
+l111
+L53 322
+V]a9OGeEG3Dog7P:G<gi;[2
+!s100 hl76LSG=TPJN_?l3]czD31
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_diff_out_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z195 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_INTERMDISABLE.vhd
+Z196 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DIFF_OUT_INTERMDISABLE.vhd
+l0
+R57
+V27BhL`QXVWV25U6<KT6MV0
+!s100 V?1aWUHOUSUS19=3RB;m>1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_diff_out_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 29 ibufds_diff_out_intermdisable 0 22 27BhL`QXVWV25U6<KT6MV0
+!i122 2
+l113
+L54 319
+Vc>[e;Ge>Z=QfDiXC7H]@L2
+!s100 ?8T4IkdHTLDKb8L`MVcQP3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_dphy
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z197 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DPHY.vhd
+Z198 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_DPHY.vhd
+l0
+R57
+VLX=cO4U21CFM<<n=cB`^H2
+!s100 W5O^>L^mY9LLTZ_HCOgbP0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_dphy_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 ibufds_dphy 0 22 LX=cO4U21CFM<<n=cB`^H2
+!i122 2
+l103
+L52 256
+VMh1=VTImma4C3OzYN51c40
+!s100 3]18BdRcm?G@TWM2_m7N<2
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_gte2
+R28
+R2
+R3
+R4
+R29
+Z199 DPx4 ieee 18 std_logic_unsigned 0 22 o4hn5gYc0WVo72BSL@Ta50
+R7
+R8
+!i122 2
+R0
+Z200 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE2.vhd
+Z201 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE2.vhd
+l0
+R57
+VLR^kG_UIo:TGhRkb_8;j<2
+!s100 be=:nGRHL]2D[F<]N;l2S0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_gte2_v
+R2
+R3
+R4
+R29
+R199
+R7
+R8
+DEx4 work 11 ibufds_gte2 0 22 LR^kG_UIo:TGhRkb_8;j<2
+!i122 2
+l75
+L50 161
+V8Q1FcSC_OZn=keN1_7dGd0
+!s100 52me9o7:M3CNLb_VhgMHY3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_gte3
+R28
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+!i122 2
+R0
+Z202 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE3.vhd
+Z203 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE3.vhd
+l0
+R132
+Vo6G8]DkE=>02ZeR9gz0CP1
+!s100 R[Y4LlOXz0YX>dFQNdOJ50
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_gte3_v
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+DEx4 work 11 ibufds_gte3 0 22 o6G8]DkE=>02ZeR9gz0CP1
+!i122 2
+l90
+L53 105
+V6HPlQh>P:MTFYCD48MHVb2
+!s100 c[a@Bn9khfHnkSRIiAOJG3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_gte4
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z204 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE4.vhd
+Z205 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_GTE4.vhd
+l0
+R109
+VRen7N:A2nI]GLFTYHzo9B1
+!s100 8Rij8fN77l:JlHj`UP4l72
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_gte4_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 ibufds_gte4 0 22 Ren7N:A2nI]GLFTYHzo9B1
+!i122 2
+l74
+L53 83
+VKkdUnk5l2i7>JDo^6BUJ10
+!s100 6O[R[__1[iz_O^oYakRSI1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_ibufdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z206 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE.vhd
+Z207 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE.vhd
+l0
+R57
+V4I;25TGFn]ACm5CV=aiS22
+!s100 fOHD2MQ=3WJNIb6Vz3J4b3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_ibufdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 18 ibufds_ibufdisable 0 22 4I;25TGFn]ACm5CV=aiS22
+!i122 2
+l109
+L52 307
+V_VHl<Ff<^<3JOhTWo;6R83
+!s100 IG1=dC<]JRb>b`be@<c8U3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_ibufdisable_int
+R28
+R7
+R8
+!i122 2
+R0
+Z208 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE_INT.vhd
+Z209 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_IBUFDISABLE_INT.vhd
+l0
+R22
+VmN[2J3YNUkhFUE55>6`nk2
+!s100 @kma=z=bg[YHHHCHme^7I1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_ibufdisable_int_v
+R7
+R8
+DEx4 work 22 ibufds_ibufdisable_int 0 22 mN[2J3YNUkhFUE55>6`nk2
+!i122 2
+l55
+L46 90
+VNYQGYD8]SzNa`08X``_O^3
+!s100 ?cJ>ch9gTjL?^5Am>SPl:3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z210 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE.vhd
+Z211 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE.vhd
+l0
+R57
+VeT_Of91goKHJoCjjTM`am3
+!s100 5cUEBTMjX7YN13CYY645n3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 20 ibufds_intermdisable 0 22 eT_Of91goKHJoCjjTM`am3
+!i122 2
+l110
+L53 308
+VmJZZOA[?l@DKGXjVCRdNb0
+!s100 XVgS1chhJoT^Rdf1_JXgh1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufds_intermdisable_int
+R28
+R7
+R8
+!i122 2
+R0
+Z212 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE_INT.vhd
+Z213 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDS_INTERMDISABLE_INT.vhd
+l0
+R22
+VSj0G4NRaT2Fan05YOPkc<2
+!s100 Sg:DXZIY9do[;X05;BP7<3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufds_intermdisable_int_v
+R7
+R8
+DEx4 work 24 ibufds_intermdisable_int 0 22 Sj0G4NRaT2Fan05YOPkc<2
+!i122 2
+l57
+L47 92
+V=eg8adHLW_zL^V<8bhhV43
+!s100 c[ahMIYlC675^`PzQ=[?o0
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufdse3
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z214 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDSE3.vhd
+Z215 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFDSE3.vhd
+l0
+R57
+VK]>k;0LkC18`T=]zWAPN?0
+!s100 Wm0ARQ7?fSUo79kjAAn863
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufdse3_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 ibufdse3 0 22 K]>k;0LkC18`T=]zWAPN?0
+!i122 2
+l101
+R106
+V;:mjC4Z]X@hfFGoNc90mm3
+!s100 l<Tb7j:jf@G=7VHOE=m120
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eibufe3
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z216 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFE3.vhd
+Z217 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IBUFE3.vhd
+l0
+R57
+VRQD4JWDUQG?]<@8<6hIe<3
+!s100 8Ihh:6U3@JaJ;JQ8Y9P4k3
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aibufe3_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 ibufe3 0 22 RQD4JWDUQG?]<@8<6hIe<3
+!i122 2
+l108
+L52 187
+VW<>N=ED]`U]X92zN7aUg13
+!s100 a5V:E`g483Tf6:SJljb>c1
+R12
+33
+R144
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eicape2
+R28
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+R29
+!i122 2
+R0
+Z218 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE2.vhd
+Z219 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE2.vhd
+l0
+R39
+VzibhOaI7RQk2PFmaVI=kG3
+!s100 hoaT?iG60<VgX>fTdWmW80
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aicape2_v
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+R29
+DEx4 work 6 icape2 0 22 zibhOaI7RQk2PFmaVI=kG3
+!i122 2
+l133
+L58 363
+VD3?a9bX:beho:d`mUBo<N3
+!s100 B>NFQF2><]kRn]`ZN0Bk50
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eicape3
+R28
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+R29
+!i122 2
+R0
+Z220 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE3.vhd
+Z221 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ICAPE3.vhd
+l0
+R109
+V;HaEO4MZCU43jW]e`m6Lo2
+!s100 k126>MS1PmPC8Gj=l>Ke63
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aicape3_v
+R2
+R3
+R4
+R6
+R5
+R7
+R8
+R29
+DEx4 work 6 icape3 0 22 ;HaEO4MZCU43jW]e`m6Lo2
+!i122 2
+l138
+L57 374
+Vb5VNKU`C>M;O0YAYkK=@A1
+!s100 mAAKib1RZjZ:B>9mH9db63
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eice_iserdese1_vhd
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R34
+R35
+l0
+Z222 L373 1
+V@^:cico]SCTl9^Ci`Y_kn2
+!s100 a0l<gH7=aeP0BY;7CB80i3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aice_iserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 17 ice_iserdese1_vhd 0 22 @^:cico]SCTl9^Ci`Y_kn2
+!i122 2
+l404
+L390 108
+VPBn`ic?fZ[`8DW`^zeznh1
+!s100 I]2@d7R37JaG]YAkEMl7Z0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eice_module
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R30
+R31
+l0
+L372 1
+VMg<APec8V6I27XbNB]>5G2
+!s100 i>9An1<ZFlP=]lC?8IS>l3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aice_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 10 ice_module 0 22 Mg<APec8V6I27XbNB]>5G2
+!i122 2
+l403
+L389 109
+VcMa8cTjef0Lhm3_BKDI4K1
+!s100 EE7Qc;bRXe9_n2c9:N=iM3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eice_module_nodelay
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R37
+R38
+l0
+R222
+V7QAM<<UHdg>z;74moN09G0
+!s100 g:lk;1Ul<e58;mVUWGlQE0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aice_module_nodelay_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 ice_module_nodelay 0 22 7QAM<<UHdg>z;74moN09G0
+!i122 2
+l404
+L390 109
+VK272?9F2@Z;_;HhR401]c1
+!s100 XEn0D_aAb4E<nE8Qb_?;h1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiddr
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z223 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR.vhd
+Z224 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR.vhd
+l0
+R32
+VDGP9O9^_z=ak_hb29KCO51
+!s100 _^XXo^bXeeM^6DJ2Vj_2S1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiddr_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 iddr 0 22 DGP9O9^_z=ak_hb29KCO51
+!i122 2
+l101
+L65 213
+V8_WGPd68zdKcOd;?B4jEZ2
+!s100 ^omz0j=6_U9d?j;X1f]ZQ3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiddr_2clk
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z225 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR_2CLK.vhd
+Z226 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDR_2CLK.vhd
+l0
+R109
+V@<]Tjd=;zKdPHhGP=S7Gz2
+!s100 RHT?FN:6WRE74LiYlMan^0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiddr_2clk_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 iddr_2clk 0 22 @<]Tjd=;zKdPHhGP=S7Gz2
+!i122 2
+l108
+L64 232
+VVV=@g]9eKDTPGL4mBL?TT0
+!s100 >S28AmRUT=Pi5izNn5F`L1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiddre1
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z227 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDRE1.vhd
+Z228 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDDRE1.vhd
+l0
+R139
+VmUY=`^47Un`Z[0G>FJ0V70
+!s100 WL3IXFZ64D[nfgnQE8ISA2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiddre1_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 iddre1 0 22 mUY=`^47Un`Z[0G>FJ0V70
+!i122 2
+l79
+L50 151
+V5i]34;OhzmMGIe<9k?mOB1
+!s100 _QZ3?Je:XHoNOHGY<RC3i3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eidelayctrl
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z229 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYCTRL.vhd
+Z230 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYCTRL.vhd
+l0
+R109
+V3YoiPDMPU]PHPV_m9d:=33
+!s100 LOlKM`HS6IgRjcUzCd9oh0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aidelayctrl_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 10 idelayctrl 0 22 3YoiPDMPU]PHPV_m9d:=33
+!i122 2
+l80
+L49 263
+VEn7aW6J5ze8JZ?GhUh<D=0
+!s100 @E;DYMZ8za`_b`AC77zZk3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eidelaye2
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z231 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2.vhd
+Z232 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2.vhd
+l0
+R48
+VmGQ2Dj[H7QkF;PH=N>if@2
+!s100 g1a^KDeYfo@_`_2V?<5TJ1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aidelaye2_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 8 idelaye2 0 22 mGQ2Dj[H7QkF;PH=N>if@2
+!i122 2
+l186
+L70 466
+VTNK4hbWgV4VCPjXaMJSf>1
+!s100 4U[DHWanF`oV`Tjb]JEYS2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eidelaye2_finedelay
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z233 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2_FINEDELAY.vhd
+Z234 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE2_FINEDELAY.vhd
+l0
+R11
+V<_kVX7jdCz75QPLPnUbLi2
+!s100 iT?oYXT5mUE>Z>B3jbe>]2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aidelaye2_finedelay_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 idelaye2_finedelay 0 22 <_kVX7jdCz75QPLPnUbLi2
+!i122 2
+l195
+L69 505
+VOo`X5j4zjMQXI_f1QKUcZ0
+!s100 DA@0^aMSNdgi7U:mI?jA52
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eidelaye3
+R28
+R6
+R2
+R3
+R4
+R175
+R29
+R8
+R7
+R5
+!i122 2
+R0
+Z235 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE3.vhd
+Z236 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IDELAYE3.vhd
+l0
+R112
+VaO4Efi4]Te0AJOaVl=kTb2
+!s100 FQ3AMBjRka3LCPG1LXWI`0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aidelaye3_v
+R6
+R2
+R3
+R4
+R175
+R29
+R8
+R7
+R5
+DEx4 work 8 idelaye3 0 22 aO4Efi4]Te0AJOaVl=kTb2
+!i122 2
+l212
+L70 826
+V02dnRmNncS7:0bOdRa[lc3
+!s100 PSCf@DIm>JQJ1D^cnaoWh2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Einbuf
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z237 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INBUF.vhd
+Z238 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INBUF.vhd
+l0
+R57
+VKRPRcQO9=liQATN?HbjMb1
+!s100 :7GWIWJ:X?Y@2U5kMjlVd0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ainbuf_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 5 inbuf 0 22 KRPRcQO9=liQATN?HbjMb1
+!i122 2
+l100
+L50 136
+V7Uj1<DEj3]He^c?zlboXg3
+!s100 _7MG]X4cm;cBBzzOm1WO03
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Einv
+R28
+R7
+R8
+!i122 2
+R0
+Z239 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INV.vhd
+Z240 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/INV.vhd
+l0
+R43
+V7anQLWISf;[DHONPH<]Km2
+!s100 IoA6fE;[80VJQ;3HmYYUA2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ainv_v
+R7
+R8
+DEx4 work 3 inv 0 22 7anQLWISf;[DHONPH<]Km2
+!i122 2
+l33
+R45
+V[O:FbhQib5Ddz7o4:3e1b0
+!s100 n5Z`f?4o`>D7Tf61LWZIJ0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobuf
+R28
+R7
+R8
+!i122 2
+R0
+Z241 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF.vhd
+Z242 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF.vhd
+l0
+R27
+VKLE?i4PbJVNRWTz?h8bYP0
+!s100 bc73ij]d5OJbjK44P5W:e1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobuf_v
+R7
+R8
+DEx4 work 5 iobuf 0 22 KLE?i4PbJVNRWTz?h8bYP0
+!i122 2
+l45
+L44 44
+VY@Y[;UjnSgJkMd58]]ceo3
+!s100 `D85m]dhz;1Sk_]lFGGU:3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobuf_analog
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z243 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_ANALOG.vhd
+Z244 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_ANALOG.vhd
+l0
+R139
+VZlliE675g99k19[fXU?hM3
+!s100 KQ>HnXi`K?SYY?H9E4kek2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobuf_analog_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 12 iobuf_analog 0 22 ZlliE675g99k19[fXU?hM3
+!i122 2
+l72
+L49 127
+V3KjaGa[@On27mBWmn<:3D1
+!s100 o4>Kh<3T[1?8<njEBbNho3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobuf_dcien
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z245 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_DCIEN.vhd
+Z246 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_DCIEN.vhd
+l0
+R57
+VlhRzWzc0;RXNMH[9Mb]Sk1
+!s100 e0_9U^lZ6LmPHON3D1Y5P0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobuf_dcien_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 iobuf_dcien 0 22 lhRzWzc0;RXNMH[9Mb]Sk1
+!i122 2
+l111
+L54 314
+VSD6P9KfZl:9CzhI19QB?j2
+!s100 dZSaizn5UZKWlmmVC2GP93
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobuf_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z247 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_INTERMDISABLE.vhd
+Z248 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUF_INTERMDISABLE.vhd
+l0
+R57
+V>eAFN^5U6HFO3Oo0M<z7l3
+!s100 Q63AY<LBLSPYnE>c]1azm0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobuf_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 19 iobuf_intermdisable 0 22 >eAFN^5U6HFO3Oo0M<z7l3
+!i122 2
+l110
+L54 315
+VTNlDRf=4JC8<k6a^U<jcd3
+!s100 QzFGSKAcj9@;C1[_kU=^m2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds
+R28
+R7
+R8
+!i122 2
+R0
+Z249 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS.vhd
+Z250 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS.vhd
+l0
+R57
+V?4Kc`NG@1kmO3`FM:6kgJ3
+!s100 2kl:OcBbUKfQb8;mQ;]UT0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_v
+R7
+R8
+DEx4 work 7 iobufds 0 22 ?4Kc`NG@1kmO3`FM:6kgJ3
+!i122 2
+l65
+L55 113
+V2V=c_cn`T1N8hoZB?Cmn30
+!s100 l@]K;KmYU3m8W:P5Yh`:V2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds_dcien
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z251 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DCIEN.vhd
+Z252 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DCIEN.vhd
+l0
+R57
+V@X`?DVo7H=1mN7_ie0^Mi3
+!s100 ^o:^c=z43bF2XC_@aL]cj3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_dcien_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 13 iobufds_dcien 0 22 @X`?DVo7H=1mN7_ie0^Mi3
+!i122 2
+l122
+L56 369
+VE^8_bl<VH[5F16zSdzeXe1
+!s100 gd@WMa?CE[_RR[YZ<MdJW0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds_diff_out
+R28
+R7
+R8
+!i122 2
+R0
+Z253 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT.vhd
+Z254 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT.vhd
+l0
+R22
+V3M0XC@]42`eNa9GaOSE8i2
+!s100 U:ZCbS==Z6NMC9dz8ZUVT1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_diff_out_v
+R7
+R8
+DEx4 work 16 iobufds_diff_out 0 22 3M0XC@]42`eNa9GaOSE8i2
+!i122 2
+l51
+L48 109
+V>OSf_zaEz`]PeSTIahDCd2
+!s100 KN46PFkCAX69U0j_Bj`1X3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds_diff_out_dcien
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z255 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_DCIEN.vhd
+Z256 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_DCIEN.vhd
+l0
+R57
+VPFo7o7aC]]4:QEIoN7^?A2
+!s100 _mz7?iE]bN^iDPG:NVnCf1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_diff_out_dcien_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 22 iobufds_diff_out_dcien 0 22 PFo7o7aC]]4:QEIoN7^?A2
+!i122 2
+l117
+Z257 L57 395
+Vk<1`=G;OQbncgc4=V5a0S3
+!s100 4M7M>RhK1Vb`U<8^4N2e70
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds_diff_out_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z258 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_INTERMDISABLE.vhd
+Z259 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_DIFF_OUT_INTERMDISABLE.vhd
+l0
+R57
+VK8AZY9[TiJ;nbM0>kek2@2
+!s100 KzAWRo`8PeIHhljJ4AlCK0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_diff_out_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 30 iobufds_diff_out_intermdisable 0 22 K8AZY9[TiJ;nbM0>kek2@2
+!i122 2
+l118
+R257
+Vd7=1of2S19kBL3D_J?RGm0
+!s100 ][OQm1NT@djT@>eUDGGa33
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufds_intermdisable
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z260 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_INTERMDISABLE.vhd
+Z261 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDS_INTERMDISABLE.vhd
+l0
+R57
+V7cb=AinTdEEj?9URT8DQh1
+!s100 AM7EmWmDhcP`cQ=GcA@FX3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufds_intermdisable_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 21 iobufds_intermdisable 0 22 7cb=AinTdEEj?9URT8DQh1
+!i122 2
+l123
+L56 371
+VnA6TcVS1Z@fCmMzM4hX4j0
+!s100 =^Z]gG2]QQ_1A:oQhM`^h2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufdse3
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z262 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDSE3.vhd
+Z263 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFDSE3.vhd
+l0
+R57
+VeF_kKfW10RNZkUTJL3^7M3
+!s100 Wz8=3gc4z78zF;6l<V3N20
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufdse3_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 iobufdse3 0 22 eF_kKfW10RNZkUTJL3^7M3
+!i122 2
+l127
+L57 287
+VaB7[=k?;cV8?S_fVX@olg2
+!s100 ;@mdUl[:WNWmjdi;3IiiY2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiobufe3
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z264 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFE3.vhd
+Z265 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/IOBUFE3.vhd
+l0
+R57
+V;j]dQ2ISU:m7Ka;6Ann>>3
+!s100 Jb3Pkm]h<mmK`<Q6VKOJ91
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiobufe3_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 iobufe3 0 22 ;j]dQ2ISU:m7Ka;6Ann>>3
+!i122 2
+l117
+L56 229
+VZk>UmFZ42imB:ZB[_n]n51
+!s100 Pj=aZ?R7bBinYl[JZBaHB0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiodlyctrl_npre_oserdese1_vhd
+R92
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L2110 1
+V99G^P^X;gnKM]VLA9[[]:1
+!s100 eL>c?PHB2gN4_0N=Y=m[>0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiodlyctrl_npre_oserdese1_vhd_v
+R29
+R7
+R8
+DEx4 work 28 iodlyctrl_npre_oserdese1_vhd 0 22 99G^P^X;gnKM]VLA9[[]:1
+!i122 2
+l2168
+L2128 178
+VQQe@<6Z^?PIQ<ib@]a?Ia2
+!s100 AM64;?fORl<6AP`O15JQY3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eioout
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z266 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDES.vhd
+Z267 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OSERDES.vhd
+l0
+L308 1
+Vl<FTl>:[[i=?oOKnBQafn2
+!s100 3DYhI7<[@hfO>ZRcdh_0Y1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aioout_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 5 ioout 0 22 l<FTl>:[[i=?oOKnBQafn2
+!i122 2
+l474
+L349 878
+VPk_W6:N`i?nUKgBEmff6@2
+!s100 D9JKoV=Jzn^ZUe]nRj=8l1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiot
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R266
+R267
+l0
+L1238 1
+V2Gbkj_;o7Om>;c_cgd^Vn0
+!s100 YW^?g`1efHW2FmcWH<24=2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiot_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 3 iot 0 22 2Gbkj_;o7Om>;c_cgd^Vn0
+!i122 2
+l1340
+L1269 622
+VaNScPI10]2kC=H=4hYZ1Y0
+!s100 ]8D]<a?N15o`e]BPVo2MD2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiserdes
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R30
+R31
+l0
+L514 1
+VKlAHT3_<O;3oDM22a@3F<0
+!s100 SUG61^<^g11RoHg>_fL2P1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiserdes_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 7 iserdes 0 22 KlAHT3_<O;3oDM22a@3F<0
+!i122 2
+l775
+L575 1295
+VOO2b?_4BaHJDcR5iQN_4_0
+!s100 ?N=dAkHhLAPW:=7N2PUo`2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiserdes_nodelay
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R37
+R38
+l0
+L518 1
+VZe_m`VEnRZPX=Xfk6dR=23
+!s100 c8LI^LeLQa2FZnAQ74=oT3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiserdes_nodelay_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 15 iserdes_nodelay 0 22 Ze_m`VEnRZPX=Xfk6dR=23
+!i122 2
+l778
+L560 1324
+VmX1MDN?:_I7NPIE?1B>YN2
+!s100 X0;i<SSih_;HWOCi92RQU2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eiserdese1
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R34
+R35
+l0
+L512 1
+V^Rc_bmL8]PT2XV:?l^HP]3
+!s100 XcCBQ^1?cgaajHVCVh6GK0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aiserdese1_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 9 iserdese1 0 22 ^Rc_bmL8]PT2XV:?l^HP]3
+!i122 2
+l795
+L565 1314
+VUEYfz1ozBkkDP0`[]NNmA1
+!s100 9D3mO;g8ZDUCMIU=O4E_R0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ejtag_sime2
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z268 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/JTAG_SIME2.vhd
+Z269 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/JTAG_SIME2.vhd
+l0
+L982 1
+VKFWk_HCQai^eLf4mZCUln3
+!s100 `F7O<bA:faW=`0WkY>3<R2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ajtag_sime2_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 10 jtag_sime2 0 22 KFWk_HCQai^eLf4mZCUln3
+!i122 2
+l1114
+L998 182
+VEHd8d^H;A[z2Hza0L`[5V0
+!s100 ST>bi>KZTcO1XM8O90O9`3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ejtag_sime2_submod
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+R268
+R269
+l0
+R11
+VQ1Z_?G4FRS_;b=hf[M4cG2
+!s100 A89JFiSDEIJn^D49o3J[j2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ajtag_sime2_submod_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 17 jtag_sime2_submod 0 22 Q1Z_?G4FRS_;b=hf[M4cG2
+!i122 2
+l133
+L49 923
+VeXP;l75YSEnM8d2bC;X;A3
+!s100 2^U<6DXKF?8OUIo87HgYj1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ekeeper
+Z270 w1560832361
+R7
+R8
+!i122 2
+R0
+Z271 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/KEEPER.vhd
+Z272 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/KEEPER.vhd
+l0
+R91
+VAAjPgaz0cDRl]NG3B8Glb1
+!s100 O70_JmCVSP]ad2jVVGG9J1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Akeeper_v
+R7
+R8
+DEx4 work 6 keeper 0 22 AAjPgaz0cDRl]NG3B8Glb1
+!i122 2
+l32
+L31 15
+VM2>;[BR37PMQFTAgbO5`93
+!s100 1JbEWeVoz3hk]U_WgT76O1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eldce
+R28
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z273 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDCE.vhd
+Z274 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDCE.vhd
+l0
+R11
+VZk@^;62o3]@z1[iEje14_2
+!s100 8Qj@LDobg7:iFcLJ<M:6B3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aldce_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 4 ldce 0 22 Zk@^;62o3]@z1[iEje14_2
+!i122 2
+l60
+Z275 L49 34
+V3:7==AL=i0GaXJCVGOgZQ3
+!s100 Q]NRbP>kMXR8fTbK625aV3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eldpe
+R28
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z276 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDPE.vhd
+Z277 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LDPE.vhd
+l0
+R11
+VHzN??j>]KWSS_N2<o0L?k1
+!s100 iRc>SfQFRTnnQ4E=:U3243
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aldpe_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 4 ldpe 0 22 HzN??j>]KWSS_N2<o0L?k1
+!i122 2
+l60
+R275
+V>iHA_3ja21>ZCHDOe3]CF1
+!s100 ]1>QWH6SGER;bVIYC9BcV3
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut1
+R28
+R7
+R8
+!i122 2
+R0
+Z278 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT1.vhd
+Z279 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT1.vhd
+l0
+R43
+VlLPhgWiKPd@O`G0oFAHj>2
+!s100 bLWVG]CBS@zhSX7V7mX^Q0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut1_v
+R7
+R8
+DEx4 work 4 lut1 0 22 lLPhgWiKPd@O`G0oFAHj>2
+!i122 2
+l38
+L36 17
+VdzZTU07=lRPiX9>QA4@TB3
+!s100 ?@D_G6eUeF<<0j68Zd?993
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut2
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z280 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT2.vhd
+Z281 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT2.vhd
+l0
+R139
+V5Y>gL4lH;VVND>c^f9ZMU1
+!s100 `Xm3Q1YN2QakQT2W>lR0Z1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut2_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 lut2 0 22 5Y>gL4lH;VVND>c^f9ZMU1
+!i122 2
+l47
+Z282 L46 30
+VZdK`UibPkHd_cS^BUlZm>3
+!s100 ``8HdSfLXl9m5]=V`nSan1
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut3
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z283 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT3.vhd
+Z284 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT3.vhd
+l0
+R73
+V@2TgWkKf9`D;TN^UXlEPN3
+!s100 h]WGXT`>884GdF?6S;MA`0
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut3_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 lut3 0 22 @2TgWkKf9`D;TN^UXlEPN3
+!i122 2
+l73
+L45 43
+VVOoO^Mg;0TeiGJYG=U@Fz0
+!s100 JH1FQ9>GnC663F6j83Nz[2
+R12
+33
+R33
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut4
+R270
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z285 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT4.vhd
+Z286 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT4.vhd
+l0
+R73
+VzBz13A1DF[A[3]<[Ih;SN3
+!s100 m7mZICnWJPL?>KjnLBM6V2
+R12
+33
+Z287 !s110 1759777950
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut4_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 lut4 0 22 zBz13A1DF[A[3]<[Ih;SN3
+!i122 2
+l76
+L46 52
+V=3lP?O>gfI@HBAJLKo^4:0
+!s100 8T5cJ16T]Q1lRIQA9IH6c1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut5
+R70
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z288 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT5.vhd
+Z289 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT5.vhd
+l0
+R11
+VD0JKUgBn^1K;ClUi15X542
+!s100 2YKFIXRjGBYaBIBk]XC4M3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut5_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 lut5 0 22 D0JKUgBn^1K;ClUi15X542
+!i122 2
+l121
+L48 95
+VbQ_dkJ^m2k?]k3EiU6TlM2
+!s100 Y44cYbK6F;``6NK8H^>az2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut6
+R70
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z290 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6.vhd
+Z291 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6.vhd
+l0
+R73
+VPAcR_aU2@ze>@ZRY1?XGD2
+!s100 A=`^m>GK0cBTPa3kHBcb71
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut6_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 lut6 0 22 PAcR_aU2@ze>@ZRY1?XGD2
+!i122 2
+l93
+L48 71
+V@CRTmknQiMig@DOD>o[nR3
+!s100 SahGoiUda1m]MOU6;PHaf3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Elut6_2
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z292 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6_2.vhd
+Z293 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/LUT6_2.vhd
+l0
+R192
+Vk7c1^VDTj;3EO8HiVeKhL0
+!s100 ?];Bg<G95h[5zIh]hbWz81
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Alut6_2_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 lut6_2 0 22 k7c1^VDTj;3EO8HiVeKhL0
+!i122 2
+l122
+L47 122
+VT8dk@EJ6<ZbAHB^he]UOl2
+!s100 gahWSk:]fD4O_?BNIPHgo1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emaster_jtag
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z294 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MASTER_JTAG.vhd
+Z295 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MASTER_JTAG.vhd
+l0
+R48
+VSoVNzD68CF8Gbb^j_LBF>3
+!s100 3BMA_NVR`bXm81lY4XW<K3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Amaster_jtag_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 master_jtag 0 22 SoVNzD68CF8Gbb^j_LBF>3
+!i122 2
+l48
+L44 9
+V45iQCbcMVY>QgW;[0kZ5>0
+!s100 ;:]28c24:aC_A7l1Bk:i30
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme2_adv
+R28
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+!i122 2
+R0
+Z296 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_ADV.vhd
+Z297 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_ADV.vhd
+l0
+L140 1
+Vo38D3Z4jYSn=O3<VaYQ4j3
+!s100 HkEO@^W:c9Ynk1b1fTfe91
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme2_adv_v
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+DEx4 work 10 mmcme2_adv 0 22 o38D3Z4jYSn=O3<VaYQ4j3
+!i122 2
+l1170
+L229 4889
+VN0k8He^<emH>z^:0CgZ8?1
+!s100 b4A8o4N[E4A@?LRlmnom`0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme2_base
+R28
+R5
+R6
+R2
+R3
+R4
+R29
+R118
+R7
+R8
+!i122 2
+R0
+Z298 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_BASE.vhd
+Z299 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME2_BASE.vhd
+l0
+R48
+VP9>?PoMW>W;PmlaZOU8PP0
+!s100 JRAkkeNNPTIGEb6ET@NMT1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme2_base_v
+R5
+R6
+R2
+R3
+R4
+R29
+R118
+R7
+R8
+DEx4 work 11 mmcme2_base 0 22 P9>?PoMW>W;PmlaZOU8PP0
+!i122 2
+l104
+L91 86
+VHJe?jkZ^AP<KZZ_XjcjaU0
+!s100 @ch0Jz0=[E3VddY?DZa?T1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme3_adv
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z300 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_ADV.vhd
+Z301 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_ADV.vhd
+l0
+Z302 L43 1
+VVMGn5?ozz_FB]Ma8j2mNG3
+!s100 m=7b;g?Jj6>oDklS@0fNQ1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme3_adv_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 mmcme3_adv 0 22 VMGn5?ozz_FB]Ma8j2mNG3
+!i122 2
+Z303 l1137
+Z304 L137 4811
+VgTkTUfWJ101JV63H1>1jI1
+!s100 AdazB0Z6cV58hEK7N:Z3Y1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme3_base
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z305 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_BASE.vhd
+Z306 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME3_BASE.vhd
+l0
+R81
+V30b<koh<^TSV]KIkC_KSK0
+!s100 BPHB4o3o3oe47`kKXTQEU0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme3_base_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 mmcme3_base 0 22 30b<koh<^TSV]KIkC_KSK0
+!i122 2
+l103
+Z307 L89 88
+VUlVmSF;RZ8oWk9O>R[6XH1
+!s100 8JTR:EeZhI8U9M=`8`FcX3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme4_adv
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z308 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_ADV.vhd
+Z309 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_ADV.vhd
+l0
+R302
+Vo2AG?ag8WY4SD<nQQFlEH2
+!s100 KZg>ODZKFR5KYEd:_k<`h1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme4_adv_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 mmcme4_adv 0 22 o2AG?ag8WY4SD<nQQFlEH2
+!i122 2
+R303
+R304
+V^^ekB]AQALTN]O9C<4>ES3
+!s100 MXIcgeT7EZzIX:1=UKd3I0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emmcme4_base
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z310 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_BASE.vhd
+Z311 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MMCME4_BASE.vhd
+l0
+R81
+V[`gVOHSMbi`90Nl9m[Z_P0
+!s100 `RiYzV60lkIj?k];PBh5U3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ammcme4_base_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 mmcme4_base 0 22 [`gVOHSMbi`90Nl9m[Z_P0
+!i122 2
+l103
+R307
+Vio`nA?cAH?3;DV5M>>zIA3
+!s100 fBJ@KCJi^0[Rb<jA:IY`S2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emuxcy
+R28
+R7
+R8
+!i122 2
+R0
+Z312 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXCY.vhd
+Z313 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXCY.vhd
+l0
+R91
+VD7RfS^>^k;7JIJ0ZILdHK2
+!s100 hd2b@DDjBgn9Tf:J4C8Id2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Amuxcy_v
+R7
+R8
+DEx4 work 5 muxcy 0 22 D7RfS^>^k;7JIJ0ZILdHK2
+!i122 2
+l36
+Z314 L35 11
+VFb3ca3<Vioo]=O`JPKhn10
+!s100 <<JCe4]M`jY5Sa8zF7N[^0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emuxf7
+R28
+R7
+R8
+!i122 2
+R0
+Z315 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF7.vhd
+Z316 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF7.vhd
+l0
+R91
+VDAEPT0Gk0UKj6cHSC5bK21
+!s100 2>jSo3U<>?>HUZIk9_5lo2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Amuxf7_v
+R7
+R8
+DEx4 work 5 muxf7 0 22 DAEPT0Gk0UKj6cHSC5bK21
+!i122 2
+l36
+R314
+V<ciDh96VPJ;FhTZXn8O__2
+!s100 h7nLcjNI2i7h=0U3Qjan_2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emuxf8
+R28
+R7
+R8
+!i122 2
+R0
+Z317 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF8.vhd
+Z318 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF8.vhd
+l0
+R91
+Vo[P2@?AGWOCa9A2jGVWAU0
+!s100 9kDT=[7F;fEc690kP=`Pb1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Amuxf8_v
+R7
+R8
+DEx4 work 5 muxf8 0 22 o[P2@?AGWOCa9A2jGVWAU0
+!i122 2
+l36
+R314
+VXB[9gJWaSd2eSh^nSRjKg0
+!s100 6O2JW8cb:=_0S:e?>H]Ki0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Emuxf9
+R28
+R7
+R8
+!i122 2
+R0
+Z319 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF9.vhd
+Z320 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/MUXF9.vhd
+l0
+R54
+VX^o5a3K3Eeoz<ahhWDlVK3
+!s100 f<`OQ<QB1KYee8Igf`UNW1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Amuxf9_v
+R7
+R8
+DEx4 work 5 muxf9 0 22 X^o5a3K3Eeoz<ahhWDlVK3
+!i122 2
+l36
+R314
+VbC=9f>GgaUB40h]8`?a_i3
+!s100 g<99eLQjf42]j^lbLD^n_3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobuf
+R28
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z321 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUF.vhd
+Z322 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUF.vhd
+l0
+R11
+Vi9M:4z8LQHK[lGoHz^2<L3
+!s100 M`YU3:jgmH6b;fgETh9750
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobuf_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 4 obuf 0 22 i9M:4z8LQHK[lGoHz^2<L3
+!i122 2
+l48
+R282
+VZ3h>C=3Aa?H2Qz;TRBQ0@3
+!s100 H8G1W^U56639USUYj>O^=0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds
+R28
+R7
+R8
+!i122 2
+R0
+Z323 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS.vhd
+Z324 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS.vhd
+l0
+R22
+VTaAINnBeC95FUa[AmN=Af0
+!s100 Qz<V]C174fCd4ETCNhan32
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_v
+R7
+R8
+DEx4 work 6 obufds 0 22 TaAINnBeC95FUa[AmN=Af0
+!i122 2
+l43
+L42 12
+VOPL0<3j;^DNb_bX44o=Tj2
+!s100 TGScWNYOHYJYX_6=bD;Bb2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds_dphy
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z325 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_DPHY.vhd
+Z326 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_DPHY.vhd
+l0
+R57
+V6H0H:k8AE1XJI3DUCQKPW2
+!s100 EOAi=NM:dY]fDmBLn^WzR2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_dphy_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 obufds_dphy 0 22 6H0H:k8AE1XJI3DUCQKPW2
+!i122 2
+l71
+L50 84
+V7m9Rc6T^KIlI9Fm0dX:mA1
+!s100 [VohF[b2NMG3XL>oYWz@n3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds_gte3
+R92
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+!i122 2
+R0
+Z327 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3.vhd
+Z328 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3.vhd
+l0
+R109
+V[SXD6]EHGfPK_f7@=kdmR0
+!s100 gM[[Q_X;g?lDHDgV_GYdV1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_gte3_v
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+DEx4 work 11 obufds_gte3 0 22 [SXD6]EHGfPK_f7@=kdmR0
+!i122 2
+l57
+L51 51
+V1`@z70VWG3lJ0<XBYZ7ga1
+!s100 ja[Ug_o0fBcR3mBa@1ak?3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds_gte3_adv
+R92
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+!i122 2
+R0
+Z329 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3_ADV.vhd
+Z330 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE3_ADV.vhd
+l0
+R139
+VDRR@GAU[2AZe<QVT8S6hW0
+!s100 6=lNCWJTN`;coEcIz1EO:2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_gte3_adv_v
+R6
+R2
+R3
+R4
+R29
+R199
+R8
+R7
+R5
+DEx4 work 15 obufds_gte3_adv 0 22 DRR@GAU[2AZe<QVT8S6hW0
+!i122 2
+l61
+L48 75
+VBf40:D@R3P@Zl?Z?z=fXL3
+!s100 J98nU>ikF_P]FEPc3e5__2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds_gte4
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z331 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4.vhd
+Z332 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4.vhd
+l0
+R57
+Vd?FWManb][SnUJ2@N2P463
+!s100 lINcfG9V?>5`cM]IAZA@X1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_gte4_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 obufds_gte4 0 22 d?FWManb][SnUJ2@N2P463
+!i122 2
+l54
+L48 51
+VYeX[f5O`a@;GIi6ON]Fca0
+!s100 PCDjjhTmkJZAzOidzl^^g1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobufds_gte4_adv
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z333 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4_ADV.vhd
+Z334 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFDS_GTE4_ADV.vhd
+l0
+R57
+VN;YNGnnc?l4f=T6ZM2T4c0
+!s100 7;UH6?BiYU1gRfQg[A>>l1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobufds_gte4_adv_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 15 obufds_gte4_adv 0 22 N;YNGnnc?l4f=T6ZM2T4c0
+!i122 2
+l62
+L49 75
+V1:M?d0`WA_G3;G>:AfXBo3
+!s100 gdH4DMd`764O7Eie;dRTK1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobuft
+R92
+R7
+R8
+!i122 2
+R0
+Z335 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT.vhd
+Z336 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT.vhd
+l0
+R43
+VWWnW@dPG[UQc>B@Y2D_iY0
+!s100 6VaoTC20C8ZQ8W:Mh<abP1
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobuft_v
+R7
+R8
+DEx4 work 5 obuft 0 22 WWnW@dPG[UQc>B@Y2D_iY0
+!i122 2
+l41
+L40 41
+VJzPl5kBcg8Le_jQJ4W6]L3
+!s100 hMznV0kCWG]nCmZEjD8a]0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobuft_dcien
+R92
+R7
+R8
+!i122 2
+R0
+Z337 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT_DCIEN.vhd
+Z338 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFT_DCIEN.vhd
+l0
+R54
+V_]cG]A`aBAH?UWOUWU6EN1
+!s100 hV@?@lHHLWM0i68^ICT2R2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobuft_dcien_v
+R7
+R8
+DEx4 work 11 obuft_dcien 0 22 _]cG]A`aBAH?UWOUWU6EN1
+!i122 2
+l43
+L42 23
+Vnd_O9o8O3CahWGjbk5Ac[1
+!s100 dEK?W^bLJOdN9T6Y0N1l?2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobuftds
+R92
+R7
+R8
+!i122 2
+R0
+Z339 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS.vhd
+Z340 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS.vhd
+l0
+R22
+VMS`H2H7Hm>Xk5JoLIb8211
+!s100 ;[c2QT61BN=_aALZVe:f^0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobuftds_v
+R7
+R8
+DEx4 work 7 obuftds 0 22 MS`H2H7Hm>Xk5JoLIb8211
+!i122 2
+l44
+L43 67
+VdC0Kg8@fX?g2m[?g5O;>C1
+!s100 1P2=W;dMaXo5=QS6eQZX30
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eobuftds_dcien
+R92
+R7
+R8
+!i122 2
+R0
+Z341 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS_DCIEN.vhd
+Z342 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OBUFTDS_DCIEN.vhd
+l0
+R54
+V_hbb7D;Af^fddc=D[WO3z1
+!s100 Df?F08V5e1Jil11NPWNY62
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aobuftds_dcien_v
+R7
+R8
+DEx4 work 13 obuftds_dcien 0 22 _hbb7D;Af^fddc=D[WO3z1
+!i122 2
+l43
+L42 55
+VK]IZ]9]l[j6gARebXS`Cn1
+!s100 ZFVj^hAF=6NT:>@VAE6VG3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eoddr
+R92
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z343 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDR.vhd
+Z344 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDR.vhd
+l0
+R32
+V2:ZoR`T_nJ]KCQ?_=YD3X0
+!s100 Gg2WD4e=dXkdiI2I^33@g3
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aoddr_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 4 oddr 0 22 2:ZoR`T_nJ]KCQ?_=YD3X0
+!i122 2
+l98
+L65 197
+V6jb6U:U2ak5555h^Q0G7f2
+!s100 V=6QQGUfim_3Q1A:D8MYD0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eoddre1
+R92
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z345 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDRE1.vhd
+Z346 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODDRE1.vhd
+l0
+R139
+VI8kLojAKIjIZCFFldCACg0
+!s100 z3m;fHO_Lgg[RT81N35];2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aoddre1_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 oddre1 0 22 I8kLojAKIjIZCFFldCACg0
+!i122 2
+l91
+L51 192
+VU;B<LOXmGGJ6aWNn488VQ1
+!s100 C?ZNVn::B<HD`?KIj^DbB0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eodelaye2
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z347 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2.vhd
+Z348 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2.vhd
+l0
+R48
+VGSb50GdX:k`zbf1:LL@f`2
+!s100 MP=CRJch^GfQDCbM0O97]2
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aodelaye2_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 8 odelaye2 0 22 GSb50GdX:k`zbf1:LL@f`2
+!i122 2
+l189
+L69 472
+VTT=SBH5jB8kYzYJQO_^Q?3
+!s100 foD<CjNjfn^djj=zAo2oK0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eodelaye2_finedelay
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z349 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2_FINEDELAY.vhd
+Z350 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE2_FINEDELAY.vhd
+l0
+R11
+V]9N37GAU^>2NWcGGR9>]i2
+!s100 UNiMcBW<7hOZ_XZ?<0IgF0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aodelaye2_finedelay_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 odelaye2_finedelay 0 22 ]9N37GAU^>2NWcGGR9>]i2
+!i122 2
+l196
+L68 506
+V[DfnkXa?Enn2g9eYi[oj10
+!s100 ]]WcPBUB0LD:Bb721=Gd23
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eodelaye3
+R92
+R6
+R2
+R3
+R4
+R175
+R29
+R8
+R7
+R5
+!i122 2
+R0
+Z351 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE3.vhd
+Z352 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ODELAYE3.vhd
+l0
+R112
+V[5QgQ??aQ52z[<^Vnh`jF1
+!s100 @25n>W0?_QVH5RYUhE`FS0
+R12
+33
+R287
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aodelaye3_v
+R6
+R2
+R3
+R4
+R175
+R29
+R8
+R7
+R5
+DEx4 work 8 odelaye3 0 22 [5QgQ??aQ52z[<^Vnh`jF1
+!i122 2
+l195
+L67 695
+VZZRR2CHD>g8`N?keA08kC1
+!s100 I0XeY8VVX``HBm[iaYl:^1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eor2l
+R92
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z353 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OR2L.vhd
+Z354 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/OR2L.vhd
+l0
+R11
+V=NM31BZjAT9dhSHD1f:_P3
+!s100 7e6L6zV70G`?[Y8FC8U^@0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aor2l_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 4 or2l 0 22 =NM31BZjAT9dhSHD1f:_P3
+!i122 2
+l51
+R18
+V1fEKZ<@1obH8WFCmGK3^60
+!s100 OGjEmkig>oci7VjE35TOc0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eoserdes
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R266
+R267
+l0
+L1906 1
+VRR22ek>]ACn2FED?j]FHz2
+!s100 CULLlUV`7X7?R5ZaC]]FD1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aoserdes_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 7 oserdes 0 22 RR22ek>]ACn2FED?j]FHz2
+!i122 2
+l2079
+L1958 223
+V2BBPjCSgcG4iL6Ani5V7;1
+!s100 S][l[QSSQ[lGYYnkZVnJ60
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eoserdese1
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L2966 1
+VG<@DLaZbnj[nkmU4NoW?j0
+!s100 0n3Z6_nI`MFSh?hJ_:XX51
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aoserdese1_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 9 oserdese1 0 22 G<@DLaZbnj[nkmU4NoW?j0
+!i122 2
+l3242
+L3018 724
+VbVV^ecIZXS_hBB[S6OnDo2
+!s100 P3z]a_;gZBGilYPH9M0BH2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ephaser_ref
+R28
+R2
+R3
+R4
+R6
+R175
+R29
+R118
+R5
+R7
+R8
+!i122 2
+R0
+Z355 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PHASER_REF.vhd
+Z356 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PHASER_REF.vhd
+l0
+R302
+V?jAC>]jmdS5GOF465f5>D1
+!s100 [X;3MdWz1^P?=f^b5nUO]1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aphaser_ref_v
+R2
+R3
+R4
+R6
+R175
+R29
+R118
+R5
+R7
+R8
+DEx4 work 10 phaser_ref 0 22 ?jAC>]jmdS5GOF465f5>D1
+!i122 2
+l95
+L57 140
+VIK4nEB^7AYbGYEXh9;al@3
+!s100 TNG@NoC_`U<Jmd0BEUmIH3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplg
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R266
+R267
+l0
+R112
+VfgMdh?X^0g8>ZLYG_0<A:0
+!s100 Nz87==B^ljJ>J8j32Rg6J0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplg_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 3 plg 0 22 fgMdh?X^0g8>ZLYG_0<A:0
+!i122 2
+l101
+L59 239
+VMHU^GkOoQL`6fY=MOEU<S1
+!s100 eHn>`UhLobk;2oDKaRUaf1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplg_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L137 1
+Vl;;a1iICQ@nG[dj?RNHoi2
+!s100 @g6:`Ho=<UY6RKW>nUND63
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplg_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 17 plg_oserdese1_vhd 0 22 l;;a1iICQ@nG[dj?RNHoi2
+!i122 2
+l201
+L153 248
+V?W=^lHS<?XkR<ZJ:8709T1
+!s100 gn7W6N1g47C5XbQ4I>bF43
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle2_adv
+R28
+R6
+R2
+R3
+R4
+R5
+R29
+R118
+R7
+R8
+!i122 2
+R0
+Z357 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_ADV.vhd
+Z358 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_ADV.vhd
+l0
+L58 1
+V1MgZl<DYUdQI[Old>m>k11
+!s100 AGz[9>B4LHINKzWRQgcE^1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle2_adv_v
+R6
+R2
+R3
+R4
+R5
+R29
+R118
+R7
+R8
+DEx4 work 9 plle2_adv 0 22 1MgZl<DYUdQI[Old>m>k11
+!i122 2
+l930
+L120 4243
+VYEI@]5XlgZQB0Wk4gU3Kg0
+!s100 XkIGL?z_PXbz@NDU;=`K61
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle2_base
+R28
+R2
+R3
+R4
+R5
+R6
+R29
+R118
+R7
+R8
+!i122 2
+R0
+Z359 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_BASE.vhd
+Z360 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE2_BASE.vhd
+l0
+R11
+V_1=7UZK9a0gWOjX<Rzg:23
+!s100 AJcM;ZmoI9Gbo>F>L5?gQ1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle2_base_v
+R2
+R3
+R4
+R5
+R6
+R29
+R118
+R7
+R8
+DEx4 work 10 plle2_base 0 22 _1=7UZK9a0gWOjX<Rzg:23
+!i122 2
+l91
+L78 70
+Vi^3F30D>dj5iFJHZ_X_`22
+!s100 8XKjEE4I?DcC;MEgBW6Qn2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle3_adv
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z361 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_ADV.vhd
+Z362 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_ADV.vhd
+l0
+Z363 L44 1
+V3Uk@5==lWHnD<ZA7>f66n2
+!s100 gJQP`DL=6<od?EaBm<e^S1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle3_adv_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 plle3_adv 0 22 3Uk@5==lWHnD<ZA7>f66n2
+!i122 2
+l668
+L89 2479
+VHQnA5Y:4fLP2OADoQ;`LB1
+!s100 DYB0MiX14FJ8J7AS^2jZn2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle3_base
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z364 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_BASE.vhd
+Z365 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE3_BASE.vhd
+l0
+R81
+V=zOjzGM_?OJMI:;flNgOC0
+!s100 B@@CJ4VflQ;b0LQdNjXHU3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle3_base_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 plle3_base 0 22 =zOjzGM_?OJMI:;flNgOC0
+!i122 2
+l80
+Z366 L67 60
+VN6da;k:^?9X0:]YMzF84H3
+!s100 c2lV@<@R=>IEI=I>2D3?;3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle4_adv
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z367 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_ADV.vhd
+Z368 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_ADV.vhd
+l0
+R363
+V56@GI^INXW[>d^R[cWUJz1
+!s100 UzVXNO1J34^aA]VflA]4`0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle4_adv_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 plle4_adv 0 22 56@GI^INXW[>d^R[cWUJz1
+!i122 2
+l668
+L89 2480
+VAFzmL6mBElf@9IOlNYGCW2
+!s100 bSE>VAP>Z:[M4IVdFo0?I2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eplle4_base
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z369 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_BASE.vhd
+Z370 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PLLE4_BASE.vhd
+l0
+R81
+VX^N@AF8=;JW?;KC:=dQ210
+!s100 ^O;4edeWa`9H3IQbKD2VA2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aplle4_base_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 10 plle4_base 0 22 X^N@AF8=;JW?;KC:=dQ210
+!i122 2
+l80
+R366
+Vnano[560zc<U<_[V2Vimd2
+!s100 jmJ94A8`LJXo:fDBLQ?]k3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eps7
+R28
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z371 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PS7.vhd
+Z372 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PS7.vhd
+l0
+R48
+VgeS5YP;F8khcC4=665d:k2
+!s100 kSO5GG;9BUNDc2R?11?gO1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aps7_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 3 ps7 0 22 geS5YP;F8khcC4=665d:k2
+!i122 2
+l662
+L660 14
+V8HfW4Wd:`i=39hKn0@PMN1
+!s100 J26ULa13lZMCO01mcXz:n0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Epulldown
+Z373 w1560832363
+R7
+R8
+!i122 2
+R0
+Z374 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLDOWN.vhd
+Z375 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLDOWN.vhd
+l0
+R43
+V`Q4@Xbe@MB8lMSC3M5i:j3
+!s100 U7m_n=LN@6i43CG`X7BV@1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Apulldown_v
+R7
+R8
+DEx4 work 8 pulldown 0 22 `Q4@Xbe@MB8lMSC3M5i:j3
+!i122 2
+l31
+Z376 L30 4
+Vid<^0hH1TbMA0H965cPjY2
+!s100 Oi:J1T9i1ZJAhJ3fenH`N2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Epullup
+R373
+R7
+R8
+!i122 2
+R0
+Z377 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLUP.vhd
+Z378 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/PULLUP.vhd
+l0
+R43
+V^?jKY>]jAQk6jlW?AZO^?1
+!s100 1CaZlV;mV5`k[jPC1?PfM0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Apullup_v
+R7
+R8
+DEx4 work 6 pullup 0 22 ^?jKY>]jAQk6jlW?AZO^?1
+!i122 2
+l31
+R376
+VQg1OBJEi40CFi`E];3iJO3
+!s100 7@h<YYGnhTF0g2?2;_YMA2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram128x1d
+R92
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z379 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1D.vhd
+Z380 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1D.vhd
+l0
+R73
+VZ;4@7HG`E_]Ng`T9M^kea1
+!s100 2[[cmNCB`@3_9n8jmkoSQ0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram128x1d_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 ram128x1d 0 22 Z;4@7HG`E_]Ng`T9M^kea1
+!i122 2
+l59
+L49 40
+VkKXWPz7FNRNb9XNJ6?MCA3
+!s100 Go7bNGYW:JhSbYl7AXd1[1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram128x1s
+R92
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z381 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1S.vhd
+Z382 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM128X1S.vhd
+l0
+R81
+VWO^ERR>G3fB>Ye8aLQ<A[2
+!s100 oMgFXag3_EPajeJo:7>WL1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram128x1s_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 ram128x1s 0 22 WO^ERR>G3fB>Ye8aLQ<A[2
+!i122 2
+l62
+L53 39
+V4LQ9>AB@z?9o>3TaBglXS1
+!s100 j9M^5AGjI3@Hbfa_4QIKe1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram256x1d
+R92
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z383 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1D.vhd
+Z384 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1D.vhd
+l0
+R192
+V82BOm?[b6j`UDmLdVl1:V1
+!s100 f:;FU[T]V_W`BA1l[]@F<0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram256x1d_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 ram256x1d 0 22 82BOm?[b6j`UDmLdVl1:V1
+!i122 2
+l57
+L47 40
+V0jnaO>jB01=iZ;Mc1nFh50
+!s100 kbUPdMiz=h0:X`ATf]=Ae1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram256x1s
+R92
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z385 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1S.vhd
+Z386 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM256X1S.vhd
+l0
+R11
+VZ>YRVTERU26_7HHTPbNaY1
+!s100 bZe<Dj@Gk64KQD];I=ToK0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram256x1s_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 ram256x1s 0 22 Z>YRVTERU26_7HHTPbNaY1
+!i122 2
+l57
+L48 36
+VHKnZggJNTC?Ea=D<HVbm[3
+!s100 MfD5MmFGH^>5IFHb<IQ=l3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram32m
+R92
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z387 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M.vhd
+Z388 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M.vhd
+l0
+R11
+VFbbgY^nfZ92T[`Y>Y^lNN2
+!s100 g6^aCzBPgcadSIOLXoAN@0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram32m_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 ram32m 0 22 FbbgY^nfZ92T[`Y>Y^lNN2
+!i122 2
+l79
+L60 85
+V6bO<6KR=LM9eLZ=4a2Q3V0
+!s100 eemJZ`d=ToONJJ:M`N`d13
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram32m16
+R92
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z389 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M16.vhd
+Z390 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32M16.vhd
+l0
+R192
+VXV^0LXhd347:5fYiL4WND3
+!s100 =iI?9<895T`B>YTB<1LzW1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram32m16_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 ram32m16 0 22 XV^0LXhd347:5fYiL4WND3
+!i122 2
+l104
+L73 145
+VgJA:Mom1RYO=LeMD0an2d0
+!s100 :cPkmPAHQeT`6RX099g>]3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram32x16dr8
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z391 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X16DR8.vhd
+Z392 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X16DR8.vhd
+l0
+R57
+VLd5bOkeb0DZ;TJ``nozBG2
+!s100 Z;3bhYQLhIC5EW1T<9i_e2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram32x16dr8_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 11 ram32x16dr8 0 22 Ld5bOkeb0DZ;TJ``nozBG2
+!i122 2
+l138
+L77 197
+VI<Ua`B4Xm6@T9ZL@<YcjI1
+!s100 cXhMMiSXDJ:bnYBL6`E=F1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram32x1d
+R28
+R2
+R3
+R4
+R5
+R7
+R8
+!i122 2
+R0
+Z393 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1D.vhd
+Z394 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1D.vhd
+l0
+R73
+Vh2UK6MC_VH1Y<2oaUNaO12
+!s100 4Gd:>1Hi]UYaFkzcWl2T20
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram32x1d_v
+R2
+R3
+R4
+R5
+R7
+R8
+DEx4 work 8 ram32x1d 0 22 h2UK6MC_VH1Y<2oaUNaO12
+!i122 2
+l67
+Z395 L57 32
+VAOhODCHbY1h7<>IQ6]T_J1
+!s100 PNZ?47iI8VRE94?<ZZ`EV1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram32x1s
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z396 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1S.vhd
+Z397 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM32X1S.vhd
+l0
+R81
+VIbd_bHaYaH2J78dRZ34330
+!s100 IhMjA^Yg=NAEaV@I^Q5KS2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram32x1s_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 ram32x1s 0 22 Ibd_bHaYaH2J78dRZ34330
+!i122 2
+l59
+L50 38
+V^bQoNzkZQ`JmbdUobgT>n2
+!s100 =Za2Ii]RfAf=DJGYodf071
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram512x1s
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z398 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM512X1S.vhd
+Z399 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM512X1S.vhd
+l0
+R192
+VFCl9[hTg;Q=Amm3G?;ZHD3
+!s100 EE8k]G;LM3`g`:mQX`:2O3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram512x1s_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 ram512x1s 0 22 FCl9[hTg;Q=Amm3G?;ZHD3
+!i122 2
+l54
+L45 35
+V7F^Ha0gUoG@Aa7nJeM;H72
+!s100 zH[MVzIbz_<_O9:=N0K^o1
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram64m
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z400 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M.vhd
+Z401 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M.vhd
+l0
+R73
+VY]ORa@nMlmRJeNL2GZ8a00
+!s100 <@;]CPG5Cm7Dh`S78eeRJ3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram64m_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 ram64m 0 22 Y]ORa@nMlmRJeNL2GZ8a00
+!i122 2
+l78
+L59 54
+V<KHLW9KjP8?W^DOb`<I_:3
+!s100 aKEmEO4e[=@FzQnkJWiBR0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram64m8
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z402 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M8.vhd
+Z403 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64M8.vhd
+l0
+R81
+VPniHH]mgn>[zYbN4SO?K@0
+!s100 IF<W<^i[C9BaDga^Z8lAG3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram64m8_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 7 ram64m8 0 22 PniHH]mgn>[zYbN4SO?K@0
+!i122 2
+l105
+L74 82
+V[_Hh85aMfaYZ?<[g8JK<X0
+!s100 3]YHLS>_f_5S7?Q@daO:C3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram64x1d
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z404 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1D.vhd
+Z405 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1D.vhd
+l0
+R81
+V6U`e;>fI[?^A5GEhEigl61
+!s100 nG<G3Ik20=WAXPGcHmgET0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram64x1d_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 ram64x1d 0 22 6U`e;>fI[?^A5GEhEigl61
+!i122 2
+l68
+L58 41
+VRQ`2>R7C1U<aVnJf9ZYL^3
+!s100 ?d86R^O3b57IFNcNCUINb2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram64x1s
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z406 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1S.vhd
+Z407 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X1S.vhd
+l0
+R81
+V]c8F]?Mo0AZ0XCBM>9H141
+!s100 5jA]zHA:<V8C@JlC=_1D_0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram64x1s_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 8 ram64x1s 0 22 ]c8F]?Mo0AZ0XCBM>9H141
+!i122 2
+l60
+L51 37
+VI0BDMW5SNCj56RX5l_I9I3
+!s100 PN>cYC6;EZn?CWbF=J9b?3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eram64x8sw
+R92
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z408 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X8SW.vhd
+Z409 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAM64X8SW.vhd
+l0
+R81
+V2Qm<=`hOLBB:HbL`>CWSP1
+!s100 >ejCXEl9J4=?mm7IJlmA?0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aram64x8sw_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 9 ram64x8sw 0 22 2Qm<=`hOLBB:HbL`>CWSP1
+!i122 2
+l68
+L54 120
+Vghl`57;DhC17f8cPM@25F1
+!s100 8dM;[<gJIk_PC51M`LH@g3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramb18e1
+R92
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z410 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E1.vhd
+Z411 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E1.vhd
+l0
+L5399 1
+ValY_3W]ePc8R:XWD7Dfm@0
+!s100 fHQ7b0Yn=G`GdRdeMLeO12
+R12
+33
+Z412 !s110 1759777952
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramb18e1_v
+R5
+R6
+R7
+R8
+DEx4 work 8 ramb18e1 0 22 alY_3W]ePc8R:XWD7Dfm@0
+!i122 2
+l5815
+L5533 762
+V`UNZJeXPSg3GUH7HTTCSX0
+!s100 W98:H;;cX1kF5=Si^;o1h1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramb18e2
+R92
+R6
+R2
+R3
+R4
+R175
+R8
+R7
+R5
+!i122 2
+R0
+Z413 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E2.vhd
+Z414 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB18E2.vhd
+l0
+R32
+V0X8F3i4ZkR>G;PTWOJ8=d1
+!s100 QK:z`f4a:TSO4V2o>VX9I2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramb18e2_v
+R6
+R2
+R3
+R4
+R175
+R8
+R7
+R5
+DEx4 work 8 ramb18e2 0 22 0X8F3i4ZkR>G;PTWOJ8=d1
+!i122 2
+l806
+L195 2050
+VzQ7i]o0R;jBCZMa9H>n_G0
+!s100 83Wdj:^neC^9bQdLa2o`k2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramb36e1
+R92
+R5
+R6
+R7
+R8
+!i122 2
+R0
+Z415 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E1.vhd
+Z416 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E1.vhd
+l0
+L5408 1
+VZ98N;<MMJRl7kh;jh[IS>2
+!s100 ec7a_]BHIa=eRL^k8iM_>3
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramb36e1_v
+R5
+R6
+R7
+R8
+DEx4 work 8 ramb36e1 0 22 Z98N;<MMJRl7kh;jh[IS>2
+!i122 2
+l5908
+L5628 993
+V49Lj6MiLbb<B=7eXMWC8m3
+!s100 7:Hm1?FM4z]PIV8<8R5[H1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramb36e2
+R28
+R6
+R2
+R3
+R4
+R175
+R8
+R7
+R5
+!i122 2
+R0
+Z417 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E2.vhd
+Z418 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMB36E2.vhd
+l0
+R302
+Vk<RIPJUVcMiKQk<7BGY2i1
+!s100 LfkC:iM;TDe]TiNb2n=_i2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramb36e2_v
+R6
+R2
+R3
+R4
+R175
+R8
+R7
+R5
+DEx4 work 8 ramb36e2 0 22 k<RIPJUVcMiKQk<7BGY2i1
+!i122 2
+l1146
+L284 2543
+V1N[UhO]iGA<W;hD2OB;;13
+!s100 ]`hnJF;YEH4?kaTzH0UW>1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramd32
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z419 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD32.vhd
+Z420 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD32.vhd
+l0
+R81
+VbUBnJ3`HR;YY^EZiU4^eD2
+!s100 h66KLMeEhNkTW1`neE]B@2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramd32_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 ramd32 0 22 bUBnJ3`HR;YY^EZiU4^eD2
+!i122 2
+l65
+L55 42
+Vn01GnAhf<YDdCg6ZeWM>k2
+!s100 nfOAOJZJkTE0d4Ckj@2d82
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eramd64e
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z421 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD64E.vhd
+Z422 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMD64E.vhd
+l0
+R81
+V>TVUK1Tg]ki:eg:d]0Cf_2
+!s100 S=0coC<R>3O1mJI9dV9>E2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aramd64e_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 7 ramd64e 0 22 >TVUK1Tg]ki:eg:d]0Cf_2
+!i122 2
+l71
+L61 46
+V>0CHkVKc>AKOMICLS=fVA0
+!s100 Q<zNd@jSG=>Odi:^[Db]V2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erams32
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z423 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS32.vhd
+Z424 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS32.vhd
+l0
+R81
+VCTkN5d19F8z:7T[4Lo6k>0
+!s100 3D;;65ei?R2TS3WI5Czdf3
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arams32_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 6 rams32 0 22 CTkN5d19F8z:7T[4Lo6k>0
+!i122 2
+l59
+L50 41
+Vo_Si?cagOS03LWkhHW:d_0
+!s100 5>IdjVSMZP=?eRCeIG2n43
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erams64e
+R28
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z425 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E.vhd
+Z426 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E.vhd
+l0
+R81
+VgIH5[jj@RW5BFW6`_UL;@2
+!s100 <B]aPf3j>Mi;]E;Mz9kc:1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arams64e_v
+R2
+R3
+R4
+R7
+R8
+DEx4 work 7 rams64e 0 22 gIH5[jj@RW5BFW6`_UL;@2
+!i122 2
+l65
+L55 46
+V:TU@PbbnfRjCd0MdB6Al^2
+!s100 ]ZZ[o9jbD3ZQ4;42Ea=YQ1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erams64e1
+R28
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z427 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E1.vhd
+Z428 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RAMS64E1.vhd
+l0
+R11
+V?SI`j:dS@cAn`L992_1A`3
+!s100 _EP>WW;A107EVE>gOPFiW1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arams64e1_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 8 rams64e1 0 22 ?SI`j:dS@cAn`L992_1A`3
+!i122 2
+l61
+R395
+V5;Y37F@N1JAF1?dFazM9P0
+!s100 <9O1f2a1:gl:JX<@Ki[0m0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erank12d_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L414 1
+VR9e=o^f[`]Bmn7IiMGXjn2
+!s100 hHB4<^Yi:9:PXgG2S?<X?3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arank12d_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 21 rank12d_oserdese1_vhd 0 22 R9e=o^f[`]Bmn7IiMGXjn2
+!i122 2
+l554
+L450 457
+VoajYa4BSz0TjNA@fk5eMG3
+!s100 jnkS11L3k00R;@k6DgK<70
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erb18_internal_vhdl
+R92
+R2
+R3
+R4
+R5
+R6
+R175
+R29
+R118
+R7
+R8
+!i122 2
+R0
+R410
+R411
+l0
+L74 1
+Ve3^NA5bO7HWAEGVg8Z[FO3
+!s100 HPconf[4[WMNNB=<Q9`RA3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arb18_internal_vhdl_v
+R2
+R3
+R4
+R5
+R6
+R175
+R29
+R118
+R7
+R8
+DEx4 work 18 rb18_internal_vhdl 0 22 e3^NA5bO7HWAEGVg8Z[FO3
+!i122 2
+l3190
+L293 5090
+VdTUTLcGTHd]E^<?Pl<gb21
+!s100 ISmYBmPPUJgNfV^F;MPK[2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Erb36_internal_vhdl
+R92
+R2
+R3
+R4
+R5
+R6
+R175
+R29
+R118
+R7
+R8
+!i122 2
+R0
+R415
+R416
+l0
+L83 1
+VX<C=6R]0Tkj>^gc7^8Y6T1
+!s100 6hEo:H6^lN;>a2gVRBcVk1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Arb36_internal_vhdl_v
+R2
+R3
+R4
+R5
+R6
+R175
+R29
+R118
+R7
+R8
+DEx4 work 18 rb36_internal_vhdl 0 22 X<C=6R]0Tkj>^gc7^8Y6T1
+!i122 2
+l3199
+L302 5090
+VGa9SY^dGPC=JZZ6XZd?7I0
+!s100 n1WAjnLa][]7?zG4@<zXH1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eriu_or
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z429 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RIU_OR.vhd
+Z430 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/RIU_OR.vhd
+l0
+R57
+VU^4i`CEoXgmz4NofY=8LV2
+!s100 4bfnSdEW59<^:GQA8J_SW2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ariu_or_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 riu_or 0 22 U^4i`CEoXgmz4NofY=8LV2
+!i122 2
+l86
+L50 113
+VjL5S@=;2B]QmY[OT1`:`G1
+!s100 E>V?F7nTZOHgJ]QFfaEdU0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eselfheal_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L51 1
+VjE;FghfoZOGES0`@5X7[01
+!s100 8BOij6M?UdPLWH[e<<^bJ3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Aselfheal_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 22 selfheal_oserdese1_vhd 0 22 jE;FghfoZOGES0`@5X7[01
+!i122 2
+l86
+L66 57
+VOXT3g;>RW7J27B>F=LaRY0
+!s100 4FP8d`lZVdNga1A1g4Iz70
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esim_confige2
+R28
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z431 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE2.vhd
+Z432 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE2.vhd
+l0
+R302
+Vd4jZRQ]6CQl>_7G<T1AB71
+!s100 lUN:]WTo_E=M3km?JJFT<3
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asim_confige2_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 12 sim_confige2 0 22 d4jZRQ]6CQl>_7G<T1AB71
+!i122 2
+l492
+L64 2568
+VWM__g8fEKke_e<:k9`P^41
+!s100 `klRzz[Eiih]@Fl@Dg0PB3
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esim_confige3
+R92
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z433 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE3.vhd
+Z434 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SIM_CONFIGE3.vhd
+l0
+R57
+V1kVTJb8OV=a[9JQ`3k9@M1
+!s100 >DX;bI7ZAFdiUDP>:gkUH2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asim_confige3_v
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 12 sim_confige3 0 22 1kVTJb8OV=a[9JQ`3k9@M1
+!i122 2
+l484
+L58 2582
+VAlU;=h:m23ozY?nEmWN=I3
+!s100 ?Q<M7JMLd7fTC8kQSbo[`1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esrl16e
+R92
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z435 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRL16E.vhd
+Z436 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRL16E.vhd
+l0
+R57
+VBFGm7c]jOkzTblBPB[7gk2
+!s100 3@BOBk@NNcN47IogK4HW70
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asrl16e_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 6 srl16e 0 22 BFGm7c]jOkzTblBPB[7gk2
+!i122 2
+l62
+L53 52
+VoGEBjhkk73fKOe2?L:9891
+!s100 T8_mBk5AHi0E6HIUJ2IRW0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esrlc16e
+R92
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z437 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC16E.vhd
+Z438 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC16E.vhd
+l0
+R57
+V?MgZZ2PNG=^T[SEa`MCD[2
+!s100 UR1b_ZG3dnBWFzUFOnCA>0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asrlc16e_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 srlc16e 0 22 ?MgZZ2PNG=^T[SEa`MCD[2
+!i122 2
+l63
+L54 56
+V9bcPezQ7hQi]?AJ=_DAYn2
+!s100 S7U1JD`Co6N5cbI_E8;BC2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esrlc32e
+R28
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z439 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC32E.vhd
+Z440 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SRLC32E.vhd
+l0
+R112
+V5U3fXX]SHPMS4R4]V9]z_3
+!s100 Me_Xmm=I;5oHdO`dNTT7b2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asrlc32e_v
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 srlc32e 0 22 5U3fXX]SHPMS4R4]V9]z_3
+!i122 2
+l62
+L53 56
+V:@T_RXH0UHbDYMj9Ud:`b0
+!s100 ]]D?_lR@L>FdTQ[Hb`SBf0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Estartupe2
+R28
+R29
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z441 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE2.vhd
+Z442 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE2.vhd
+l0
+R125
+VVa1YU`>Q;ZT1eJzebZT>k2
+!s100 `DP_R6LzRR1`a20[U2ZPg0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Astartupe2_v
+R29
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 startupe2 0 22 Va1YU`>Q;ZT1eJzebZT>k2
+!i122 2
+l117
+L62 157
+V3h;MWjBFzPR@aM^fbIkX53
+!s100 c=bmWCeaS3K]mFj?f[[Wn1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Estartupe3
+R28
+R29
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+!i122 2
+R0
+Z443 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE3.vhd
+Z444 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/STARTUPE3.vhd
+l0
+R132
+VJ;fVMLzoeY`KkSYCicj_?0
+!s100 1[<<z?K3j4FXKDnDUb4jz3
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Astartupe3_v
+R29
+R5
+R6
+R2
+R3
+R4
+R7
+R8
+DEx4 work 9 startupe3 0 22 J;fVMLzoeY`KkSYCicj_?0
+!i122 2
+l122
+L66 166
+VI>9L6FJIje2Y7?^0Y>mHF1
+!s100 821D6^@g@0Zel0_B8aLJM1
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esysmone1
+R28
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+!i122 2
+R0
+Z445 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE1.vhd
+Z446 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE1.vhd
+l0
+R48
+V=z=C_cUDkfS:C9k^ZO?^J3
+!s100 ]V9M>ob?T@nfJj9FDjhjk0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asysmone1_v
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+DEx4 work 8 sysmone1 0 22 =z=C_cUDkfS:C9k^ZO?^J3
+!i122 2
+l862
+L150 3488
+V>l4JK^?POTNUlePJMP5a@1
+!s100 oP8jm_L]3?T:D1[RNdknR2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Esysmone4
+R28
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+!i122 2
+R0
+Z447 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE4.vhd
+Z448 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/SYSMONE4.vhd
+l0
+R48
+VVboi38kTBgaBif]_`nSVm2
+!s100 <c=V>NN0E_H:aoZT`FzJG0
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Asysmone4_v
+R6
+R2
+R3
+R4
+R29
+R118
+R8
+R7
+R5
+DEx4 work 8 sysmone4 0 22 Vboi38kTBgaBif]_`nSVm2
+!i122 2
+l1235
+L154 4805
+V;UTzJ4Mb^nD_TSizi[`n93
+!s100 >W`O^Y6T30OL6>eG4IbR^2
+R12
+33
+R412
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Etout_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L2642 1
+V2IA4?OCHS<>OL4R?DaMQ<3
+!s100 ;D>I;2VZM<z7bhh3SYF^f0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Atout_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 tout_oserdese1_vhd 0 22 2IA4?OCHS<>OL4R?DaMQ<3
+!i122 2
+l2718
+L2667 284
+VD[IOUGOnk5zLPe?^m>GnQ2
+!s100 mG:L04fIOFD6QC:?:_M>Q3
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Etrif_oserdese1_vhd
+R92
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L921 1
+Vzgl9W[ZY`YfFXB`P7n?d23
+!s100 AI9j]AziN3LE`;I0Hl85:0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Atrif_oserdese1_vhd_v
+R5
+R6
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 18 trif_oserdese1_vhd 0 22 zgl9W[ZY`YfFXB`P7n?d23
+!i122 2
+l1007
+L948 225
+VHb:?MmdeE7d:DA<`a8TbU1
+!s100 b4^IC94GHT1_DSmXzU_On0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Etxbuffer_oserdese1_vhd
+R92
+R29
+R7
+R8
+!i122 2
+R0
+R113
+R114
+l0
+L1183 1
+ViBk3YWgih^CANd^Q2SkX]2
+!s100 ealhBLdIK<9UaLLgG:df^2
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Atxbuffer_oserdese1_vhd_v
+R29
+R7
+R8
+DEx4 work 22 txbuffer_oserdese1_vhd 0 22 iBk3YWgih^CANd^Q2SkX]2
+!i122 2
+l1323
+L1211 289
+VJKeFOP6A5^l5YVVlVJYE=0
+!s100 02lR]DFQ1LQJB[ZJiQ4SH0
+R12
+33
+R115
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Euram288
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z449 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288.vhd
+Z450 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288.vhd
+l0
+R57
+V5WI]<59h8>Gk4LaYO3mY:3
+!s100 fP4JniRQ6CK^iPHH6?;=C0
+R12
+33
+Z451 !s110 1759777953
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Auram288_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 7 uram288 0 22 5WI]<59h8>Gk4LaYO3mY:3
+!i122 2
+l615
+L146 3377
+Vi4oNADEZY:FEk<cMQUFJO3
+!s100 [lYRTS<e@dBT[z4_7Efdz0
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Euram288_base
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z452 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288_BASE.vhd
+Z453 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/URAM288_BASE.vhd
+l0
+R57
+VY0Hh4kUfU]?5<:4CPfMIN2
+!s100 2W6ST=N0f`73FDRYj<`L=2
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Auram288_base_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 12 uram288_base 0 22 Y0Hh4kUfU]?5<:4CPfMIN2
+!i122 2
+l495
+L96 2207
+VzVEj]f0VKSHE[L8bPcT_e2
+!s100 0An<hCN`>FQS@iR7Z7n1L0
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Eusr_accesse2
+R28
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+!i122 2
+R0
+Z454 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/USR_ACCESSE2.vhd
+Z455 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/USR_ACCESSE2.vhd
+l0
+R81
+V@KFoUh`EhB45IcKKcH<BM1
+!s100 9POZ]mdn6]iVRoj@ehd<k2
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ausr_accesse2_v
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R29
+DEx4 work 12 usr_accesse2 0 22 @KFoUh`EhB45IcKKcH<BM1
+!i122 2
+l44
+L38 13
+VKSb`J>NZ<10FGLbKTB=5:1
+!s100 `8H[zXm;4JOJT<JJOKOYR2
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Evcc
+R70
+R7
+R8
+!i122 2
+R0
+Z456 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCC.vhd
+Z457 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCC.vhd
+l0
+R43
+V[Nz]]<VDHZPghBznj[AL`0
+!s100 =21XjS]IJ9cCLJhkccck11
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Avcc_v
+R7
+R8
+DEx4 work 3 vcc 0 22 [Nz]]<VDHZPghBznj[AL`0
+!i122 2
+l31
+R376
+VmcJM4f^SW5=F14J=GURU:1
+!s100 jcdQ4WQPOkVmJcn]jGY2m1
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Pvcomponents
+R5
+R7
+R8
+!i122 1
+w1575513463
+R0
+8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VCOMP.vhd
+F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VCOMP.vhd
+l0
+L13 47081
+V3W5a6]<ZCQE5EDUUJ4]`i0
+!s100 MCc?QeX8e][45R2DB1jP:1
+R12
+33
+R13
+!i10b 1
+Z458 !s108 1759777945.000000
+!s90 -quiet|-2008|-work|unisim|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VCOMP.vhd|
+!s107 /softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VCOMP.vhd|
+!i113 0
+R16
+R17
+Evcu
+R28
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+!i122 2
+R0
+Z459 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCU.vhd
+Z460 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/VCU.vhd
+l0
+R57
+V?E_0i@<mR[I6dc2<3[:2G2
+!s100 3?BAzZV2_:a7BChQKJ`JR3
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Avcu_v
+R6
+R2
+R3
+R4
+R8
+R7
+R5
+DEx4 work 3 vcu 0 22 ?E_0i@<mR[I6dc2<3[:2G2
+!i122 2
+l530
+L271 778
+VUh0Cbn1m4Dn;023]E4`^S2
+!s100 dZ@mkYSWahn9kmMZ5TYJ=0
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Pvpkg
+R2
+R3
+R8
+R7
+!i122 0
+R28
+R0
+Z461 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VPKG.vhd
+Z462 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VPKG.vhd
+l0
+L51 703
+V946TcP6=<VYUj`3fBRa5M2
+!s100 I[6hL:4aOZdc[GeMeD]bO0
+R12
+33
+b1
+Z463 !s110 1759777945
+!i10b 1
+R458
+Z464 !s90 -quiet|-2008|-work|unisim|/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VPKG.vhd|
+Z465 !s107 /softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/unisim_VPKG.vhd|
+!i113 0
+R16
+R17
+Bbody
+DPx4 work 4 vpkg 0 22 946TcP6=<VYUj`3fBRa5M2
+R2
+R3
+R8
+R7
+!i122 0
+l0
+L759 856
+Vog28AKZThBFE03g9F7>dQ1
+!s100 2NJlGoAYA9UghTPC[NzTd3
+R12
+33
+R463
+!i10b 1
+R458
+R464
+R465
+!i113 0
+R16
+R17
+Exadc
+R28
+R6
+R2
+R3
+R4
+R5
+R29
+R118
+R7
+R8
+!i122 2
+R0
+Z466 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XADC.vhd
+Z467 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XADC.vhd
+l0
+L72 1
+VJRD^:1?eV]c?AW:OzK?^=0
+!s100 KE]k5_g>2??B4O`OT14UW2
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Axadc_v
+R6
+R2
+R3
+R4
+R5
+R29
+R118
+R7
+R8
+DEx4 work 4 xadc 0 22 JRD^:1?eV]c?AW:OzK?^=0
+!i122 2
+l666
+L148 3439
+Vbie3^A_0Z<Q:HZ7Z_O[kP0
+!s100 WXkmSEZL_BGkeo`_oUi`?1
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Exorcy
+R28
+R7
+R8
+!i122 2
+R0
+Z468 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XORCY.vhd
+Z469 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/XORCY.vhd
+l0
+R43
+V=hQJF3]znRCZ9`H0PnYJh2
+!s100 4aMana<IL56;E7iWo2meC3
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Axorcy_v
+R7
+R8
+DEx4 work 5 xorcy 0 22 =hQJF3]znRCZ9`H0PnYJh2
+!i122 2
+l34
+R78
+V9JWiL<g6ZkAT;:hoR=]?a3
+!s100 lOX3g7j7<So35k9T^a^6h0
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Ezhold_delay
+R28
+R2
+R3
+R4
+R29
+R7
+R8
+!i122 2
+R0
+Z470 8/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ZHOLD_DELAY.vhd
+Z471 F/softs/xilinx/Vivado/2019.2/data/vhdl/src/unisims/primitive/ZHOLD_DELAY.vhd
+l0
+R73
+VZ3A`=5c_cePJ;1560^c<d3
+!s100 <ILTS4A9l09mjdz[L9[Pz1
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17
+Azhold_delay_v
+R2
+R3
+R4
+R29
+R7
+R8
+DEx4 work 11 zhold_delay 0 22 Z3A`=5c_cePJ;1560^c<d3
+!i122 2
+l90
+L48 304
+VEl:kfC<0kO`3;=Nm?_WNn0
+!s100 n=Bm3lTfGdo;WO1SABcbK0
+R12
+33
+R451
+!i10b 1
+R14
+R15
+R19
+!i113 0
+R16
+R17

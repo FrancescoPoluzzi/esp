@@ -61,6 +61,8 @@ esp-config: $(ESP_CFG_BUILD)/socmap.vhd
 esp-xconfig: $(ESP_CFG_BUILD) $(GRLIB_CFG_BUILD)/grlib_config.vhd
 	@echo ""
 	@echo "Running interactive ESP configuration..."
+	@echo $(ESP_CFG_BUILD)
+	@echo $(GRLIB_CFG_BUILD)
 	@cd $(ESP_CFG_BUILD); \
 	LD_LIBRARY_PATH="" python3 $(ESP_ROOT)/tools/socgen/esp_creator.py $(ARCH_BITS) $(TECH_TYPE) $(TECHLIB) $(LINUX_MAC) $(LEON3_STACK) $(BOARD) $(EMU_TECH) $(EMU_FREQ)
 

@@ -1,0 +1,1 @@
+/home/poluzzi/esp/rtl/cores/ariane/ariane/src/common_cells/include/common_cells/registers.svh
