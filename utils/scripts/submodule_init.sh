@@ -28,6 +28,7 @@ INSTALL_SPANDEX=0
 INSTALL_BASEJUMP=0
 INSTALL_ZYNQ=0
 INSTALL_EIGEN=0
+INSTALL_X_HEEP=0
 
 if [ $(noyes "*** QUESTION : Do you want to install the Ariane core?") == "y" ]; then
     INSTALL_ARIANE=1
@@ -59,6 +60,10 @@ fi
 
 if [ $(noyes "*** QUESTION : Do you want to install NVDLA?") == "y" ]; then
     INSTALL_NVDLA=1
+fi
+
+if [ $(noyes "*** QUESTION : Do you want to install X-Heep?") == "y" ]; then
+    INSTALL_X_HEEP=1
 fi
 
 if [ $(noyes "*** QUESTION : Do you want to install Spandex caches?") == "y" ]; then
@@ -116,6 +121,10 @@ fi
 
 if [ ${INSTALL_NVDLA} == 1 ]; then
     git submodule update --init --recursive accelerators/third-party/NV_NVDLA
+fi
+
+if [ ${INSTALL_X_HEEP} == 1 ]; then
+    git submodule update --init --recursive accelerators/third-party/ips/x-heep
 fi
 
 if [ ${INSTALL_SPANDEX} == 1 ]; then
