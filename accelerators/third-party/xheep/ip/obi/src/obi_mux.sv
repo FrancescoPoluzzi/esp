@@ -9,9 +9,9 @@
 /// An OBI multiplexer.
 module obi_mux #(
   /// The configuration of the subordinate ports (input ports).
-  parameter obi_pkg::obi_cfg_t SbrPortObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The configuration of the manager port (output port).
-  parameter obi_pkg::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
+  parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
   /// The request struct for the subordinate ports (input ports).
   parameter type               sbr_port_obi_req_t = logic,
   /// The A channel struct for the subordinate ports (input ports).
@@ -45,7 +45,7 @@ module obi_mux #(
     $fatal(1, "unimplemented");
   end
 
-  localparam int unsigned RequiredExtraIdWidth = cf_math_pkg::idx_width(NumSbrPorts);
+  localparam int unsigned RequiredExtraIdWidth = cf_math_pkg_xheep::idx_width(NumSbrPorts);
 
   logic [NumSbrPorts-1:0] sbr_ports_req, sbr_ports_gnt;
   sbr_port_a_chan_t [NumSbrPorts-1:0] sbr_ports_a;
@@ -165,9 +165,9 @@ endmodule
 
 module obi_mux_intf #(
   /// The configuration of the subordinate ports (input ports).
-  parameter obi_pkg::obi_cfg_t SbrPortObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The configuration of the manager port (output port).
-  parameter obi_pkg::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
+  parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
   /// The number of subordinate ports (input ports).
   parameter int unsigned       NumSbrPorts        = 32'd0,
   /// The maximum number of outstanding transactions.

@@ -7,9 +7,9 @@
 /// An OBI crossbar interconnect.
 module obi_xbar #(
   /// The OBI configuration for the subordinate ports (input ports).
-  parameter obi_pkg::obi_cfg_t SbrPortObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The OBI configuration for the manager ports (ouput ports).
-  parameter obi_pkg::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
+  parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
   /// The request struct for the subordinate ports (input ports).
   parameter type               sbr_port_obi_req_t = logic,
   /// The A channel struct for the subordinate ports (input ports).
@@ -49,10 +49,10 @@ module obi_xbar #(
 
   input  addr_map_rule_t [NumAddrRules-1:0]   addr_map_i,
   input  logic [NumSbrPorts-1:0]              en_default_idx_i,
-  input  logic [NumSbrPorts-1:0][cf_math_pkg::idx_width(NumMgrPorts)-1:0] default_idx_i
+  input  logic [NumSbrPorts-1:0][cf_math_pkg_xheep::idx_width(NumMgrPorts)-1:0] default_idx_i
 );
 
-  logic [NumSbrPorts-1:0][cf_math_pkg::idx_width(NumMgrPorts)-1:0] sbr_port_select;
+  logic [NumSbrPorts-1:0][cf_math_pkg_xheep::idx_width(NumMgrPorts)-1:0] sbr_port_select;
 
   // Signals from the demuxes
   sbr_port_obi_req_t [NumSbrPorts-1:0][NumMgrPorts-1:0] sbr_reqs;
@@ -160,9 +160,9 @@ endmodule
 
 module obi_xbar_intf #(
   /// The OBI configuration for the subordinate ports (input ports).
-  parameter obi_pkg::obi_cfg_t SbrPortObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The OBI configuration for the manager ports (ouput ports).
-  parameter obi_pkg::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
+  parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg      = SbrPortObiCfg,
   /// The number of subordinate ports (input ports).
   parameter int unsigned       NumSbrPorts        = 32'd0,
   /// The number of manager ports (output ports).
@@ -188,7 +188,7 @@ module obi_xbar_intf #(
 
   input  addr_map_rule_t [NumAddrRules-1:0]   addr_map_i,
   input  logic [NumSbrPorts-1:0]              en_default_idx_i,
-  input  logic [NumSbrPorts-1:0][cf_math_pkg::idx_width(NumMgrPorts)-1:0] default_idx_i
+  input  logic [NumSbrPorts-1:0][cf_math_pkg_xheep::idx_width(NumMgrPorts)-1:0] default_idx_i
 );
 
   `OBI_TYPEDEF_ALL(sbr_port_obi, SbrPortObiCfg)

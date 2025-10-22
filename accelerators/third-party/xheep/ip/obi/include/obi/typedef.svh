@@ -32,17 +32,17 @@
 
 `define OBI_TYPEDEF_ATOP_A_OPTIONAL(a_optional_t) \
   typedef struct packed {                         \
-    obi_pkg::atop_t atop;                         \
+    obi_pkg_ip::atop_t atop;                         \
   } a_optional_t;
 
 `define OBI_TYPEDEF_ALL_A_OPTIONAL(a_optional_t, AUSER_WIDTH, WUSER_WIDTH, MID_WIDTH, ACHK_WIDTH) \
   typedef struct packed {                                                                         \
     logic [ AUSER_WIDTH-1:0] auser;                                                               \
     logic [ WUSER_WIDTH-1:0] wuser;                                                               \
-    obi_pkg::atop_t          atop;                                                                \
-    obi_pkg::memtype_t       memtype;                                                             \
+    obi_pkg_ip::atop_t          atop;                                                                \
+    obi_pkg_ip::memtype_t       memtype;                                                             \
     logic [   MID_WIDTH-1:0] mid;                                                                 \
-    obi_pkg::prot_t          prot;                                                                \
+    obi_pkg_ip::prot_t          prot;                                                                \
     logic                    dbg;                                                                 \
     logic [  ACHK_WIDTH-1:0] achk;                                                                \
   } a_optional_t;

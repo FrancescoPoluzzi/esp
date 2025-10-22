@@ -6,7 +6,7 @@
 
 module obi_cut #(
     /// The OBI configuration.
-  parameter obi_pkg::obi_cfg_t ObiCfg       = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg       = obi_pkg_ip::ObiDefaultConfig,
   /// The obi A channel struct.
   parameter type               obi_a_chan_t = logic,
   /// The obi R channel struct.

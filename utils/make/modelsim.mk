@@ -9,6 +9,9 @@ VCOMOPT += -suppress vcom-1491
 VLOGOPT += -suppress 2275
 VLOGOPT += -suppress 2583
 VLOGOPT += -suppress 2892
+VLOGOPT += -suppress vlog-2583
+VLOGOPT += -suppress vlog-2577
+VLOGOPT += -suppress vlog-2720
 ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 VLOGOPT += +define+XILINX_FPGA
 endif
@@ -37,7 +40,7 @@ VSIM = VSIMOPT='$(VSIMOPT)' TECHLIB=$(TECHLIB) ESP_ROOT=$(ESP_ROOT) vsim $(VSIMO
 ### Xilinx Simulation libs targets ###
 $(ESP_ROOT)/.cache/modelsim/xilinx_lib:
 	$(QUIET_MKDIR)mkdir -p $@
-	@echo "compile_simlib -directory xilinx_lib -simulator modelsim -library all -simulator_exec_path /softs/mentor/qsta/2023.4/bin" > $@/simlib.tcl; \
+	@echo "compile_simlib -directory xilinx_lib -simulator modelsim -library all" > $@/simlib.tcl; \
 	cd $(ESP_ROOT)/.cache/modelsim; \
 	if ! vivado $(VIVADO_BATCH_OPT) -source xilinx_lib/simlib.tcl; then \
 		echo "$(SPACES)ERROR: Xilinx library compilation failed!"; rm -rf xilinx_lib modelsim.ini; exit 1; \

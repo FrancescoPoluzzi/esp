@@ -5,7 +5,7 @@
 // Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 package obi_test;
-  import obi_pkg::*;
+  import obi_pkg_ip::*;
 
   class obi_driver #(
     parameter obi_cfg_t ObiCfg           = ObiDefaultConfig,

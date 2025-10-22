@@ -17,7 +17,7 @@ module tb_obi_xbar;
   localparam int unsigned AddrWidth = 32;
   localparam int unsigned DataWidth = 32;
   localparam int unsigned MgrIdWidth = 5;
-  localparam int unsigned SbrIdWidth = MgrIdWidth+cf_math_pkg::idx_width(NumManagers);
+  localparam int unsigned SbrIdWidth = MgrIdWidth+cf_math_pkg_xheep::idx_width(NumManagers);
   localparam int unsigned AUserWidth = 4;
   localparam int unsigned WUserWidth = 2;
   localparam int unsigned RUserWidth = 3;
@@ -30,7 +30,7 @@ module tb_obi_xbar;
   localparam time ApplTime =  2ns;
   localparam time TestTime =  8ns;
 
-  localparam obi_pkg::obi_cfg_t MgrConfig = '{
+  localparam obi_pkg_ip::obi_cfg_t MgrConfig = '{
     UseRReady:      1'b1,
     CombGnt:        1'b0,
     AddrWidth: AddrWidth,
@@ -63,7 +63,7 @@ module tb_obi_xbar;
     .MaxAddr (32'h0001_3000)
   ) rand_manager_t;
 
-  localparam obi_pkg::obi_cfg_t SbrConfig = '{
+  localparam obi_pkg_ip::obi_cfg_t SbrConfig = '{
     UseRReady:      1'b1,
     CombGnt:        1'b0,
     AddrWidth: AddrWidth,
@@ -144,17 +144,17 @@ module tb_obi_xbar;
                              '{auser: '0,
                                wuser: '0,
                                atop: '0,
-                               memtype: obi_pkg::memtype_t'('0),
+                               memtype: obi_pkg_ip::memtype_t'('0),
                                mid: '0,
-                               prot: obi_pkg::prot_t'('0),
+                               prot: obi_pkg_ip::prot_t'('0),
                                dbg: '0,
                                achk: '0}, r_rdata, r_rid, r_err, r_optional);
       obi_rand_manager.read(32'h0000_e100, 2, '{auser: '0,
                                                 wuser: '0,
                                                 atop: '0,
-                                                memtype: obi_pkg::memtype_t'('0),
+                                                memtype: obi_pkg_ip::memtype_t'('0),
                                                 mid: '0,
-                                                prot: obi_pkg::prot_t'('0),
+                                                prot: obi_pkg_ip::prot_t'('0),
                                                 dbg: '0,
                                                 achk: '0}, r_rdata, r_rid, r_err, r_optional);
       obi_rand_manager.run(NumRequests);

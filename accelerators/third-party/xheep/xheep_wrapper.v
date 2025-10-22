@@ -1,11 +1,13 @@
 // xheep_wrapper.v
+`include "cf_math_pkg_xheep.sv"
 `include "obi_pkg.sv"
+`include "obi_pkg_ip.sv"
 `include "esp_apb_pkg.sv"
 
 module XHEEP_wrapper
 #(
   parameter AXI_ADDR_WIDTH = 32, // match SoC (32 or 64 per CPU tile)
-  parameter AXI_DATA_WIDTH = 64, // 64 for Ariane-based SoCs
+  parameter AXI_DATA_WIDTH = 32, // 64 for Ariane, 32 for Ibex
   parameter AXI_ID_WIDTH   = 4
 )(
   // === Clocks / resets ===
@@ -94,8 +96,8 @@ module XHEEP_wrapper
   assign x_heep_axi_bready  = 1'b1;
   assign x_heep_axi_rready  = 1'b1;
 
-  // AXI sideband defaults (like NVDLA)
-  assign x_heep_axi_awsize  = $clog2(AXI_DATA_WIDTH/8);
+  // AXI sideband defaults like NVDLA
+  assign x_heep_axi_awsize   = $clog2(AXI_DATA_WIDTH/8);
   assign x_heep_axi_arsize   = $clog2(AXI_DATA_WIDTH/8);
   assign x_heep_axi_awburst  = 2'b01;
   assign x_heep_axi_arburst  = 2'b01;
@@ -113,27 +115,11 @@ module XHEEP_wrapper
 
   // Active-high reset for X-HEEP/bridge
   wire rst_ni = x_heep_rstn & direct_reset;
-  wire clk_i  = x_heep_clk;
+  wire clk_i  = x_heep_clk;  // single domain for bridge + X-HEEP
 
-  // -------- Pack APB pins into a struct the bridge expects --------
-  typedef struct packed {
-    logic [31:0] paddr;
-    logic        psel;
-    logic        penable;
-    logic        pwrite;
-    logic [2:0]  pprot;   // APB3 attributes
-    logic [31:0] pwdata;
-    logic [3:0]  pstrb;   // APB4 strobes
-  } apb_req_t;
-
-  typedef struct packed {
-    logic [31:0] prdata;
-    logic        pready;
-    logic        pslverr;
-  } apb_rsp_t;
-
-  apb_req_t apb_req;
-  apb_rsp_t apb_rsp;
+  import esp_apb_pkg::*;
+  esp_apb_pkg::apb_req_t apb_req;
+  esp_apb_pkg::apb_rsp_t apb_rsp;
 
   assign apb_req.paddr   = paddr;
   assign apb_req.psel    = psel;
@@ -147,125 +133,107 @@ module XHEEP_wrapper
   assign pready  = apb_rsp.pready;
   assign pslverr = apb_rsp.pslverr;
 
-  import obi_pkg::*; 
+  // Flatten struct fields for VCD dumping (QuestaSim doesn't support struct.field syntax)
+  logic [31:0] dbg_apb_req_paddr;
+  logic        dbg_apb_req_psel;
+  logic        dbg_apb_req_penable;
+  logic        dbg_apb_req_pwrite;
+  logic [31:0] dbg_apb_req_pwdata;
+  logic [3:0]  dbg_apb_req_pstrb;
+  logic [2:0]  dbg_apb_req_pprot;
+  
+  logic [31:0] dbg_apb_rsp_prdata;
+  logic        dbg_apb_rsp_pready;
+  logic        dbg_apb_rsp_pslverr;
+
+  always_comb begin
+    dbg_apb_req_paddr   = apb_req.paddr;
+    dbg_apb_req_psel    = apb_req.psel;
+    dbg_apb_req_penable = apb_req.penable;
+    dbg_apb_req_pwrite  = apb_req.pwrite;
+    dbg_apb_req_pwdata  = apb_req.pwdata;
+    dbg_apb_req_pstrb   = apb_req.pstrb;
+    dbg_apb_req_pprot   = apb_req.pprot;
+    
+    dbg_apb_rsp_prdata  = apb_rsp.prdata;
+    dbg_apb_rsp_pready  = apb_rsp.pready;
+    dbg_apb_rsp_pslverr = apb_rsp.pslverr;
+  end
+
+
+/*  // ========================================================================
+  // DEBUG: Monitor APB writes to X-HEEP
+  // ========================================================================
+  always @(posedge clk_i) begin
+    if (apb_req.psel && apb_req.penable && apb_req.pwrite) begin
+      $display("[XHEEP_WRAPPER APB] x_heep_rstn=%d direct_reset=%d  WRITE addr=0x%08x data=0x%08x", 
+               x_heep_rstn, direct_reset, apb_req.paddr, apb_req.pwdata);
+    end
+    if (apb_req.psel && apb_req.penable && !apb_req.pwrite && apb_rsp.pready) begin
+      $display("[XHEEP_WRAPPER APB] x_heep_rstn=%d direct_reset=%d READ  addr=0x%08x data=0x%08x", 
+               x_heep_rstn, direct_reset, apb_req.paddr, apb_rsp.prdata);
+    end
+  end*/
+
+  import obi_pkg::*;
   obi_pkg::obi_req_t  [0:0] esp_obi_m_req;
   obi_pkg::obi_resp_t  [0:0] esp_obi_m_rsp;
 
   // -------- APB -> OBI bridge --------
-  apb_to_obi u_apb2obi (
+  apb_to_obi #(
+    .ObiCfg   (obi_pkg::ObiDefaultConfig),
+    .apb_req_t(esp_apb_pkg::apb_req_t),
+    .apb_rsp_t(esp_apb_pkg::apb_rsp_t),
+    .obi_req_t(obi_pkg::obi_req_t),
+    .obi_rsp_t(obi_pkg::obi_resp_t)
+  ) u_apb2obi (
     .clk_i     (clk_i),
     .rst_ni    (rst_ni),
     .apb_req_i (apb_req),
     .apb_rsp_o (apb_rsp),
     .obi_req_o (esp_obi_m_req[0]),
-    .obi_resp_i(esp_obi_m_rsp[0])
-  );
-  // -------- OBI (core data) -> AXI bridge --------
-  // Pack minimal AXI types expected by obi_to_axi.sv
-  typedef struct packed {
-    struct packed {
-      logic [AXI_ADDR_WIDTH-1:0] addr;
-      logic [1:0]  burst;
-      logic [2:0]  size;
-      logic [3:0]  cache;
-      logic [2:0]  prot;
-      logic        lock;
-      logic [5:0]  atop;
-      logic [0:0]  user; // we set AxiUserWidth=1 and tie to 0
-    } aw;
-    struct packed {
-      logic [AXI_DATA_WIDTH-1:0]        data;
-      logic [(AXI_DATA_WIDTH/8)-1:0]    strb;
-      logic                              last;
-    } w;
-    struct packed {
-      logic [AXI_ADDR_WIDTH-1:0] addr;
-      logic [1:0]  burst;
-      logic [2:0]  size;
-      logic [3:0]  cache;
-      logic [2:0]  prot;
-      logic        lock;
-    } ar;
-    logic aw_valid;
-    logic w_valid;
-    logic ar_valid;
-    logic b_ready;
-    logic r_ready;
-  } axi_req_t;
-
-  typedef struct packed {
-    struct packed {
-      logic [1:0]  resp;
-      logic [0:0]  user;
-    } b;
-    struct packed {
-      logic [AXI_DATA_WIDTH-1:0] data;
-      logic [1:0]  resp;
-      logic [0:0]  user;
-    } r;
-    logic aw_ready;
-    logic w_ready;
-    logic ar_ready;
-    logic b_valid;
-    logic r_valid;
-  } axi_rsp_t;
-
-  axi_req_t x_axi_req;
-  axi_rsp_t x_axi_rsp;
-
-  // Map obi_to_axi AXI structs to discrete top-level AXI pins
-  // AW
-  assign x_heep_axi_awvalid = x_axi_req.aw_valid;
-  assign x_axi_rsp.aw_ready = x_heep_axi_awready;
-  assign x_heep_axi_awaddr  = x_axi_req.aw.addr;
-  // W
-  assign x_heep_axi_wvalid  = x_axi_req.w_valid;
-  assign x_axi_rsp.w_ready  = x_heep_axi_wready;
-  assign x_heep_axi_wdata   = x_axi_req.w.data;
-  assign x_heep_axi_wstrb   = x_axi_req.w.strb;
-  assign x_heep_axi_wlast   = x_axi_req.w.last;
-  // AR
-  assign x_heep_axi_arvalid = x_axi_req.ar_valid;
-  assign x_axi_rsp.ar_ready = x_heep_axi_arready;
-  assign x_heep_axi_araddr  = x_axi_req.ar.addr;
-  // B
-  assign x_axi_req.b_ready  = x_heep_axi_bready;
-  assign x_heep_axi_bvalid  = x_axi_rsp.b_valid;
-  assign x_heep_axi_bresp   = x_axi_rsp.b.resp;
-  // R
-  assign x_axi_req.r_ready  = x_heep_axi_rready;
-  assign x_heep_axi_rvalid  = x_axi_rsp.r_valid;
-  assign x_heep_axi_rdata   = x_axi_rsp.r.data;
-  assign x_heep_axi_rresp   = x_axi_rsp.r.resp;
-  // Sideband defaults are assigned later in this file.
-
-  // Local OBI wires for core data port
-  obi_pkg::obi_req_t  core_data_req;
-  obi_pkg::obi_resp_t core_data_rsp;
-
-  // Bridge core data OBI master to AXI master
-  obi_to_axi #(
-    .ObiCfg       (obi_pkg::ObiDefaultConfig),
-    .obi_req_t    (obi_pkg::obi_req_t),
-    .obi_rsp_t    (obi_pkg::obi_resp_t),
-    .axi_req_t    (axi_req_t),
-    .axi_rsp_t    (axi_rsp_t),
-    .AxiUserWidth (1)
-  ) u_cdata_obi2axi (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
-    .obi_req_i(core_data_req),
-    .obi_rsp_o(core_data_rsp),
-    .user_i  (1'b0),
-    .axi_req_o(x_axi_req),
-    .axi_rsp_i(x_axi_rsp),
-    .axi_rsp_channel_sel(),
-    .axi_rsp_b_user_o(),
-    .axi_rsp_r_user_o(),
-    .obi_rsp_user_i('0)
+    .obi_rsp_i(esp_obi_m_rsp[0])
   );
 
-  // -------- X-HEEP top --------
+  logic [31:0] dbg_obi_m_req_addr;
+  logic        dbg_obi_m_req_req;
+  logic [31:0] dbg_obi_m_req_wdata;
+  logic        dbg_obi_m_req_we;
+  logic [3:0]  dbg_obi_m_req_be;
+  logic [31:0] dbg_obi_m_resp_rdata;
+  logic        dbg_obi_m_resp_rvalid;
+  logic        dbg_apb_m_resp_gnt;
+  always_comb begin
+    dbg_obi_m_req_req = esp_obi_m_req[0].req;
+    dbg_obi_m_req_addr = esp_obi_m_req[0].addr;
+    dbg_obi_m_req_wdata = esp_obi_m_req[0].wdata;
+    dbg_obi_m_req_we = esp_obi_m_req[0].we;
+    dbg_obi_m_req_be = esp_obi_m_req[0].be;
+    dbg_obi_m_resp_rdata = esp_obi_m_rsp[0].rdata;
+    dbg_obi_m_resp_rvalid = esp_obi_m_rsp[0].rvalid;
+    dbg_apb_m_resp_gnt = esp_obi_m_rsp[0].gnt;
+  end
+
+// -------- X-HEEP top --------
+
+  // Tie-off interface for XIF (X_EXT==0, but ports still require an actual interface)
+  if_xif xif_if();
+
+  // Sink for unused outputs to avoid floating ports
+  logic unused_jtag_tdo;
+  logic unused_uart_tx;
+  logic unused_exit_valid;
+  logic unused_dma_done;
+
+  logic unused_ext_core_instr_req;
+  logic unused_ext_core_data_req;
+  logic unused_ext_debug_master_req;
+  logic unused_ext_dma_read_req;
+  logic unused_ext_dma_write_req;
+  logic unused_ext_dma_addr_req;
+  logic unused_ext_peripheral_slave_req;
+  logic unused_ext_debug_req;
+
   core_v_mini_mcu #(
     .EXT_XBAR_NMASTER (1)
   ) u_xheep (
@@ -275,19 +243,25 @@ module XHEEP_wrapper
     .ext_xbar_master_req_i  (esp_obi_m_req),
     .ext_xbar_master_resp_o (esp_obi_m_rsp),
 
-    .ext_core_instr_resp_i     ('0),
-    .ext_core_data_resp_i      (core_data_rsp),
-    .ext_debug_master_resp_i   ('0),
-    .ext_dma_read_resp_i       ('0),
-    .ext_dma_write_resp_i      ('0),
-    .ext_dma_addr_resp_i       ('0),
+    // External master requests (we’re not using them here)
+    .ext_core_instr_req_o         (unused_ext_core_instr_req),
+    .ext_core_data_req_o          (unused_ext_core_data_req),
+    .ext_debug_master_req_o       (unused_ext_debug_master_req),
+    .ext_dma_read_req_o           (unused_ext_dma_read_req),
+    .ext_dma_write_req_o          (unused_ext_dma_write_req),
+    .ext_dma_addr_req_o           (unused_ext_dma_addr_req),
+    .ext_peripheral_slave_req_o   (unused_ext_peripheral_slave_req),
+    .ext_debug_req_o              (unused_ext_debug_req),
 
-    .ext_core_instr_req_o   (),
-    .ext_core_data_req_o    (core_data_req),
-    .ext_debug_master_req_o (),
-    .ext_dma_read_req_o     (),
-    .ext_dma_write_req_o    (),
-    .ext_dma_addr_req_o     (),
+    // JTAG / UART / exit
+    .jtag_tdo_o                   (unused_jtag_tdo),
+    .uart_tx_o                    (unused_uart_tx),
+    .exit_valid_o                 (unused_exit_valid),
+
+    // DMA ports (unused in this ESP integration)
+    .ext_dma_slot_tx_i            (1'b0),
+    .ext_dma_slot_rx_i            (1'b0),
+    .dma_done_o                   (unused_dma_done),
 
     .boot_select_i                        (1'b0),
     .execute_from_flash_i                 (1'b0),
@@ -295,17 +269,68 @@ module XHEEP_wrapper
     .jtag_tms_i                           (1'b1),
     .jtag_trst_ni                         (rst_ni),
     .jtag_tdi_i                           (1'b0),
-    .jtag_tdo_o                           (),
     .uart_rx_i                            (1'b1),
-    .uart_tx_o                            (),
     .intr_vector_ext_i                    ('0),
-    .intr_timer_i                         (1'b0),
-    .intr_software_i                      (1'b0),
-    .intr_external_i                      (1'b0),
     .intr_ext_peripheral_i                (1'b0),
     .cpu_subsystem_powergate_switch_ack_ni        (1'b1),
     .peripheral_subsystem_powergate_switch_ack_ni (1'b1),
-    .external_subsystem_powergate_switch_ack_ni   (1'b1)
+    .external_subsystem_powergate_switch_ack_ni   (1'b1),
+  
+    .xif_compressed_if (xif_if),
+    .xif_issue_if      (xif_if),
+    .xif_commit_if     (xif_if),
+    .xif_mem_if        (xif_if),
+    .xif_mem_result_if (xif_if),
+    .xif_result_if     (xif_if)
+
   );
+
+  // --- Wave dump: flattened signals (QuestaSim-compatible) ---
+  initial begin
+    //$dumpfile("xheep.vcd");
+    // top-level clock/resets
+    $dumpvars(0, x_heep_clk);
+    $dumpvars(0, x_heep_rstn);
+    $dumpvars(0, direct_reset);
+    // internal derived clk/reset
+    $dumpvars(0, clk_i);
+    $dumpvars(0, rst_ni);
+
+    // top-level APB
+    $dumpvars(0, paddr);
+    $dumpvars(0, psel);
+    $dumpvars(0, penable);
+    $dumpvars(0, pwrite);
+    $dumpvars(0, pwdata);
+    $dumpvars(0, prdata);
+    $dumpvars(0, pready);
+    $dumpvars(0, pslverr);
+
+    // flattened APB request (from struct)
+    $dumpvars(0, dbg_apb_req_paddr);
+    $dumpvars(0, dbg_apb_req_psel);
+    $dumpvars(0, dbg_apb_req_penable);
+    $dumpvars(0, dbg_apb_req_pwrite);
+    $dumpvars(0, dbg_apb_req_pwdata);
+    $dumpvars(0, dbg_apb_req_pstrb);
+    $dumpvars(0, dbg_apb_req_pprot);
+
+    // flattened APB response (from struct)
+    $dumpvars(0, dbg_apb_rsp_prdata);
+    $dumpvars(0, dbg_apb_rsp_pready);
+    $dumpvars(0, dbg_apb_rsp_pslverr);
+
+    // flattened OBI master request (from struct)
+    $dumpvars(0, dbg_obi_m_req_req);
+    $dumpvars(0, dbg_obi_m_req_addr);
+    $dumpvars(0, dbg_obi_m_req_wdata);
+    $dumpvars(0, dbg_obi_m_req_we);
+    $dumpvars(0, dbg_obi_m_req_be);
+    // flattened OBI master response (from struct)
+    $dumpvars(0, dbg_obi_m_resp_rdata);
+    $dumpvars(0, dbg_obi_m_resp_rvalid);
+    $dumpvars(0, dbg_apb_m_resp_gnt);
+
+  end
 
 endmodule

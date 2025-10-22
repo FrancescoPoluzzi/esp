@@ -1,8 +1,8 @@
-.PHONY: hw sw mirror-filelist mcu-gen
+.PHONY: hw sw mirror-filelist update-xheep-sverilog update-xheep-verilog mcu-gen questa
 
 ACCEL_NAME := xheep
-VLOG_INCDIRS  += /home/poluzzi/esp/accelerators/third-party/xheep/vlog_incdir
-VLOG_FILELIST += /home/poluzzi/esp/accelerators/third-party/xheep/xheep.sverilog
+VLOG_INCDIRS  += $(ESP_TOP)/accelerators/third-party/xheep/vlog_incdir
+VLOG_FILELIST += $(ESP_TOP)/accelerators/third-party/xheep/xheep.sverilog
 export VLOG_INCDIRS VLOG_FILELIST
 $(info [xheep] VLOG_FILELIST=$(VLOG_FILELIST))
 $(info [xheep] VLOG_INCDIRS=$(VLOG_INCDIRS))
@@ -14,52 +14,97 @@ OBI_ROOT   := $(XHEEP_ROOT)/ip/obi
 XH_ROOT    := $(XHEEP_ROOT)/ip/x-heep
 
 # 1) run the X-HEEP generator, then 2) mirror filelist into out/
-hw: mcu-gen mirror-filelist
+hw: mcu-gen questa update-xheep-sverilog update-xheep-verilog mirror-filelist
 
 mcu-gen:
-	$(MAKE) -C $(XH_ROOT) mcu-gen
+	$(MAKE) -C $(XH_ROOT) mcu-gen X_HEEP_CFG=configs/esp_heep.hjson
 
-# Copy every non-empty, non-comment line from xheep.sverilog into out/<same path>.
+questa:
+	$(MAKE) -C $(XH_ROOT) questasim-sim
+
+update-xheep-sverilog:
+	@set -e; \
+	TCL="$(XH_ROOT)/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/edalize_build_rtl.tcl"; \
+	SV="$(XHEEP_ROOT)/xheep.sverilog"; \
+	[ -f "$$TCL" ] || { echo "[xheep][ERROR] Missing $$TCL"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; \
+	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.sv$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
+	awk -v genpref="x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	{ grep -v '^x-heep' "$$SV" 2>/dev/null || true; } > "$$SV.new"; \
+	cat "$$t2" >> "$$SV.new"; \
+	mv "$$SV.new" "$$SV"; \
+	rm -f "$$t1" "$$t2"; \
+	echo "[xheep] Updated $$SV from $$TCL"
+
+update-xheep-verilog:
+	@set -e; \
+	TCL="$(XH_ROOT)/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/edalize_build_rtl.tcl"; \
+	VL="$(XHEEP_ROOT)/xheep.verilog"; \
+	[ -f "$$TCL" ] || { echo "[xheep][ERROR] Missing $$TCL"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; \
+	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.v$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
+	awk -v genpref="x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	{ grep -v '^x-heep' "$$VL" 2>/dev/null || true; } > "$$VL.new"; \
+	cat "$$t2" >> "$$VL.new"; \
+	mv "$$VL.new" "$$VL"; \
+	rm -f "$$t1" "$$t2"; \
+	echo "[xheep] Updated $$VL from $$TCL"
+
+
+# Copy every non-empty, non-comment line from xheep.sverilog AND xheep.verilog into out/<same path>.
 # Lines starting with "obi/" are sourced from ip/obi/..., and "x-heep/" from ip/x-heep/...
 mirror-filelist:
-	@OUT="$(OUT_DIR)"; OBI="$(OBI_ROOT)"; XH="$(XH_ROOT)"; FL="$(VLOG_FILELIST)"; \
+	@OUT="$(OUT_DIR)"; OBI="$(OBI_ROOT)"; XH="$(XH_ROOT)"; FL="$(VLOG_FILELIST)"; VL="$(XHEEP_ROOT)/xheep.verilog"; \
 	echo "[xheep] Mirroring filelist -> $$OUT"; \
-	while IFS= read -r rel; do \
-	  [ -z "$$rel" ] && continue; \
-	  case "$$rel" in \#*) continue ;; esac; \
-	  prefix=$${rel%%/*}; rest=$${rel#*/}; \
-	  if [ "$$prefix" = "obi" ]; then src="$$OBI/$$rest"; \
-	  elif [ "$$prefix" = "x-heep" ]; then src="$$XH/$$rest"; \
-	  else echo "[xheep][ERROR] Unknown prefix in $$rel"; exit 1; fi; \
-	  [ -f "$$src" ] || { echo "[xheep][ERROR] Source not found: $$src (from $$rel)"; exit 1; }; \
-	  dst="$$OUT/$$rel"; \
-	  mkdir -p "$$(dirname "$$dst")"; \
-	  if ! cmp -s "$$src" "$$dst" 2>/dev/null; then cp "$$src" "$$dst"; echo "[xheep] COPIED  $$src -> $$dst"; fi; \
-	done < "$$FL"
-
+	for LIST in "$$FL" "$$VL"; do \
+	  [ -f "$$LIST" ] || { echo "[xheep][WARN] Missing list $$LIST, skipping"; continue; }; \
+	  while IFS= read -r rel; do \
+	    [ -z "$$rel" ] && continue; \
+	    case "$$rel" in \#*) continue ;; esac; \
+	    prefix=$${rel%%/*}; rest=$${rel#*/}; \
+	    if [ "$$prefix" = "obi" ]; then src="$$OBI/$$rest"; \
+	    elif [ "$$prefix" = "x-heep" ]; then src="$$XH/$$rest"; \
+	    else echo "[xheep][ERROR] Unknown prefix in $$rel (from $$LIST)"; exit 1; fi; \
+	    [ -f "$$src" ] || { echo "[xheep][ERROR] Source not found: $$src (from $$rel in $$LIST)"; exit 1; }; \
+	    dst="$$OUT/$$rel"; \
+	    mkdir -p "$$(dirname "$$dst")"; \
+	    if ! cmp -s "$$src" "$$dst" 2>/dev/null; then cp "$$src" "$$dst"; echo "[xheep] COPIED  $$src -> $$dst"; fi; \
+	  done < "$$LIST"; \
+	done
 
 sw:
-	# clean re-config so a previous bad cache can't persist
-	rm -rf $(XH_ROOT)/sw/build/CMakeCache.txt $(XH_ROOT)/sw/build/CMakeFiles
-	# run x-heep app with leaked flags scrubbed but keep required toolchain/env
-	env -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u ASFLAGS -u LDFLAGS \
-	    -u CMAKE_C_FLAGS -u CMAKE_CXX_FLAGS -u CMAKE_ASM_FLAGS -u CMAKE_EXE_LINKER_FLAGS \
-	    -u ARCH -u MARCH -u XCFLAGS -u XCXXFLAGS -u MAKEFLAGS \
-	    RISCV="/home/poluzzi/riscv32imc" \
-	    CC="riscv32-unknown-elf-gcc" CXX="riscv32-unknown-elf-g++" \
-	    PY="python3" \
-	    PATH="/home/poluzzi/riscv32imc/bin:$(PATH)" \
-	    $(MAKE) -C $(XH_ROOT) app PROJECT=esp_app
+# 	# clean re-config so a previous bad cache can't persist
+# 	rm -rf $(XH_ROOT)/sw/build/CMakeCache.txt $(XH_ROOT)/sw/build/CMakeFiles
+# 	# run x-heep app with leaked flags scrubbed but keep required toolchain/env
+# 	env -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u ASFLAGS -u LDFLAGS \
+# 	    -u CMAKE_C_FLAGS -u CMAKE_CXX_FLAGS -u CMAKE_ASM_FLAGS -u CMAKE_EXE_LINKER_FLAGS \
+# 	    -u ARCH -u MARCH -u XCFLAGS -u XCXXFLAGS -u MAKEFLAGS \
+# 	    RISCV=$(RISCV32IMC) \
+# 	    CC="riscv32-unknown-elf-gcc" CXX="riscv32-unknown-elf-g++" \
+# 	    PY="python3" \
+# 	    PATH="$(RISCV32IMC)/bin:$(PATH)" \
+# 	    $(MAKE) -C $(XH_ROOT) app PROJECT=esp_app LINKER=on_chip TARGET=sim
+	rm -rf $(XH_ROOT)/sw/build
+	$(MAKE) -C $(XH_ROOT) RISCV=/home/francesco/tools/riscv  ARCH=rv32imc app PROJECT=esp_app LINKER=on_chip TARGET=sim
 	mkdir -p $(XH_ROOT)/sw/generated
-	python3 $(XH_ROOT)/util/c_gen.py \
+# 	python3 $(XH_ROOT)/util/c_gen.py \
+# 		$(XH_ROOT)/sw/generated/xheep_firmware.h \
+# 		$(XH_ROOT)/sw/build/main.bin
+	python3 $(ESP_TOP)/accelerators/third-party/xheep/ip/x-heep/util/hex_to_c.py \
 		$(XH_ROOT)/sw/generated/xheep_firmware.h \
-		$(XH_ROOT)/sw/build/main.bin
-	mkdir -p $(ESP_ROOT)/soft/common/apps/baremetal/xheep
-	mkdir -p $(ESP_ROOT)/soft/common/apps/baremetal/xheep/common
-	cp $(XH_ROOT)/sw/generated/xheep_firmware.h $(ESP_ROOT)/soft/common/apps/baremetal/xheep
-	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_ROOT)/soft/common/apps/baremetal/xheep
-	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_ROOT)/soft/common/apps/baremetal/xheep
-	cp -r $(XH_ROOT)/sw/applications/esp_app/common/. $(ESP_ROOT)/soft/common/apps/baremetal/xheep/common
+		$(XH_ROOT)/sw/build/main.hex
+	mkdir -p $(ESP_TOP)/soft/common/apps/baremetal/xheep
+	mkdir -p $(ESP_TOP)/soft/common/apps/baremetal/xheep/common
+	cp $(XH_ROOT)/sw/generated/xheep_firmware.h $(ESP_TOP)/soft/common/apps/baremetal/xheep
+	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/soft/common/apps/baremetal/xheep
+	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/soft/common/apps/baremetal/xheep
+	cp -r $(XH_ROOT)/sw/applications/esp_app/common/. $(ESP_TOP)/soft/common/apps/baremetal/xheep/common
+
+	cp $(XH_ROOT)/sw/generated/xheep_firmware.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+	cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+	cp -r $(XH_ROOT)/sw/applications/esp_app/common/.  $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
 
 vsim:
 	$(info CIAOCIAO)

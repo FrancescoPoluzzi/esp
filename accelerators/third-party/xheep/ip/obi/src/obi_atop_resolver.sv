@@ -10,12 +10,12 @@
 /// Handles atomics. Hence, it needs to be instantiated in front of a memory region over which the
 /// bus has exclusive access.
 module obi_atop_resolver
-  import obi_pkg::*;
+  import obi_pkg_ip::*;
 #(
     /// The configuration of the subordinate ports (input ports).
-    parameter obi_pkg::obi_cfg_t SbrPortObiCfg             = obi_pkg::ObiDefaultConfig,
+    parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg             = obi_pkg_ip::ObiDefaultConfig,
     /// The configuration of the manager port (output port).
-    parameter obi_pkg::obi_cfg_t MgrPortObiCfg             = SbrPortObiCfg,
+    parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg             = SbrPortObiCfg,
     /// The request struct for the subordinate port (input ports).
     parameter type               sbr_port_obi_req_t        = logic,
     /// The response struct for the subordinate port (input ports).
@@ -303,14 +303,14 @@ module obi_atop_resolver
     if (SbrPortObiCfg.OptionalCfg.UseProt) begin : gen_prot_assign
       assign a_optional.prot = sbr_port_req_i.a.a_optional.prot;
     end else begin : gen_no_prot
-      assign a_optional.prot = obi_pkg::DefaultProt;
+      assign a_optional.prot = obi_pkg_ip::DefaultProt;
     end
   end
   if (MgrPortObiCfg.OptionalCfg.UseMemtype) begin : gen_memtype
     if (SbrPortObiCfg.OptionalCfg.UseMemtype) begin : gen_memtype_assign
       assign a_optional.memtype = sbr_port_req_i.a.a_optional.memtype;
     end else begin : gen_no_memtype
-      assign a_optional.memtype = obi_pkg::DefaultMemtype;
+      assign a_optional.memtype = obi_pkg_ip::DefaultMemtype;
     end
   end
   if (MgrPortObiCfg.OptionalCfg.MidWidth) begin : gen_mid
@@ -534,12 +534,12 @@ endmodule
 `include "obi/assign.svh"
 
 module obi_atop_resolver_intf
-  import obi_pkg::*;
+  import obi_pkg_ip::*;
 #(
     /// The configuration of the subordinate ports (input ports).
-    parameter obi_pkg::obi_cfg_t SbrPortObiCfg = obi_pkg::ObiDefaultConfig,
+    parameter obi_pkg_ip::obi_cfg_t SbrPortObiCfg = obi_pkg_ip::ObiDefaultConfig,
     /// The configuration of the manager port (output port).
-    parameter obi_pkg::obi_cfg_t MgrPortObiCfg = SbrPortObiCfg,
+    parameter obi_pkg_ip::obi_cfg_t MgrPortObiCfg = SbrPortObiCfg,
     /// Enable LR & SC AMOS
     parameter bit                LrScEnable    = 1,
     /// Cut path between request and response at the cost of increased AMO latency

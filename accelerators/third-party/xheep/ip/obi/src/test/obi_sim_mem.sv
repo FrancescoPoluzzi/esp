@@ -4,8 +4,8 @@
 
 // Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
-module obi_sim_mem import obi_pkg::*; #(
-  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
+module obi_sim_mem import obi_pkg_ip::*; #(
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg = obi_pkg_ip::ObiDefaultConfig,
   parameter type obi_req_t = logic,
   parameter type obi_rsp_t = logic,
   parameter type obi_r_chan_t = logic,
@@ -148,8 +148,8 @@ endmodule
 `include "obi/typedef.svh"
 `include "obi/assign.svh"
 
-module obi_sim_mem_intf import obi_pkg::*; #(
-  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
+module obi_sim_mem_intf import obi_pkg_ip::*; #(
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg = obi_pkg_ip::ObiDefaultConfig,
   parameter bit WarnUninitialized = 1'b0,
   parameter bit ClearErrOnAccess = 1'b0,
   parameter time ApplDelay = 0ps,

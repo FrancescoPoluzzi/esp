@@ -8,7 +8,7 @@
 
 module obi_to_axi #(
   /// The configuration of the OBI port (input port).
-  parameter obi_pkg::obi_cfg_t ObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The request struct of the OBI port
   parameter type               obi_req_t = logic,
   /// The response struct of the OBI port
@@ -82,34 +82,34 @@ module obi_to_axi #(
       axi_obi_atop = '0;
       axi_obi_wdata = obi_req_i.a.wdata;
       case (obi_req_i.a.a_optional.atop)
-        obi_pkg::ATOPLR:  axi_obi_lock = 1'b1;
-        obi_pkg::ATOPSC:  axi_obi_lock = 1'b1;
-        obi_pkg::AMOSWAP: axi_obi_atop = {axi_pkg::ATOP_ATOMICSWAP};
-        obi_pkg::AMOADD:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::ATOPLR:  axi_obi_lock = 1'b1;
+        obi_pkg_ip::ATOPSC:  axi_obi_lock = 1'b1;
+        obi_pkg_ip::AMOSWAP: axi_obi_atop = {axi_pkg::ATOP_ATOMICSWAP};
+        obi_pkg_ip::AMOADD:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_ADD};
-        obi_pkg::AMOXOR:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOXOR:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_EOR};
-        obi_pkg::AMOAND: begin
+        obi_pkg_ip::AMOAND: begin
           axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                           axi_pkg::ATOP_LITTLE_END,
                           axi_pkg::ATOP_CLR};
           axi_obi_wdata = ~obi_req_i.a.wdata;
         end
-        obi_pkg::AMOOR:   axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOOR:   axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_SET};
-        obi_pkg::AMOMIN:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOMIN:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_SMIN};
-        obi_pkg::AMOMAX:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOMAX:  axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_SMAX};
-        obi_pkg::AMOMINU: axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOMINU: axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_UMIN};
-        obi_pkg::AMOMAXU: axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
+        obi_pkg_ip::AMOMAXU: axi_obi_atop = {axi_pkg::ATOP_ATOMICLOAD,
                                           axi_pkg::ATOP_LITTLE_END,
                                           axi_pkg::ATOP_UMAX};
         default:;

@@ -6,7 +6,7 @@
 
 module obi_sram_shim #(
   /// The OBI configuration for all ports.
-  parameter obi_pkg::obi_cfg_t ObiCfg    = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg    = obi_pkg_ip::ObiDefaultConfig,
   /// The request struct for all ports.
   parameter type               obi_req_t = logic,
   /// The response struct for all ports.

@@ -9,15 +9,15 @@
 /// An OBI to APB adapter.
 module obi_to_apb #(
   /// The configuration of the subordinate port (input port).
-  parameter      obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
+  parameter      obi_pkg_ip::obi_cfg_t ObiCfg = obi_pkg_ip::ObiDefaultConfig,
   /// The OBI request struct for the subordinate port (input port).
   parameter type obi_req_t = logic,
   /// The OBI response struct for the subordinate port (input port).
-  parameter type obi_rsp_t = logic, // OBI response struct
+  parameter type obi_rsp_t = logic, // OBI response
   /// The APB request struct for the manager port (output port).
-  parameter type apb_req_t = logic, // APB request struct
+  parameter type apb_req_t = logic, // APB request
   /// The APB response struct for the manager port (output port).
-  parameter type apb_rsp_t = logic, // APB response struct
+  parameter type apb_rsp_t = logic, // APB response
   /// Enable gnt/rvalid in same cycle.
   parameter bit EnableSameCycleRsp = 1'b0
 ) (

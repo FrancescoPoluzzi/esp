@@ -1,67 +1,160 @@
-// apb_to_obi.sv — Flat OBI (X-HEEP) + APB via packages (no parameter type ports)
+// Copyright 2025 ETH Zurich and University of Bologna.
+// Solderpad Hardware License, Version 0.51, see LICENSE for details.
+// SPDX-License-Identifier: SHL-0.51
 
-`include "obi_pkg.sv"
-`include "esp_apb_pkg.sv"
+// Nils Wistoff <nwistoff@iis.ee.ethz.ch>
 
-module apb_to_obi (
-  input  logic                 clk_i,
-  input  logic                 rst_ni,
+`include "common_cells/registers.svh"
+`include "common_cells/assertions.svh"
 
-  // APB subordinate port
-  input  esp_apb_pkg::apb_req_t  apb_req_i,
-  output esp_apb_pkg::apb_rsp_t  apb_rsp_o,
-
-  // OBI manager port (X-HEEP flat interface types)
-  output obi_pkg::obi_req_t      obi_req_o,
-  input  obi_pkg::obi_resp_t     obi_resp_i
+// An APB to OBI adapter for interfacing ESP APB peripheral bus and X-Heep OBI 
+// system bus. In this case ESP is the master and X-Heep the slave.
+module apb_to_obi #(
+  /// The configuration of the manager port (output port).
+  parameter      obi_pkg::obi_cfg_t ObiCfg,
+  /// The APB request struct for the subordinate port (input port).
+  parameter type apb_req_t, 
+  /// The APB response struct for the subordinate port (input port).
+  parameter type apb_rsp_t, 
+  /// The OBI request struct for the manager port (output port).
+  parameter type obi_req_t,
+  /// The OBI response struct for the manager port (output port).
+  parameter type obi_rsp_t  
+) (
+  input  logic clk_i,
+  input  logic rst_ni,
+  // Subordinate APB port.
+  input  apb_req_t apb_req_i,
+  output apb_rsp_t apb_rsp_o,
+  // Manager OBI port.
+  output obi_req_t obi_req_o,
+  input  obi_rsp_t obi_rsp_i
 );
 
-  import esp_apb_pkg::*;
-  import obi_pkg::*;
+  localparam logic [31:0] XHEEP_APB_BASE_OFF = 32'h0040_0000; // from the address map/DTS
+  localparam logic [31:0] XHEEP_SOC_CTRL_WRITE_OFFSET = 32'h0001_FF00; // from the address map/DTS
+  localparam logic [31:0] XHEEP_POWER_MANAGER_WRITE_OFFSET = 32'h0001_FE00; // from the address map/DTS
+  localparam logic [31:0] SOC_CTRL_START_ADDRESS = 32'h2000_0000; // from the address map/DTS
+  localparam logic [31:0] POWER_MANAGER_START_ADDRESS = 32'h2004_0000; // from the address map/DTS
 
-  typedef enum logic [0:0] {ADDR, RESP} state_e;
-  state_e state_q, state_d;
+  typedef enum logic {RESP, ADDR} obi_phase_e;
+  obi_phase_e obi_phase_d, obi_phase_q;
 
-  // ---------------- Combinational ----------------
+  // // One-time dump of interface widths to spot truncation issues.
+  // initial begin
+  //   $display("[apb_to_obi][DBG] paddr bits=%0d, obi addr bits=%0d, pwdata bits=%0d, rdata bits=%0d", $bits(apb_req_i.paddr), $bits(obi_req_o.addr), $bits(apb_req_i.pwdata), $bits(obi_rsp_i.rdata));
+  // end
+
+  // ---------------
+  // Request Signals (APB request to OBI)
+  // ---------------
+
+  // create OBI struct from APB inputs
+  obi_req_t obi_req_next;
   always_comb begin
-    // Safe defaults
-    obi_req_o  = '0;
-    apb_rsp_o  = '0;
+    // Default all fields
+    obi_req_next = '0;
 
-    // Static OBI payload from APB fields
-    obi_req_o.addr  = apb_req_i.paddr;
-    obi_req_o.we    = apb_req_i.pwrite;
-    obi_req_o.be    = apb_req_i.pwrite ? apb_req_i.pstrb : '1;
-    obi_req_o.wdata = apb_req_i.pwdata;
+    // Address/write channel
+    if (apb_req_i.paddr >= (XHEEP_APB_BASE_OFF + XHEEP_SOC_CTRL_WRITE_OFFSET)) begin
+      // Access to configuration registers
+      obi_req_next.addr  = apb_req_i.paddr + (SOC_CTRL_START_ADDRESS - XHEEP_APB_BASE_OFF - XHEEP_SOC_CTRL_WRITE_OFFSET);
+    end
+    else if (apb_req_i.paddr >= (XHEEP_APB_BASE_OFF + XHEEP_POWER_MANAGER_WRITE_OFFSET)) begin
+      // Access to power manager registers
+      obi_req_next.addr  = apb_req_i.paddr + (POWER_MANAGER_START_ADDRESS - XHEEP_APB_BASE_OFF - XHEEP_POWER_MANAGER_WRITE_OFFSET);
+    end
+    else begin
+      // Normal access to X-Heep RAM
+      obi_req_next.addr  = apb_req_i.paddr - XHEEP_APB_BASE_OFF;
+    end
+    obi_req_next.we    = apb_req_i.pwrite;
+    // APB sets pstrb to '0 on reads. OBI expects '1.
+    obi_req_next.be    = apb_req_i.pwrite ? apb_req_i.pstrb : '1;
+    obi_req_next.wdata = apb_req_i.pwdata;
+    // Only one outstanding transaction supported by APB
+    // obi_req_next.aid   = '0; // not considered in our case
 
-    // APB read data from OBI read channel
-    apb_rsp_o.prdata  = obi_resp_i.rdata;
-    apb_rsp_o.pslverr = 1'b0;
+  end
 
-    // FSM default
-    state_d = state_q;
+  // Forward OBI fields to the output
+  assign obi_req_o.addr = obi_req_next.addr;
+  assign obi_req_o.we = obi_req_next.we;
+  assign obi_req_o.be = obi_req_next.be;
+  assign obi_req_o.wdata = obi_req_next.wdata;
 
-    unique case (state_q)
+  // ----------------
+  // Response Signals (OBI answer to APB)
+  // ----------------
+
+  // forward OBI response to APB bus
+  assign apb_rsp_o.prdata  = obi_rsp_i.rdata;
+  assign apb_rsp_o.pslverr = 1'b0; // we dont have a OBI error signal in our system
+
+  // ----------
+  // Handshakes
+  // ----------
+
+  always_comb begin : obi_fsm
+    obi_req_o.req    = 1'b0;
+    apb_rsp_o.pready = 1'b0;
+    obi_phase_d      = obi_phase_q;
+    unique case (obi_phase_q)
+      // Address phase (or idle).
       ADDR: begin
-        obi_req_o.req = apb_req_i.psel;
-        if (obi_req_o.req && obi_resp_i.gnt) state_d = RESP;
+        // Need to wait for APB access phase to sample valid strobe and wdata.
+        obi_req_o.req = apb_req_i.psel; // we have a requist when the peripheral select of X-Heep is 1
+        // Downstream A handshake completed.
+        if (obi_req_o.req && obi_rsp_i.gnt) obi_phase_d = RESP; // go to next stage if OBI says guaranteed and APB is giving a valid address
       end
-
+      // Response phase.
       RESP: begin
-        if (obi_resp_i.rvalid) begin
-          apb_rsp_o.pready = 1'b1;
-          state_d = ADDR;
+        // Downstream R handshake completed.
+        if (obi_rsp_i.rvalid) begin  // if OBI has avbailable response signal
+          apb_rsp_o.pready = 1'b1; // give ready signal to APB bus
+          obi_phase_d = ADDR;
         end
       end
-
-      default: state_d = ADDR;
+      default: obi_phase_d = ADDR;
     endcase
   end
 
-  // ---------------- State FF ----------------
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) state_q <= ADDR;
-    else         state_q <= state_d;
-  end
+  `FF(obi_phase_q, obi_phase_d, ADDR, clk_i, rst_ni) // update the state machine on next cycle
+
+  // // Cycle-accurate transaction trace (simulation-only).
+  // always_ff @(posedge clk_i or negedge rst_ni) begin
+  //   if (!rst_ni) begin
+  //   end else begin
+  //     if (apb_req_i.psel && apb_req_i.penable) begin
+  //       $display("[%0t][apb_to_obi][APB] paddr=0x%08x pwrite=%0b pstrb=0x%0x pwdata=0x%08x (paddr[23:0]=0x%06x)", $time, apb_req_i.paddr, apb_req_i.pwrite, apb_req_i.pstrb, apb_req_i.pwdata, apb_req_i.paddr[23:0]);
+  //       $display("[%0t][apb_to_obi][OBI-A] req=%0b addr=0x%0h be=0x%0x we=%0b gnt=%0b", $time, obi_req_o.req, obi_req_o.addr, obi_req_o.be, obi_req_o.we, obi_rsp_i.gnt);
+  //     end
+  //     if (obi_rsp_i.rvalid) begin
+  //       $display("[%0t][apb_to_obi][OBI-R] rvalid=1 rdata=0x%08x -> APB pready=%0b", $time, obi_rsp_i.rdata, apb_rsp_o.pready);
+  //     end
+  //   end
+  // end
+
+  // ----------
+  // Assertions
+  // ----------
+/*
+`ifndef OBI_ASSERTS_OFF
+  `ASSERT(penable, obi_phase_q == RESP |-> apb_req_i.penable, clk_i, !rst_ni,
+      "APB PENABLE must be asserted during OBI RESP phase!")
+  `ASSERT_INIT(no_integrity, !ObiCfg.Integrity,
+      "Integrity not supported!")
+  `ASSERT_INIT(no_achk, ObiCfg.OptionalCfg.AChkWidth == 0,
+      "ACHK field not supported!")
+  `ASSERT_INIT(equal_wdata_width, $bits(apb_req_i.pwdata) == $bits(obi_req_o.a.wdata),
+      "WDATA width mismatch between APB and OBI ports!")
+  `ASSERT_INIT(equal_be_width, $bits(apb_req_i.pstrb) == $bits(obi_req_o.a.be),
+      "Strobe width mismatch between APB and OBI ports!")
+  `ASSERT_INIT(equal_rdata_width, $bits(apb_rsp_o.prdata) == $bits(obi_rsp_i.r.rdata),
+      "RDATA width mismatch between APB and OBI ports!")
+  `ASSERT_INIT(equal_addr_width, $bits(apb_req_i.paddr) == $bits(obi_req_o.addr),
+      "Address width mismatch between APB and OBI ports!")
+`endif
+*/
 
 endmodule

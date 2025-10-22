@@ -6,7 +6,7 @@
 
 module obi_demux #(
   /// The OBI configuration for all ports.
-  parameter obi_pkg::obi_cfg_t ObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The request struct for all ports.
   parameter type               obi_req_t   = logic,
   /// The response struct for all ports.
@@ -16,7 +16,7 @@ module obi_demux #(
   /// The maximum number of outstanding transactions.
   parameter int unsigned       NumMaxTrans = 32'd0,
   /// The type of the port select signal.
-  parameter type               select_t    = logic [cf_math_pkg::idx_width(NumMgrPorts)-1:0]
+  parameter type               select_t    = logic [cf_math_pkg_xheep::idx_width(NumMgrPorts)-1:0]
 ) (
   input  logic                       clk_i,
   input  logic                       rst_ni,
@@ -34,7 +34,7 @@ module obi_demux #(
   end
 
   // stall requests to ensure in-order behavior (could be handled differently with rready)
-  localparam int unsigned CounterWidth = cf_math_pkg::idx_width(NumMaxTrans);
+  localparam int unsigned CounterWidth = cf_math_pkg_xheep::idx_width(NumMaxTrans);
 
   logic cnt_up, cnt_down, overflow;
   logic [CounterWidth-1:0] in_flight;
@@ -113,13 +113,13 @@ endmodule
 
 module obi_demux_intf #(
   /// The OBI configuration for all ports.
-  parameter obi_pkg::obi_cfg_t ObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t ObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The number of manager ports.
   parameter int unsigned       NumMgrPorts = 32'd0,
   /// The maximum number of outstanding transactions.
   parameter int unsigned       NumMaxTrans = 32'd0,
   /// The type of the port select signal.
-  parameter type               select_t    = logic [cf_math_pkg::idx_width(NumMgrPorts)-1:0]
+  parameter type               select_t    = logic [cf_math_pkg_xheep::idx_width(NumMgrPorts)-1:0]
 ) (
   input logic         clk_i,
   input logic         rst_ni,

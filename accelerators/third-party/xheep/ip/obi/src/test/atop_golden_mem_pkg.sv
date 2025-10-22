@@ -105,7 +105,7 @@ package atop_golden_mem_pkg;
       input  logic [   ObiIdWidthM-1:0] m_id,
       // input  logic [  ObiUserWidth-1:0] user,
       input  logic [   NumMgrWidth-1:0] manager = 0,
-      input  obi_pkg::atop_t            atop = '0,
+      input  obi_pkg_ip::atop_t            atop = '0,
       output logic [  ObiDataWidth-1:0] rdata,
       output logic                      err,
       output logic                      exokay
@@ -120,11 +120,11 @@ package atop_golden_mem_pkg;
       // $display("Writing 0x%x to 0x%x and atop 0x%x", wdata, addr, atop);
 
 
-      if (atop == obi_pkg::ATOPSC) begin
+      if (atop == obi_pkg_ip::ATOPSC) begin
 
         // TODO
 
-      end else if (atop == obi_pkg::ATOPNONE) begin
+      end else if (atop == obi_pkg_ip::ATOPNONE) begin
 
         wait_write_rsp(res_id);
         set_memory(addr, wdata, be);
@@ -132,7 +132,7 @@ package atop_golden_mem_pkg;
         err = '0;
         exokay = '0;
 
-      end else if (atop == obi_pkg::AMOSWAP) begin
+      end else if (atop == obi_pkg_ip::AMOSWAP) begin
 
         wait_write_rsp(res_id);
         rdata = get_memory(addr);
@@ -140,10 +140,10 @@ package atop_golden_mem_pkg;
         err = '0;
         exokay = '0;
 
-      end else if (atop == obi_pkg::AMOADD  || atop == obi_pkg::AMOXOR ||
-                   atop == obi_pkg::AMOAND  || atop == obi_pkg::AMOOR  ||
-                   atop == obi_pkg::AMOMIN  || atop == obi_pkg::AMOMAX ||
-                   atop == obi_pkg::AMOMINU || atop == obi_pkg::AMOMAXU ) begin
+      end else if (atop == obi_pkg_ip::AMOADD  || atop == obi_pkg_ip::AMOXOR ||
+                   atop == obi_pkg_ip::AMOAND  || atop == obi_pkg_ip::AMOOR  ||
+                   atop == obi_pkg_ip::AMOMIN  || atop == obi_pkg_ip::AMOMAX ||
+                   atop == obi_pkg_ip::AMOMINU || atop == obi_pkg_ip::AMOMAXU ) begin
 
         wait_write_rsp(res_id);
 
@@ -153,28 +153,28 @@ package atop_golden_mem_pkg;
         rdata = data_uo;
 
         unique case (atop)
-          obi_pkg::AMOADD: begin
+          obi_pkg_ip::AMOADD: begin
             set_memory(addr, data_uo + data_ui, be);
           end
-          obi_pkg::AMOXOR: begin
+          obi_pkg_ip::AMOXOR: begin
             set_memory(addr, data_uo ^ data_ui, be);
           end
-          obi_pkg::AMOAND: begin
+          obi_pkg_ip::AMOAND: begin
             set_memory(addr, data_uo & data_ui, be);
           end
-          obi_pkg::AMOOR: begin
+          obi_pkg_ip::AMOOR: begin
             set_memory(addr, data_uo | data_ui, be);
           end
-          obi_pkg::AMOMIN: begin
+          obi_pkg_ip::AMOMIN: begin
             set_memory(addr, data_so > data_si ? data_si : data_so, be);
           end
-          obi_pkg::AMOMAX: begin
+          obi_pkg_ip::AMOMAX: begin
             set_memory(addr, data_so > data_si ? data_so : data_si, be);
           end
-          obi_pkg::AMOMINU: begin
+          obi_pkg_ip::AMOMINU: begin
             set_memory(addr, data_uo > data_ui ? data_ui : data_uo, be);
           end
-          obi_pkg::AMOMAXU: begin
+          obi_pkg_ip::AMOMAXU: begin
             set_memory(addr, data_uo > data_ui ? data_uo : data_ui, be);
           end
           default: begin
@@ -197,7 +197,7 @@ package atop_golden_mem_pkg;
       input  logic [ ObiIdWidthM-1:0] m_id,
       // input  logic [ObiUserWidth-1:0] user,
       input  logic [ NumMgrWidth-1:0] manager = 0,
-      input  obi_pkg::atop_t          atop = '0,
+      input  obi_pkg_ip::atop_t          atop = '0,
       output logic [ObiDataWidth-1:0] rdata,
       output logic                    err,
       output logic                    exokay
@@ -208,7 +208,7 @@ package atop_golden_mem_pkg;
       rdata = get_memory(addr);
       err = '0;
 
-      if (atop == obi_pkg::ATOPLR) begin
+      if (atop == obi_pkg_ip::ATOPLR) begin
       end
 
       exokay = '0;

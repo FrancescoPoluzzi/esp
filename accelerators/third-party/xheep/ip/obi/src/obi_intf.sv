@@ -5,7 +5,7 @@
 // Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 interface OBI_BUS #(
-  parameter obi_pkg::obi_cfg_t OBI_CFG          = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t OBI_CFG          = obi_pkg_ip::ObiDefaultConfig,
   parameter type               obi_a_optional_t = logic,
   parameter type               obi_r_optional_t = logic
 ) ();
@@ -99,7 +99,7 @@ interface OBI_BUS #(
 endinterface
 
 interface OBI_BUS_DV #(
-  parameter obi_pkg::obi_cfg_t OBI_CFG          = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t OBI_CFG          = obi_pkg_ip::ObiDefaultConfig,
   parameter type               obi_a_optional_t = logic,
   parameter type               obi_r_optional_t = logic
 ) (

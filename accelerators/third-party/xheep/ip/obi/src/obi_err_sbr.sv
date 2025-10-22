@@ -6,7 +6,7 @@
 
 module obi_err_sbr #(
   /// The OBI configuration for all ports.
-  parameter obi_pkg::obi_cfg_t           ObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t           ObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// The request struct.
   parameter type                         obi_req_t   = logic,
   /// The response struct.
@@ -68,7 +68,7 @@ endmodule
 
 module obi_err_sbr_intf #(
   /// The OBI configuration for all ports.
-  parameter obi_pkg::obi_cfg_t           ObiCfg      = obi_pkg::ObiDefaultConfig,
+  parameter obi_pkg_ip::obi_cfg_t           ObiCfg      = obi_pkg_ip::ObiDefaultConfig,
   /// Numper of transactions accepted before stalling if UseRReady
   parameter int unsigned                 NumMaxTrans = 1,
   /// Data to respond with from error subordinate
