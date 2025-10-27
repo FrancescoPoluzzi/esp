@@ -1,4 +1,3 @@
-obi/src/axi_pkg.sv
 obi/src/apb_to_obi.sv
 obi/src/axi_to_obi.sv
 obi/src/obi_to_axi.sv

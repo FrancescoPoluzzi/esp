@@ -124,7 +124,7 @@ if [ ${INSTALL_NVDLA} == 1 ]; then
 fi
 
 if [ ${INSTALL_X_HEEP} == 1 ]; then
-    git submodule update --init --recursive accelerators/third-party/ips/x-heep
+    git submodule update --init --recursive accelerators/third-party/xheep/ip/x-heep
 fi
 
 if [ ${INSTALL_SPANDEX} == 1 ]; then

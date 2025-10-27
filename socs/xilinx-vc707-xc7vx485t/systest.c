@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <stdio.h>
+#include <stdint.h>
 #include "xheep_firmware.h"
 #include "core_v_mini_mcu.h"
 #include "power_manager_regs.h"
 #include "xheep_common.h"
 
 #define XHEEP_BASE_ADDR 0x60400000u
+#define MEMORY_BASE_ADDR 0x80000000u
 
 int main(int argc, char **argv)
 {
@@ -18,10 +20,10 @@ int main(int argc, char **argv)
     // printf("[DEBUG] Disabling X-HEEP CPU (keeping in reset)...\n");
     // *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_CPU_ENABLE_ADDR) = 0u;
 
-    /* 2.5) Trigger external reset to X-HEEP to ensure clean state */
-    printf("[DEBUG] Triggering external reset...\n", XHEEP_SHARED_STR_ADDR);
-    volatile unsigned *external_reset = (volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + 0x100u);
-    external_reset[0] = 0u;
+    // /* 2.5) Trigger external reset to X-HEEP to ensure clean state */
+    // printf("[DEBUG] Triggering external reset...\n", XHEEP_SHARED_STR_ADDR);
+    // volatile unsigned *external_reset = (volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + 0x100u);
+    // external_reset[0] = 0u;
 
 
     /* 2.5) Initialize shared memory location to prevent X propagation */
@@ -92,7 +94,7 @@ int main(int argc, char **argv)
 
     /* 9) Add delay to let X-HEEP firmware execute before polling */
     printf("[DEBUG] Waiting for X-HEEP to execute...\n");
-    for (volatile unsigned delay = 0; delay < 1000; delay++) {
+    for (volatile unsigned delay = 0; delay < 100; delay++) {
         /* busy wait to give X-HEEP time to run */
     }
 
@@ -123,6 +125,58 @@ int main(int argc, char **argv)
     if (i + 1 >= XHEEP_SHARED_STR_MAX) buf[XHEEP_SHARED_STR_MAX - 1] = '\0';
 
     printf("[DEBUG] String read complete (%u bytes)\n", i);
-    printf("X-HEEP says: %s\n", buf);
+    printf("X-HEEP says from APB: %s\n", buf);
+
+    // printf("[DEBUG] Waiting for X-HEEP to execute...\n");
+    // for (volatile unsigned delay = 0; delay < 200; delay++) {
+    //     /* busy wait to give X-HEEP time to run */
+    // }
+
+    /* 11) Read back the string X-HEEP wrote to external memory via AXI */
+    printf("[DEBUG] Reading string from external memory at 0x%08x...\n",
+           (unsigned)MEMORY_BASE_ADDR);
+    volatile const char *q_8000 = (volatile const char *)(uintptr_t)(MEMORY_BASE_ADDR + XHEEP_SHARED_STR_ADDR);
+
+    char buf_axi[XHEEP_SHARED_STR_MAX];
+    unsigned j = 0;
+    for (j = 0 ; j + 1 < XHEEP_SHARED_STR_MAX; ++j) {
+        char c = q_8000[j];
+        buf_axi[j] = c;
+        if (c == '\0') break;
+    }
+    if (j + 1 >= XHEEP_SHARED_STR_MAX) buf_axi[XHEEP_SHARED_STR_MAX - 1] = '\0';
+
+    printf("[DEBUG] AXI string read complete (%u bytes)\n", j);
+    printf("X-HEEP says from AXI: %s\n", buf_axi);
+
+    // /* 11) Read back the string X-HEEP wrote to external memory via AXI */
+    // printf("[DEBUG] Reading string from external memory at 0x%08x...\n",
+    //        (unsigned)0u);
+    // volatile const char *q_0 = (volatile const char *)(uintptr_t)(0u + XHEEP_SHARED_STR_ADDR);
+
+    // for (j = 0 ; j + 1 < XHEEP_SHARED_STR_MAX; ++j) {
+    //     char c = q_0[j];
+    //     buf_axi[j] = c;
+    //     if (c == '\0') break;
+    // }
+    // if (j + 1 >= XHEEP_SHARED_STR_MAX) buf_axi[XHEEP_SHARED_STR_MAX - 1] = '\0';
+
+    // printf("[DEBUG] AXI string read complete (%u bytes)\n", j);
+    // printf("X-HEEP says from AXI: %s\n", buf_axi);
+
+    // /* 11) Read back the string X-HEEP wrote to external memory via AXI */
+    // printf("[DEBUG] Reading string from external memory at 0x%08x...\n",
+    //        (unsigned)(0xa0200000 + XHEEP_SHARED_STR_ADDR));
+    // volatile const char *q_thirdparty_reserved = (volatile const char *)(uintptr_t)(0xa0200000 + XHEEP_SHARED_STR_ADDR);
+
+    // for (j = 0 ; j + 1 < XHEEP_SHARED_STR_MAX; ++j) {
+    //     char c = q_thirdparty_reserved[j];
+    //     buf_axi[j] = c;
+    //     if (c == '\0') break;
+    // }
+    // if (j + 1 >= XHEEP_SHARED_STR_MAX) buf_axi[XHEEP_SHARED_STR_MAX - 1] = '\0';
+
+    // printf("[DEBUG] AXI string read complete (%u bytes)\n", j);
+    // printf("X-HEEP says from AXI: %s\n", buf_axi);
 
 }
