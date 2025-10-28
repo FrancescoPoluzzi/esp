@@ -7,8 +7,8 @@
 `include "common_cells/registers.svh"
 `include "common_cells/assertions.svh"
 
-// An APB to OBI adapter for interfacing ESP APB peripheral bus and X-Heep OBI 
-// system bus. In this case ESP is the master and X-Heep the slave.
+// An APB to OBI adapter. Generic bridge that performs protocol conversion
+// without address-specific transformations.
 module apb_to_obi #(
   /// The configuration of the manager port (output port).
   parameter      obi_pkg::obi_cfg_t ObiCfg,
@@ -31,19 +31,8 @@ module apb_to_obi #(
   input  obi_rsp_t obi_rsp_i
 );
 
-  localparam logic [31:0] XHEEP_APB_BASE_OFF = 32'h0040_0000; // from the address map/DTS
-  localparam logic [31:0] XHEEP_SOC_CTRL_WRITE_OFFSET = 32'h0001_FF00; // from the address map/DTS
-  localparam logic [31:0] XHEEP_POWER_MANAGER_WRITE_OFFSET = 32'h0001_FE00; // from the address map/DTS
-  localparam logic [31:0] SOC_CTRL_START_ADDRESS = 32'h2000_0000; // from the address map/DTS
-  localparam logic [31:0] POWER_MANAGER_START_ADDRESS = 32'h2004_0000; // from the address map/DTS
-
   typedef enum logic {RESP, ADDR} obi_phase_e;
   obi_phase_e obi_phase_d, obi_phase_q;
-
-  // // One-time dump of interface widths to spot truncation issues.
-  // initial begin
-  //   $display("[apb_to_obi][DBG] paddr bits=%0d, obi addr bits=%0d, pwdata bits=%0d, rdata bits=%0d", $bits(apb_req_i.paddr), $bits(obi_req_o.addr), $bits(apb_req_i.pwdata), $bits(obi_rsp_i.rdata));
-  // end
 
   // ---------------
   // Request Signals (APB request to OBI)
@@ -55,19 +44,8 @@ module apb_to_obi #(
     // Default all fields
     obi_req_next = '0;
 
-    // Address/write channel
-    if (apb_req_i.paddr >= (XHEEP_APB_BASE_OFF + XHEEP_SOC_CTRL_WRITE_OFFSET)) begin
-      // Access to configuration registers
-      obi_req_next.addr  = apb_req_i.paddr + (SOC_CTRL_START_ADDRESS - XHEEP_APB_BASE_OFF - XHEEP_SOC_CTRL_WRITE_OFFSET);
-    end
-    else if (apb_req_i.paddr >= (XHEEP_APB_BASE_OFF + XHEEP_POWER_MANAGER_WRITE_OFFSET)) begin
-      // Access to power manager registers
-      obi_req_next.addr  = apb_req_i.paddr + (POWER_MANAGER_START_ADDRESS - XHEEP_APB_BASE_OFF - XHEEP_POWER_MANAGER_WRITE_OFFSET);
-    end
-    else begin
-      // Normal access to X-Heep RAM
-      obi_req_next.addr  = apb_req_i.paddr - XHEEP_APB_BASE_OFF;
-    end
+    // Direct address pass-through (wrapper handles any translation)
+    obi_req_next.addr  = apb_req_i.paddr;
     obi_req_next.we    = apb_req_i.pwrite;
     // APB sets pstrb to '0 on reads. OBI expects '1.
     obi_req_next.be    = apb_req_i.pwrite ? apb_req_i.pstrb : '1;

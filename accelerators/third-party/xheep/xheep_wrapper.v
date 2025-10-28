@@ -77,9 +77,13 @@ module XHEEP_wrapper
   output wire                     x_heep_intr
 );
 
-  localparam logic [31:0] EXT_SLAVE_START_ADDRESS = 32'hF000_0000; // from the address map/DTS
-  localparam logic [31:0] ESP_MEMORY_ADDRESS   = 32'h8000_0000; // from the address map/DTS
+  localparam logic [31:0] EXT_SLAVE_START_ADDRESS = 32'hF000_0000; // from generated core_v_mini_mcu.h
+  localparam logic [31:0] SOC_CTRL_START_ADDRESS = 32'h2000_0000; // from generated core_v_mini_mcu.h
+  localparam logic [31:0] ESP_MEMORY_ADDRESS   = 32'h8000_0000; // from generated ESP's riscv.dts
   localparam int LSB = $clog2(AXI_DATA_WIDTH/8);
+  // X-HEEP address map offsets (for APB->OBI translation)
+  localparam logic [31:0] XHEEP_APB_BASE_OFF = 32'h0040_0000; // from the ESP address map
+  localparam logic [31:0] XHEEP_SOC_CTRL_WRITE_OFFSET = 32'h0000_FF00; // fixed and hardcoded. It must fit in the area ESP allocates to X-HEEP.
 
   // Minimal sideband defaults; main sidebands driven by OBI->AXI bridge below
   assign x_heep_axi_awqos    = 4'b0000;
@@ -94,6 +98,25 @@ module XHEEP_wrapper
   import esp_apb_pkg::*;
   esp_apb_pkg::apb_req_t apb_req;
   esp_apb_pkg::apb_rsp_t apb_rsp;
+
+  // Intermediate APB request with translated address
+  esp_apb_pkg::apb_req_t apb_req_translated;
+
+  // Address translation logic for SoC control and power manager
+  always_comb begin
+    // Copy all fields from input
+    apb_req_translated = apb_req;
+    
+    // Translate address based on target region
+    if (apb_req.paddr >= (XHEEP_APB_BASE_OFF + XHEEP_SOC_CTRL_WRITE_OFFSET)) begin
+      // Access to configuration registers
+      apb_req_translated.paddr = apb_req.paddr + (SOC_CTRL_START_ADDRESS - XHEEP_APB_BASE_OFF - XHEEP_SOC_CTRL_WRITE_OFFSET);
+    end
+    else begin
+      // Normal access to X-Heep RAM - remove base offset
+      apb_req_translated.paddr = apb_req.paddr - XHEEP_APB_BASE_OFF;
+    end
+  end
 
   assign apb_req.paddr   = paddr;
   assign apb_req.psel    = psel;
@@ -163,7 +186,7 @@ module XHEEP_wrapper
   ) u_apb2obi (
     .clk_i     (clk_i),
     .rst_ni    (rst_ni),
-    .apb_req_i (apb_req),
+    .apb_req_i (apb_req_translated),  // Use translated address
     .apb_rsp_o (apb_rsp),
     .obi_req_o (esp_obi_m_req[0]),
     .obi_rsp_i(esp_obi_m_rsp[0])
@@ -359,7 +382,7 @@ module XHEEP_wrapper
   assign x_heep_intr = heep_exit_valid;
 
   // ---------------- OBI (manager) to AXI4 (master) bridge ----------------
-  // Use the core DATA external OBI master as AXI master source
+  // Use the core DATA external OBI master as AXI master source (no arbitration yet)
 
   // Define AXI types via axi_pkg macros
   import axi_pkg::*;
@@ -503,5 +526,104 @@ module XHEEP_wrapper
   assign heep_dma_write_resp          = '{default:'0};
   assign heep_dma_addr_resp           = '{default:'0};
   assign heep_ext_peripheral_slave_resp = '0;
+
+  // --- Wave dump: flattened signals (QuestaSim-compatible) ---
+  initial begin
+    //$dumpfile("xheep.vcd");
+    // top-level clock/resets
+    //$dumpvars(0, x_heep_clk);
+    //$dumpvars(0, x_heep_rstn);
+    //$dumpvars(0, direct_reset);
+    // internal derived clk/reset
+    //$dumpvars(0, clk_i);
+    //$dumpvars(0, rst_ni);
+
+    // top-level APB
+    //$dumpvars(0, paddr);
+    //$dumpvars(0, psel);
+    //$dumpvars(0, penable);
+    //$dumpvars(0, pwrite);
+    //$dumpvars(0, pwdata);
+    //$dumpvars(0, prdata);
+    //$dumpvars(0, pready);
+    //$dumpvars(0, pslverr);
+
+    // flattened APB request (from struct)
+    //$dumpvars(0, dbg_apb_req_paddr);
+    //$dumpvars(0, dbg_apb_req_psel);
+    //$dumpvars(0, dbg_apb_req_penable);
+    //$dumpvars(0, dbg_apb_req_pwrite);
+    //$dumpvars(0, dbg_apb_req_pwdata);
+    //$dumpvars(0, dbg_apb_req_pstrb);
+    //$dumpvars(0, dbg_apb_req_pprot);
+
+    // flattened APB response (from struct)
+    //$dumpvars(0, dbg_apb_rsp_prdata);
+    //$dumpvars(0, dbg_apb_rsp_pready);
+    //$dumpvars(0, dbg_apb_rsp_pslverr);
+
+    // flattened OBI master request (from struct)
+    //$dumpvars(0, dbg_obi_m_req_req);
+    //$dumpvars(0, dbg_obi_m_req_addr);
+    //$dumpvars(0, dbg_obi_m_req_wdata);
+    //$dumpvars(0, dbg_obi_m_req_we);
+    //$dumpvars(0, dbg_obi_m_req_be);
+    // flattened OBI master response (from struct)
+    //$dumpvars(0, dbg_obi_m_resp_rdata);
+    //$dumpvars(0, dbg_obi_m_resp_rvalid);
+    //$dumpvars(0, dbg_apb_m_resp_gnt);
+
+    // AXI master interface (to ESP fabric)
+    // Write address channel
+    //$dumpvars(0, x_heep_axi_awvalid);
+    //$dumpvars(0, x_heep_axi_awready);
+    //$dumpvars(0, x_heep_axi_awid);
+    //$dumpvars(0, x_heep_axi_awlen);
+    //$dumpvars(0, x_heep_axi_awaddr);
+    //$dumpvars(0, x_heep_axi_awsize);
+    //$dumpvars(0, x_heep_axi_awburst);
+    //$dumpvars(0, x_heep_axi_awlock);
+    //$dumpvars(0, x_heep_axi_awcache);
+    //$dumpvars(0, x_heep_axi_awprot);
+    //$dumpvars(0, x_heep_axi_awqos);
+    //$dumpvars(0, x_heep_axi_awregion);
+    //$dumpvars(0, x_heep_axi_awatop);
+
+    // Write data channel
+    //$dumpvars(0, x_heep_axi_wvalid);
+    //$dumpvars(0, x_heep_axi_wready);
+    //$dumpvars(0, x_heep_axi_wdata);
+    //$dumpvars(0, x_heep_axi_wstrb);
+    //$dumpvars(0, x_heep_axi_wlast);
+
+    // Read address channel
+    //$dumpvars(0, x_heep_axi_arvalid);
+    //$dumpvars(0, x_heep_axi_arready);
+    //$dumpvars(0, x_heep_axi_arid);
+    //$dumpvars(0, x_heep_axi_arlen);
+    //$dumpvars(0, x_heep_axi_araddr);
+    //$dumpvars(0, x_heep_axi_arsize);
+    //$dumpvars(0, x_heep_axi_arburst);
+    //$dumpvars(0, x_heep_axi_arlock);
+    //$dumpvars(0, x_heep_axi_arcache);
+    //$dumpvars(0, x_heep_axi_arprot);
+    //$dumpvars(0, x_heep_axi_arqos);
+    //$dumpvars(0, x_heep_axi_arregion);
+
+    // Write response channel
+    //$dumpvars(0, x_heep_axi_bvalid);
+    //$dumpvars(0, x_heep_axi_bready);
+    //$dumpvars(0, x_heep_axi_bid);
+    //$dumpvars(0, x_heep_axi_bresp);
+
+    // Read data channel
+    //$dumpvars(0, x_heep_axi_rvalid);
+    //$dumpvars(0, x_heep_axi_rready);
+    //$dumpvars(0, x_heep_axi_rid);
+    //$dumpvars(0, x_heep_axi_rlast);
+    //$dumpvars(0, x_heep_axi_rdata);
+    //$dumpvars(0, x_heep_axi_rresp);
+
+  end
 
 endmodule

@@ -13,6 +13,8 @@ OUT_DIR    := $(XHEEP_ROOT)/out
 OBI_ROOT   := $(XHEEP_ROOT)/ip/obi
 XH_ROOT    := $(XHEEP_ROOT)/ip/x-heep
 
+MODELSIM_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim
+
 # 1) run the X-HEEP generator, then 2) mirror filelist into out/
 hw: mcu-gen questa update-xheep-sverilog update-xheep-verilog mirror-filelist
 
@@ -24,12 +26,12 @@ questa:
 
 update-xheep-sverilog:
 	@set -e; \
-	TCL="$(XH_ROOT)/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/edalize_build_rtl.tcl"; \
+	TCL="$(XH_ROOT)/$(MODELSIM_FILELIST)/edalize_build_rtl.tcl"; \
 	SV="$(XHEEP_ROOT)/xheep.sverilog"; \
 	[ -f "$$TCL" ] || { echo "[xheep][ERROR] Missing $$TCL"; exit 1; }; \
 	t1="$$(mktemp)"; t2="$$(mktemp)"; \
 	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.sv$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
-	awk -v genpref="x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$SV" 2>/dev/null || true; } > "$$SV.new"; \
 	cat "$$t2" >> "$$SV.new"; \
 	mv "$$SV.new" "$$SV"; \
@@ -38,12 +40,12 @@ update-xheep-sverilog:
 
 update-xheep-verilog:
 	@set -e; \
-	TCL="$(XH_ROOT)/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/edalize_build_rtl.tcl"; \
+	TCL="$(XH_ROOT)/$(MODELSIM_FILELIST)/edalize_build_rtl.tcl"; \
 	VL="$(XHEEP_ROOT)/xheep.verilog"; \
 	[ -f "$$TCL" ] || { echo "[xheep][ERROR] Missing $$TCL"; exit 1; }; \
 	t1="$$(mktemp)"; t2="$$(mktemp)"; \
 	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.v$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
-	awk -v genpref="x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" -v incdir="$(XHEEP_ROOT)/vlog_incdir" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$VL" 2>/dev/null || true; } > "$$VL.new"; \
 	cat "$$t2" >> "$$VL.new"; \
 	mv "$$VL.new" "$$VL"; \
@@ -73,23 +75,9 @@ mirror-filelist:
 	done
 
 sw:
-# 	# clean re-config so a previous bad cache can't persist
-# 	rm -rf $(XH_ROOT)/sw/build/CMakeCache.txt $(XH_ROOT)/sw/build/CMakeFiles
-# 	# run x-heep app with leaked flags scrubbed but keep required toolchain/env
-# 	env -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u ASFLAGS -u LDFLAGS \
-# 	    -u CMAKE_C_FLAGS -u CMAKE_CXX_FLAGS -u CMAKE_ASM_FLAGS -u CMAKE_EXE_LINKER_FLAGS \
-# 	    -u ARCH -u MARCH -u XCFLAGS -u XCXXFLAGS -u MAKEFLAGS \
-# 	    RISCV=$(RISCV32IMC) \
-# 	    CC="riscv32-unknown-elf-gcc" CXX="riscv32-unknown-elf-g++" \
-# 	    PY="python3" \
-# 	    PATH="$(RISCV32IMC)/bin:$(PATH)" \
-# 	    $(MAKE) -C $(XH_ROOT) app PROJECT=esp_app LINKER=on_chip TARGET=sim
 	rm -rf $(XH_ROOT)/sw/build
 	$(MAKE) -C $(XH_ROOT) RISCV=/home/francesco/tools/riscv  ARCH=rv32imc app PROJECT=esp_app LINKER=on_chip TARGET=sim
 	mkdir -p $(XH_ROOT)/sw/generated
-# 	python3 $(XH_ROOT)/util/c_gen.py \
-# 		$(XH_ROOT)/sw/generated/xheep_firmware.h \
-# 		$(XH_ROOT)/sw/build/main.bin
 	python3 $(ESP_TOP)/accelerators/third-party/xheep/ip/x-heep/util/hex_to_c.py \
 		$(XH_ROOT)/sw/generated/xheep_firmware.h \
 		$(XH_ROOT)/sw/build/main.hex

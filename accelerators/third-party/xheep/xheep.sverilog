@@ -9,7 +9,7 @@ x-heep/hw/ip_examples/simple_accelerator/simple_accelerator.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/top_earlgrey/rtl/top_pkg.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/ip/spi_device/rtl/spi_device_reg_pkg.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/ip/spi_device/rtl/spi_device_pkg.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_prim_pkg_xheep-impl_0.1/prim_pkg_xheep.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_prim_pkg_xheep-impl_0.1/prim_pkg_xheep.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/ip/prim/rtl/prim_cipher_pkg.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/ip/prim_generic/rtl/prim_generic_buf.sv
 x-heep/hw/vendor/lowrisc_opentitan/hw/ip/prim_generic/rtl/prim_generic_flop.sv
@@ -347,13 +347,13 @@ x-heep/hw/ip_examples/im2col_spc/rtl/pipe_reg.sv
 x-heep/hw/ip_examples/im2col_spc/rtl/im2col_spc_regintfc_controller.sv
 x-heep/hw/ip_examples/im2col_spc/rtl/im2col_spc_param_fsm.sv
 x-heep/hw/ip_examples/im2col_spc/rtl/im2col_spc.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_buf-impl_0/prim_buf.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_clock_mux2-impl_0/prim_clock_mux2.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_flop-impl_0/prim_flop.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_flop_2sync-impl_0/prim_flop_2sync.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_flop_en-impl_0/prim_flop_en.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_ram_1p-impl_0/prim_ram_1p.sv
-x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-modelsim/generated/lowrisc_prim_xor2-impl_0/prim_xor2.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_buf-impl_0/prim_buf.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_clock_mux2-impl_0/prim_clock_mux2.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_flop-impl_0/prim_flop.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_flop_2sync-impl_0/prim_flop_2sync.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_flop_en-impl_0/prim_flop_en.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_ram_1p-impl_0/prim_ram_1p.sv
+x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim/generated/lowrisc_prim_xor2-impl_0/prim_xor2.sv
 x-heep/hw/vendor/openhwgroup_cv32e40p/rtl/include/cv32e40p_apu_core_pkg.sv
 x-heep/hw/vendor/openhwgroup_cv32e40p/rtl/include/cv32e40p_fpu_pkg.sv
 x-heep/hw/vendor/openhwgroup_cv32e40p/rtl/include/cv32e40p_pkg.sv
@@ -396,6 +396,7 @@ x-heep/hw/vendor/pulp_platform_fpu_ss/src/fpu_ss_predecoder.sv
 x-heep/hw/vendor/pulp_platform_fpu_ss/src/fpu_ss_regfile.sv
 x-heep/hw/vendor/pulp_platform_fpu_ss/src/fpu_ss.sv
 x-heep/hw/ip_examples/fpu_ss_wrapper/fpu_ss_wrapper.sv
+x-heep/tb/yosys_spiflash.sv
 x-heep/tb/testharness_pkg.sv
 x-heep/tb/testharness.sv
 x-heep/tb/ext_xbar.sv

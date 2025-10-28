@@ -52,23 +52,23 @@ int main(int argc, char **argv)
 
     printf("[DEBUG] Firmware loaded successfully\n");
 
-    /* 2.8) Make sure CPU domain is ON and RAM clocks are ungated (mimics TB power/clock state) */
-    {
-     volatile unsigned *pm_base = (volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR);
-     /* Force CPU domain SWITCH ON */
-     printf("[DEBUG] Forcing CPU domain switch ON... (PM@0x%08x + 0x%02x)\n",
-         (unsigned)(XHEEP_BASE_ADDR + XHEEP_POWER_MANAGER_WRITE_OFFSET), (unsigned)XHEEP_MASTER_CPU_FORCE_SWITCH_ON_REG_OFFSET);
-     pm_base[XHEEP_MASTER_CPU_FORCE_SWITCH_ON_REG_OFFSET >> 2] = 1u;
-     /* Ungate RAM clocks (in case they default gated) */
-     printf("[DEBUG] Ungating RAM_0/RAM_1 clocks...\n");
-     pm_base[XHEEP_RAM_0_CLK_GATE_REG_OFFSET >> 2] = 0u;
-     pm_base[XHEEP_RAM_1_CLK_GATE_REG_OFFSET >> 2] = 0u;
-    }
+    // /* 2.8) Make sure CPU domain is ON and RAM clocks are ungated (mimics TB power/clock state) */
+    // {
+    //  volatile unsigned *pm_base = (volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR);
+    //  /* Force CPU domain SWITCH ON */
+    //  printf("[DEBUG] Forcing CPU domain switch ON... (PM@0x%08x + 0x%02x)\n",
+    //      (unsigned)(XHEEP_BASE_ADDR + XHEEP_POWER_MANAGER_WRITE_OFFSET), (unsigned)XHEEP_MASTER_CPU_FORCE_SWITCH_ON_REG_OFFSET);
+    //  pm_base[XHEEP_MASTER_CPU_FORCE_SWITCH_ON_REG_OFFSET >> 2] = 1u;
+    //  /* Ungate RAM clocks (in case they default gated) */
+    //  printf("[DEBUG] Ungating RAM_0/RAM_1 clocks...\n");
+    //  pm_base[XHEEP_RAM_0_CLK_GATE_REG_OFFSET >> 2] = 0u;
+    //  pm_base[XHEEP_RAM_1_CLK_GATE_REG_OFFSET >> 2] = 0u;
+    // }
 
-    /* 3) Put CPU in reset while we program boot regs */
-    printf("[DEBUG] Asserting X-HEEP CPU reset... at address 0x%08x\n",
-        (unsigned)(XHEEP_BASE_ADDR + XHEEP_RESET_ASSERT_ADDR));
-    *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_RESET_ASSERT_ADDR) = 1u;
+    // /* 3) Put CPU in reset while we program boot regs */
+    // printf("[DEBUG] Asserting X-HEEP CPU reset... at address 0x%08x\n",
+    //     (unsigned)(XHEEP_BASE_ADDR + XHEEP_RESET_ASSERT_ADDR));
+    // *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_RESET_ASSERT_ADDR) = 1u;
 
     /* 4) Program BOOT control (JTAG/debug path = 0; flash path = 1) */
     printf("[DEBUG] Setting BOOT_SELECT to JTAG/debug path (0) at address 0x%08x\n",
@@ -81,10 +81,10 @@ int main(int argc, char **argv)
         XHEEP_FW_ENTRY_POINT, (unsigned)(XHEEP_BASE_ADDR + XHEEP_BOOT_ADDRESS_ADDR));
     *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_BOOT_ADDRESS_ADDR) = XHEEP_FW_ENTRY_POINT;
 
-    /* 6) Release CPU reset so boot ROM starts executing */
-    printf("[DEBUG] Deasserting X-HEEP CPU reset... at address 0x%08x\n",
-        (unsigned)(XHEEP_BASE_ADDR + XHEEP_RESET_DEASSERT_ADDR));
-    *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_RESET_DEASSERT_ADDR) = 1u;
+    // /* 6) Release CPU reset so boot ROM starts executing */
+    // printf("[DEBUG] Deasserting X-HEEP CPU reset... at address 0x%08x\n",
+    //     (unsigned)(XHEEP_BASE_ADDR + XHEEP_RESET_DEASSERT_ADDR));
+    // *(volatile unsigned *)(uintptr_t)(XHEEP_BASE_ADDR + XHEEP_RESET_DEASSERT_ADDR) = 1u;
 
     /* 7) Tell boot ROM to exit loop and jump to BOOT_ADDRESS (0x180) */
     printf("[DEBUG] Setting BOOT_EXIT_LOOP=1 at address 0x%08x\n",

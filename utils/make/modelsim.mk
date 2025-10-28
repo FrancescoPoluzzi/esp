@@ -12,6 +12,7 @@ VLOGOPT += -suppress 2892
 VLOGOPT += -suppress vlog-2583
 VLOGOPT += -suppress vlog-2577
 VLOGOPT += -suppress vlog-2720
+VLOGOPT += -suppress vlog-12003
 ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 VLOGOPT += +define+XILINX_FPGA
 endif
@@ -30,6 +31,7 @@ VSIMOPT += -uvmcontrol=disable -suppress 3009,2685,2718 -t fs
 VSIMOPT += +notimingchecks
 VSIMOPT += $(SIMTOP) $(EXTRA_SIMTOP)
 VSIMOPT += -modelsimini modelsim.ini
+VSIMOPT += -voptargs=+acc
 
 VLIB = vlib
 VCOM = vcom -quiet -93 $(VCOMOPT)

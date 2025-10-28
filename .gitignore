@@ -11,3 +11,6 @@ _riscv32imc_build
 # accelerators/third-party/xheep
 accelerators/rtl
 accelerators/stratus_hls
+
+.vscode*
+.bash_history
