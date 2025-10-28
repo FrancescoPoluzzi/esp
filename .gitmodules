@@ -53,7 +53,7 @@
 [submodule "soft/common/drivers/common/utils/eigen"]
 	path = soft/common/drivers/common/utils/eigen
 	url = https://gitlab.com/libeigen/eigen.git
-[submodule "accelerators/third-party/xheep/ip/x-heep"]
-	path = accelerators/third-party/xheep/ip/x-heep
+[submodule "rtl/cores/ibex/x-heep"]
+	path = rtl/cores/ibex/x-heep
 	url = https://github.com/FrancescoPoluzzi/x-heep.git
-	branch = esp-heep
+	branch = processor-tile-esp-heep
