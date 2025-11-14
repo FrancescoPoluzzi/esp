@@ -1,20 +1,20 @@
-#ifndef XHEEP_FIRMWARE_H_
-#define XHEEP_FIRMWARE_H_
+#ifndef XHEEP1_FIRMWARE_H_
+#define XHEEP1_FIRMWARE_H_
 
 #include <stdint.h>
 
 // Binary size
 // -----------
-#define XHEEP_FIRMWARE_SIZE 59896
+#define XHEEP1_FIRMWARE_SIZE 59896
 
 // Binary sections
 // ---------------
 // Total sections: 6
 
 // Section 0: address 0x00000000, size 128 bytes
-#define XHEEP_FIRMWARE_SECTION0_ADDR 0x00000000
-#define XHEEP_FIRMWARE_SECTION0_SIZE 128
-uint32_t xheep_firmware_section0[] = {
+#define XHEEP1_FIRMWARE_SECTION0_ADDR 0x00000000
+#define XHEEP1_FIRMWARE_SECTION0_SIZE 128
+uint32_t xheep1_firmware_section0[] = {
     0x0E90006F,
     0x2980006F,
     0x2940006F,
@@ -50,16 +50,16 @@ uint32_t xheep_firmware_section0[] = {
 };
 
 // Section 1: address 0x00000180, size 106 bytes
-#define XHEEP_FIRMWARE_SECTION1_ADDR 0x00000180
-#define XHEEP_FIRMWARE_SECTION1_SIZE 106
-uint32_t xheep_firmware_section1[] = {
+#define XHEEP1_FIRMWARE_SECTION1_ADDR 0x00000180
+#define XHEEP1_FIRMWARE_SECTION1_SIZE 106
+uint32_t xheep1_firmware_section1[] = {
     0x0000F197,
     0x01418193,
     0x00010117,
     0x93810113,
     0x20000537,
-    0x00E4E637,
-    0x1C060613,
+    0x05F5E637,
+    0x10060613,
     0xF517CD50,
     0x05130000,
     0xF61785A5,
@@ -83,9 +83,9 @@ uint32_t xheep_firmware_section1[] = {
 };
 
 // Section 2: address 0x000001EC, size 2536 bytes
-#define XHEEP_FIRMWARE_SECTION2_ADDR 0x000001EC
-#define XHEEP_FIRMWARE_SECTION2_SIZE 2536
-uint32_t xheep_firmware_section2[] = {
+#define XHEEP1_FIRMWARE_SECTION2_ADDR 0x000001EC
+#define XHEEP1_FIRMWARE_SECTION2_SIZE 2536
+uint32_t xheep1_firmware_section2[] = {
     0x67851141,
     0xC606C422,
     0xAFC78793,
@@ -127,7 +127,7 @@ uint32_t xheep_firmware_section2[] = {
     0x07137065,
     0xAA235487,
     0x670DA0E7,
-    0x02070713,
+    0x12070713,
     0xA0E7AC23,
     0x80824501,
     0x0000006F,
@@ -723,9 +723,9 @@ uint32_t xheep_firmware_section2[] = {
 };
 
 // Section 3: address 0x0000E800, size 403 bytes
-#define XHEEP_FIRMWARE_SECTION3_ADDR 0x0000E800
-#define XHEEP_FIRMWARE_SECTION3_SIZE 403
-uint32_t xheep_firmware_section3[] = {
+#define XHEEP1_FIRMWARE_SECTION3_ADDR 0x0000E800
+#define XHEEP1_FIRMWARE_SECTION3_SIZE 403
+uint32_t xheep1_firmware_section3[] = {
     0x4156544D,
     0x6176204C,
     0x2065756C,
@@ -826,13 +826,13 @@ uint32_t xheep_firmware_section3[] = {
     0x62204250,
     0x2D582079,
     0x70656548,
-    0x00003020
+    0x00003120
 };
 
 // Section 4: address 0x0000E994, size 96 bytes
-#define XHEEP_FIRMWARE_SECTION4_ADDR 0x0000E994
-#define XHEEP_FIRMWARE_SECTION4_SIZE 96
-uint32_t xheep_firmware_section4[] = {
+#define XHEEP1_FIRMWARE_SECTION4_ADDR 0x0000E994
+#define XHEEP1_FIRMWARE_SECTION4_SIZE 96
+uint32_t xheep1_firmware_section4[] = {
     0x00000000,
     0x00000000,
     0x00000000,
@@ -860,27 +860,27 @@ uint32_t xheep_firmware_section4[] = {
 };
 
 // Section 5: address 0x0000E9F4, size 4 bytes
-#define XHEEP_FIRMWARE_SECTION5_ADDR 0x0000E9F4
-#define XHEEP_FIRMWARE_SECTION5_SIZE 4
-uint32_t xheep_firmware_section5[] = {
+#define XHEEP1_FIRMWARE_SECTION5_ADDR 0x0000E9F4
+#define XHEEP1_FIRMWARE_SECTION5_SIZE 4
+uint32_t xheep1_firmware_section5[] = {
     0x0000E994
 };
 
 // Section information structure
-typedef struct xheep_firmware_fw_section {
+typedef struct xheep1_firmware_fw_section {
     uint32_t addr;
     uint32_t size;
     const uint32_t *data;
-} xheep_firmware_fw_section_t;
+} xheep1_firmware_fw_section_t;
 
-#define XHEEP_FIRMWARE_NUM_SECTIONS 6
-const xheep_firmware_fw_section_t xheep_firmware_sections[] = {
-    {0x00000000, 128, xheep_firmware_section0},
-    {0x00000180, 106, xheep_firmware_section1},
-    {0x000001EC, 2536, xheep_firmware_section2},
-    {0x0000E800, 403, xheep_firmware_section3},
-    {0x0000E994, 96, xheep_firmware_section4},
-    {0x0000E9F4, 4, xheep_firmware_section5}
+#define XHEEP1_FIRMWARE_NUM_SECTIONS 6
+const xheep1_firmware_fw_section_t xheep1_firmware_sections[] = {
+    {0x00000000, 128, xheep1_firmware_section0},
+    {0x00000180, 106, xheep1_firmware_section1},
+    {0x000001EC, 2536, xheep1_firmware_section2},
+    {0x0000E800, 403, xheep1_firmware_section3},
+    {0x0000E994, 96, xheep1_firmware_section4},
+    {0x0000E9F4, 4, xheep1_firmware_section5}
 };
 
-#endif // XHEEP_FIRMWARE_H_
+#endif // XHEEP1_FIRMWARE_H_

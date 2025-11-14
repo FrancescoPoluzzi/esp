@@ -73,6 +73,7 @@ THIRDPARTY_ACC  = ""
 endif
 THIRDPARTY_ACC-clean     = $(addsuffix -clean, $(THIRDPARTY_ACC))
 THIRDPARTY_ACC-distclean = $(addsuffix -distclean, $(THIRDPARTY_ACC))
+THIRDPARTY_ACC-vivado    = $(addsuffix -vivado, $(THIRDPARTY_ACC))
 
 THIRDPARTY_VLOG       = $(foreach acc, $(THIRDPARTY_ACC), $(shell f=$(THIRDPARTY_PATH)/$(acc)/out; l=$$(readlink $$f); if test -e $(THIRDPARTY_PATH)/$(acc)/$$l; then echo $(THIRDPARTY_PATH)/$(acc)/$(acc)_wrapper.v; fi))
 THIRDPARTY_VLOG      += $(foreach acc, $(THIRDPARTY_ACC), $(foreach rtl, $(shell strings $(THIRDPARTY_PATH)/$(acc)/$(acc).verilog),  $(shell f=$(THIRDPARTY_PATH)/$(acc)/out/$(rtl); if test -e $$f; then echo $$f; fi;)))
@@ -169,11 +170,16 @@ $(THIRDPARTY_ACC-distclean): %-distclean : %-clean
 	@cd $(THIRDPARTY_PATH)/$(@:-distclean=); \
 	$(MAKE) CROSS_COMPILE_ELF=$(CROSS_COMPILE_ELF) CROSS_COMPILE=$(CROSS_COMPILE_LINUX) ARCH=$(ARCH) KSRC=$(SOFT_BUILD)/linux-build distclean;
 
+$(THIRDPARTY_ACC-vivado):
+	$(QUIET_BUILD)
+	@cd $(THIRDPARTY_PATH)/$(@:-vivado=); \
+	$(MAKE) ESP_ROOT=$(ESP_ROOT) DESIGN_PATH=$(DESIGN_PATH)/$(ESP_CFG_BUILD) CPU_ARCH=$(CPU_ARCH) CROSS_COMPILE_ELF=$(CROSS_COMPILE_ELF) CROSS_COMPILE=$(CROSS_COMPILE_LINUX) ARCH=$(ARCH) KSRC=$(SOFT_BUILD)/linux-build $(@:-vivado=)-vivado;
+
 thirdparty-acc-clean: $(THIRDPARTY_ACC-clean)
 
 thirdparty-acc-distclean: $(THIRDPARTY_ACC-distclean)
 
-.PHONY: thirdparty-acc thirdparty-acc-clean thirdparty-acc-distclean $(THIRDPARTY_ACC) $(THIRDPARTY_ACC-clean) $(THIRDPARTY_ACC-distclean)
+.PHONY: thirdparty-acc thirdparty-acc-clean thirdparty-acc-distclean $(THIRDPARTY_ACC) $(THIRDPARTY_ACC-clean) $(THIRDPARTY_ACC-distclean) $(THIRDPARTY_ACC-vivado)
 
 $(HLS_LOGS):
 	$(QUIET_MKDIR)mkdir -p $(HLS_LOGS)

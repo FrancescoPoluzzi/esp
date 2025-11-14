@@ -5,7 +5,7 @@
 
 // Binary size
 // -----------
-#define XHEEP_FIRMWARE_SIZE 59892
+#define XHEEP_FIRMWARE_SIZE 59896
 
 // Binary sections
 // ---------------
@@ -15,38 +15,38 @@
 #define XHEEP_FIRMWARE_SECTION0_ADDR 0x00000000
 #define XHEEP_FIRMWARE_SECTION0_SIZE 128
 uint32_t xheep_firmware_section0[] = {
-    0x0DD0006F,
+    0x0E90006F,
+    0x2980006F,
+    0x2940006F,
+    0x1490006F,
     0x28C0006F,
     0x2880006F,
-    0x13D0006F,
-    0x2800006F,
+    0x2840006F,
+    0x16D0006F,
     0x27C0006F,
     0x2780006F,
-    0x1610006F,
-    0x2700006F,
+    0x2740006F,
+    0x4140006F,
     0x26C0006F,
     0x2680006F,
-    0x4080006F,
+    0x2640006F,
     0x2600006F,
-    0x25C0006F,
-    0x2580006F,
-    0x2540006F,
-    0x4000006F,
-    0x4500006F,
-    0x4A00006F,
-    0x7E80006F,
-    0x3AC0006F,
-    0x3C40006F,
-    0x5380006F,
-    0x5880006F,
-    0x5D80006F,
-    0x6280006F,
-    0x6780006F,
-    0x6C80006F,
-    0x71C0006F,
-    0x76C0006F,
-    0x0110006F,
-    0x4C00006F
+    0x40C0006F,
+    0x45C0006F,
+    0x4AC0006F,
+    0x7F40006F,
+    0x3B80006F,
+    0x3D00006F,
+    0x5440006F,
+    0x5940006F,
+    0x5E40006F,
+    0x6340006F,
+    0x6840006F,
+    0x6D40006F,
+    0x7280006F,
+    0x7780006F,
+    0x01D0006F,
+    0x4CC0006F
 };
 
 // Section 1: address 0x00000180, size 106 bytes
@@ -54,53 +54,53 @@ uint32_t xheep_firmware_section0[] = {
 #define XHEEP_FIRMWARE_SECTION1_SIZE 106
 uint32_t xheep_firmware_section1[] = {
     0x0000F197,
-    0x01018193,
+    0x01418193,
     0x00010117,
     0x93810113,
     0x20000537,
-    0x05F5E637,
-    0x10060613,
+    0x00E4E637,
+    0x1C060613,
     0xF517CD50,
     0x05130000,
-    0xF6178565,
+    0xF61785A5,
     0x06130000,
-    0x8E099126,
+    0x8E099166,
     0x00EF4581,
-    0x05170AF0,
+    0x05170BB0,
     0x05130000,
     0x6513E4A5,
     0x10730015,
     0x15173055,
     0x05130000,
-    0x00EF8065,
-    0x00EF7F40,
-    0x45020310,
+    0x00EF8125,
+    0x00EF0010,
+    0x450203D0,
     0x4601004C,
     0x038000EF,
     0x00C0006F,
-    0x7CA000EF,
+    0x7D6000EF,
     0x00008082
 };
 
-// Section 2: address 0x000001EC, size 2524 bytes
+// Section 2: address 0x000001EC, size 2536 bytes
 #define XHEEP_FIRMWARE_SECTION2_ADDR 0x000001EC
-#define XHEEP_FIRMWARE_SECTION2_SIZE 2524
+#define XHEEP_FIRMWARE_SECTION2_SIZE 2536
 uint32_t xheep_firmware_section2[] = {
     0x67851141,
     0xC606C422,
-    0xAF078793,
+    0xAFC78793,
     0xC781842A,
     0x00EF4581,
-    0x67BD0F30,
-    0x9F07A503,
+    0x67BD0FF0,
+    0x9F47A503,
     0xC391551C,
     0x85229782,
-    0x7A2000EF,
+    0x7AE000EF,
     0x6641673D,
     0x97870713,
     0x9FF60613,
     0x00170793,
-    0x01770593,
+    0x01B70593,
     0x04800693,
     0xA0218E19,
     0x0007C683,
@@ -118,21 +118,24 @@ uint32_t xheep_firmware_section2[] = {
     0x07134120,
     0xA423D6F7,
     0x5737A0E7,
-    0x0713202C,
+    0x07136220,
     0xA6239587,
-    0x3737A0E7,
-    0x07136548,
-    0xA823D587,
-    0x671DA0E7,
-    0x06570713,
-    0xA0E7AA23,
+    0x2737A0E7,
+    0x07132D58,
+    0xA8230797,
+    0x6737A0E7,
+    0x07137065,
+    0xAA235487,
+    0x670DA0E7,
+    0x02070713,
+    0xA0E7AC23,
     0x80824501,
     0x0000006F,
     0xCE061101,
     0x1000CC22,
     0xFE042623,
     0x67BDA81D,
-    0x9FC78693,
+    0xA0078693,
     0xFEC42703,
     0x078687BA,
     0x078A97BA,
@@ -154,14 +157,14 @@ uint32_t xheep_firmware_section2[] = {
     0x26231000,
     0xA881FE04,
     0x869367BD,
-    0x27039FC7,
+    0x2703A007,
     0x87BAFEC4,
     0x97BA0786,
     0x97B6078A,
     0x53F8479C,
     0x15634785,
     0x67BD02F7,
-    0x9FC78693,
+    0xA0078693,
     0xFEC42703,
     0x078687BA,
     0x078A97BA,
@@ -192,7 +195,7 @@ uint32_t xheep_firmware_section2[] = {
     0x2623C781,
     0x90020000,
     0x071367BD,
-    0xAA230580,
+    0xAC230580,
     0x557D9EE7,
     0x11418082,
     0xC606C426,
@@ -592,11 +595,11 @@ uint32_t xheep_firmware_section2[] = {
     0xA05D4501,
     0x67BD1141,
     0x643DC422,
-    0x98F78713,
-    0x98F40413,
+    0x99378713,
+    0x99340413,
     0xC2268C19,
     0x8409C606,
-    0x98F78493,
+    0x99378493,
     0x40B2E411,
     0x44924422,
     0x80820141,
@@ -606,18 +609,18 @@ uint32_t xheep_firmware_section2[] = {
     0x1141B7E5,
     0xC226C422,
     0x64BD643D,
-    0x98F48793,
-    0x98F40413,
+    0x99348793,
+    0x99340413,
     0xC04A8C1D,
     0x8409C606,
-    0x98F48493,
+    0x99348493,
     0x15634901,
     0x64BD0289,
     0x8793643D,
-    0x041398F4,
-    0x8C1D98F4,
+    0x04139934,
+    0x8C1D9934,
     0x84938409,
-    0x490198F4,
+    0x49019934,
     0x00891D63,
     0x442240B2,
     0x49024492,
@@ -632,16 +635,16 @@ uint32_t xheep_firmware_section2[] = {
     0x0305167D,
     0x8082FE65,
     0x2783683D,
-    0x88AA9F88,
+    0x88AA9FC8,
     0x673DE395,
-    0xA2C70513,
-    0x9EA82C23,
+    0xA3070513,
+    0x9EA82E23,
     0x00000313,
-    0xA2C70793,
+    0xA3070793,
     0x00030863,
     0x00002783,
     0x08F52423,
-    0xA2C70793,
+    0xA3070793,
     0x487D43D8,
     0x4663557D,
     0x8D6304E8,
@@ -671,7 +674,7 @@ uint32_t xheep_firmware_section2[] = {
     0xCC52CE4E,
     0x8BAAC266,
     0x0B138AAE,
-    0x4C059F8B,
+    0x4C059FCB,
     0x000B2483,
     0x40C0CC81,
     0x0884A983,
@@ -719,9 +722,9 @@ uint32_t xheep_firmware_section2[] = {
     0x8082157D
 };
 
-// Section 3: address 0x0000E800, size 399 bytes
+// Section 3: address 0x0000E800, size 403 bytes
 #define XHEEP_FIRMWARE_SECTION3_ADDR 0x0000E800
-#define XHEEP_FIRMWARE_SECTION3_SIZE 399
+#define XHEEP_FIRMWARE_SECTION3_SIZE 403
 uint32_t xheep_firmware_section3[] = {
     0x4156544D,
     0x6176204C,
@@ -792,18 +795,18 @@ uint32_t xheep_firmware_section3[] = {
     0x746E756F,
     0x64657265,
     0x0000000A,
-    0x00000922,
-    0x00000922,
-    0x0000092A,
-    0x00000932,
-    0x00000918,
-    0x0000091A,
-    0x00000918,
-    0x0000091A,
-    0x00000918,
-    0x00000918,
-    0x00000918,
-    0x0000093A,
+    0x0000092E,
+    0x0000092E,
+    0x00000936,
+    0x0000093E,
+    0x00000924,
+    0x00000926,
+    0x00000924,
+    0x00000926,
+    0x00000924,
+    0x00000924,
+    0x00000924,
+    0x00000946,
     0x74666F53,
     0x65726177,
     0x51524920,
@@ -820,13 +823,14 @@ uint32_t xheep_firmware_section3[] = {
     0x6C6C6548,
     0x7266206F,
     0x41206D6F,
-    0x202C4250,
-    0x65482D58,
-    0x00007065
+    0x62204250,
+    0x2D582079,
+    0x70656548,
+    0x00003020
 };
 
-// Section 4: address 0x0000E990, size 96 bytes
-#define XHEEP_FIRMWARE_SECTION4_ADDR 0x0000E990
+// Section 4: address 0x0000E994, size 96 bytes
+#define XHEEP_FIRMWARE_SECTION4_ADDR 0x0000E994
 #define XHEEP_FIRMWARE_SECTION4_SIZE 96
 uint32_t xheep_firmware_section4[] = {
     0x00000000,
@@ -855,28 +859,28 @@ uint32_t xheep_firmware_section4[] = {
     0x00000000
 };
 
-// Section 5: address 0x0000E9F0, size 4 bytes
-#define XHEEP_FIRMWARE_SECTION5_ADDR 0x0000E9F0
+// Section 5: address 0x0000E9F4, size 4 bytes
+#define XHEEP_FIRMWARE_SECTION5_ADDR 0x0000E9F4
 #define XHEEP_FIRMWARE_SECTION5_SIZE 4
 uint32_t xheep_firmware_section5[] = {
-    0x0000E990
+    0x0000E994
 };
 
 // Section information structure
-typedef struct {
+typedef struct xheep_firmware_fw_section {
     uint32_t addr;
     uint32_t size;
     const uint32_t *data;
-} fw_section_t;
+} xheep_firmware_fw_section_t;
 
 #define XHEEP_FIRMWARE_NUM_SECTIONS 6
-const fw_section_t xheep_firmware_sections[] = {
+const xheep_firmware_fw_section_t xheep_firmware_sections[] = {
     {0x00000000, 128, xheep_firmware_section0},
     {0x00000180, 106, xheep_firmware_section1},
-    {0x000001EC, 2524, xheep_firmware_section2},
-    {0x0000E800, 399, xheep_firmware_section3},
-    {0x0000E990, 96, xheep_firmware_section4},
-    {0x0000E9F0, 4, xheep_firmware_section5}
+    {0x000001EC, 2536, xheep_firmware_section2},
+    {0x0000E800, 403, xheep_firmware_section3},
+    {0x0000E994, 96, xheep_firmware_section4},
+    {0x0000E9F4, 4, xheep_firmware_section5}
 };
 
 #endif // XHEEP_FIRMWARE_H_
