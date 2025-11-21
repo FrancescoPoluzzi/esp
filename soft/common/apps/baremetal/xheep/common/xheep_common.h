@@ -10,7 +10,7 @@
 #define XHEEP_FW_ENTRY_POINT 0x180
 
 /* One shared drop location inside X-HEEP RAM for the message */
-#define XHEEP_SHARED_STR_OFFSET     0x0000FA00
+#define XHEEP_SHARED_STR_OFFSET     0x0000EA00
 #define XHEEP_SHARED_STR_MAX         128u
 
 #define XHEEP_SOC_CTRL_WRITE_OFFSET    0x0000FF00
