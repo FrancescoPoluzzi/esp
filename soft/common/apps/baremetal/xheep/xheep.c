@@ -16,17 +16,20 @@
 #define TWO_XHEEP_INSTANCES 0
 
 // PLIC (Platform-Level Interrupt Controller) definitions
-#define PLIC_ADDR          0x6c000000
-#define PLIC_IP_OFFSET     0x1000      // Interrupt pending register
-#define PLIC_INTACK_OFFSET 0x200004    // Interrupt acknowledge register
+#define PLIC_ADDR                   0x6c000000
+#define PLIC_PENDING_OFFSET         0x1000      // Interrupt pending register
+#define PLIC_ENABLE_OFFSET          0x2000      // Enable bits for hart 0 (machine mode)
+#define PLIC_THRESHOLD_OFFSET       0x200000
+#define PLIC_CLAIM_COMPLETE_OFFSET  0x200004
 
-// X-HEEP IRQ number (from socmap.vhd: xheep_0_pirq = 5)
-#define XHEEP_IRQ 5
+// PLIC source ID assigned to X-HEEP (see riscv.dts: interrupts = <6>)
+#define XHEEP_IRQ_ID 6
+#define XHEEP_IRQ_MASK (1u << XHEEP_IRQ_ID)
 
 #if TWO_XHEEP_INSTANCES
     #define XHEEP_1_BASE_ADDR 0x60500000u
-    // TODO: Define XHEEP_1_IRQ when second instance is configured
-    #define XHEEP_1_IRQ 6  // Placeholder - verify actual IRQ assignment
+    #define XHEEP_1_IRQ_ID 7  // Placeholder - update when the second instance is mapped
+    #define XHEEP_1_IRQ_MASK (1u << XHEEP_1_IRQ_ID)
     #include "xheep1_firmware.h"
 #endif
 
@@ -38,6 +41,18 @@ int main(int argc, char **argv)
     // Setup PLIC device structure for interrupt polling
     struct esp_device plic_dev;
     plic_dev.addr = PLIC_ADDR;
+    // Configure priority (>0) and enable bit for X-HEEP IRQ so claim/complete works
+    iowrite32(&plic_dev, XHEEP_IRQ_ID * sizeof(uint32_t), 1);
+    uint32_t enable_bits = ioread32(&plic_dev, PLIC_ENABLE_OFFSET);
+    enable_bits |= XHEEP_IRQ_MASK;
+    iowrite32(&plic_dev, PLIC_ENABLE_OFFSET, enable_bits);
+    iowrite32(&plic_dev, PLIC_THRESHOLD_OFFSET, 0);
+#if TWO_XHEEP_INSTANCES
+    iowrite32(&plic_dev, XHEEP_1_IRQ_ID * sizeof(uint32_t), 1);
+    enable_bits = ioread32(&plic_dev, PLIC_ENABLE_OFFSET);
+    enable_bits |= XHEEP_1_IRQ_MASK;
+    iowrite32(&plic_dev, PLIC_ENABLE_OFFSET, enable_bits);
+#endif
 
     printf("Zeroing out buffers....\n");
     volatile char *q_8000 = (volatile char *)(uintptr_t)(MEMORY_BASE_ADDR + XHEEP_SHARED_STR_ADDR);
@@ -117,12 +132,11 @@ int main(int argc, char **argv)
         *(volatile unsigned *)(uintptr_t)(XHEEP_0_BASE_ADDR + XHEEP_BOOT_EXIT_LOOP_ADDR));
     printf("[DEBUG] Boot ROM should now jump to firmware at 0x%03x (.__boot_address)\n", XHEEP_FW_ENTRY_POINT);
 
-    // /* 9) Poll PLIC interrupt pending register for X-HEEP completion */
-    // printf("[DEBUG] Polling PLIC for X-HEEP interrupt (IRQ %d)...\n", XHEEP_IRQ);
-    // while ((ioread32(&plic_dev, PLIC_IP_OFFSET) & (1 << XHEEP_IRQ)) == 0) {
-    //     // Busy-wait for X-HEEP to signal completion via interrupt
-    // }
-    // printf("[DEBUG] X-HEEP interrupt detected! Firmware execution complete.\n");
+    /* 9) Poll PLIC interrupt pending register for X-HEEP completion */
+    printf("[DEBUG] Polling PLIC for X-HEEP interrupt (source ID %d)...\n", XHEEP_IRQ_ID);
+    while ((ioread32(&plic_dev, PLIC_PENDING_OFFSET) & XHEEP_IRQ_MASK) == 0);
+    printf("[DEBUG] X-HEEP interrupt detected! Firmware execution complete.\n");
+    uint32_t claimed_irq = ioread32(&plic_dev, PLIC_CLAIM_COMPLETE_OFFSET);
 
     /* 10) Read back the string from X-HEEP RAM and print it */
     printf("[DEBUG] Reading string from X-HEEP shared memory at 0x%08x...\n", 
@@ -132,14 +146,14 @@ int main(int argc, char **argv)
     printf("[DEBUG] Polling for X-HEEP to write string...\n");
     const unsigned max_spin = 2u; 
     unsigned spins = 0;
-    while (/*p[0] == '\0' &&*/ spins < max_spin) {
+    while (p[0] == '\0' && spins < max_spin) {
         spins++;
         /* Small delay between polls to give X-HEEP time */
         for (volatile unsigned d = 0; d < 100; d++);
     }
-    // if (p[0] == '\0') {
-    //     printf("[WARN] Shared string still empty after timeout\n");
-    // }
+    if (p[0] == '\0') {
+        printf("[WARN] Shared string still empty after timeout\n");
+    }
     unsigned i = 0;
     printf("[DEBUG] Reading characters...\n");
     for (; i + 1 < XHEEP_SHARED_STR_MAX; ++i) {
@@ -147,7 +161,7 @@ int main(int argc, char **argv)
         buf[i] = c;
         if (c == '\0') break;
     }
-    // if (i + 1 >= XHEEP_SHARED_STR_MAX) buf[XHEEP_SHARED_STR_MAX - 1] = '\0';
+    if (i + 1 >= XHEEP_SHARED_STR_MAX) buf[XHEEP_SHARED_STR_MAX - 1] = '\0';
 
     printf("[DEBUG] String read complete (%u bytes)\n", i);
     printf("X-HEEP 0 says from APB: %s\n", buf);
@@ -160,16 +174,16 @@ int main(int argc, char **argv)
     for (j = 0 ; j + 1 < XHEEP_SHARED_STR_MAX; ++j) {
         char c = q_8000[j];
         buf_axi[j] = c;
-        // if (c == '\0') break;
+        if (c == '\0') break;
     }
-    // if (j + 1 >= XHEEP_SHARED_STR_MAX) buf_axi[XHEEP_SHARED_STR_MAX - 1] = '\0';
+    if (j + 1 >= XHEEP_SHARED_STR_MAX) buf_axi[XHEEP_SHARED_STR_MAX - 1] = '\0';
 
     printf("[DEBUG] AXI string read complete (%u bytes)\n", j);
     printf("X-HEEP 0 says from AXI: %s\n", buf_axi);
 
-    // /* 12) Acknowledge the interrupt in PLIC */
-    // printf("[DEBUG] Acknowledging X-HEEP interrupt...\n");
-    // iowrite32(&plic_dev, PLIC_INTACK_OFFSET, XHEEP_IRQ);
+    /* 12) Acknowledge the interrupt in PLIC */
+    printf("[DEBUG] Acknowledging X-HEEP interrupt...\n");
+    iowrite32(&plic_dev, PLIC_CLAIM_COMPLETE_OFFSET, claimed_irq);
 
 #if TWO_XHEEP_INSTANCES
 
@@ -210,11 +224,11 @@ int main(int argc, char **argv)
     printf("[DEBUG] Boot ROM should now jump to firmware at 0x%03x (.__boot_address)\n", XHEEP_FW_ENTRY_POINT);
 
     /* 9) Poll PLIC interrupt pending register for X-HEEP 1 completion */
-    printf("[DEBUG] Polling PLIC for X-HEEP 1 interrupt (IRQ %d)...\n", XHEEP_1_IRQ);
-    while ((ioread32(&plic_dev, PLIC_IP_OFFSET) & (1 << XHEEP_1_IRQ)) == 0) {
-        // Busy-wait for X-HEEP 1 to signal completion via interrupt
-    }
+    printf("[DEBUG] Polling PLIC for X-HEEP 1 interrupt (source ID %d)...\n", XHEEP_1_IRQ_ID);
+    while ((ioread32(&plic_dev, PLIC_PENDING_OFFSET) & XHEEP_1_IRQ_MASK) == 0)
+        ;
     printf("[DEBUG] X-HEEP 1 interrupt detected! Firmware execution complete.\n");
+    uint32_t claimed_irq1 = ioread32(&plic_dev, PLIC_CLAIM_COMPLETE_OFFSET);
 
     /* 10) Read back the string from X-HEEP RAM and print it */
     printf("[DEBUG] Reading string from X-HEEP shared memory at 0x%08x...\n", 
@@ -259,7 +273,7 @@ int main(int argc, char **argv)
 
     /* 12) Acknowledge the interrupt in PLIC for X-HEEP 1 */
     printf("[DEBUG] Acknowledging X-HEEP 1 interrupt...\n");
-    iowrite32(&plic_dev, PLIC_INTACK_OFFSET, XHEEP_1_IRQ);
+    iowrite32(&plic_dev, PLIC_CLAIM_COMPLETE_OFFSET, claimed_irq1);
 
 #endif
 
