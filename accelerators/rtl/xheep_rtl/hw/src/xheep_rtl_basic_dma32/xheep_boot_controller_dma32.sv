@@ -1,4 +1,4 @@
-module xheep_boot_controller (
+module xheep_boot_controller_dma32 (
     input  logic        clk,
     input  logic        rst_n,
 

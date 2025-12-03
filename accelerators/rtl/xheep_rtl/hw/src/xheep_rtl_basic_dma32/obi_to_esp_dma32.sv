@@ -1,8 +1,8 @@
-module obi_to_esp_dma #(
+module obi_to_esp_dma32 #(
     parameter int unsigned DATA_WIDTH = 64
 )(
     input logic clk,
-    input logic rst,
+    input logic rst, // Active-low reset from ESP shell
 
     // ----------------------
     // OBI Interface (Slave)
@@ -160,8 +160,8 @@ module obi_to_esp_dma #(
     // -------------------------------------------------------------------------
     // Sequential Logic
     // -------------------------------------------------------------------------
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
+    always_ff @(posedge clk or negedge rst) begin
+        if (!rst) begin
             state_q     <= IDLE;
             addr_q      <= '0;
             wdata_q     <= '0;

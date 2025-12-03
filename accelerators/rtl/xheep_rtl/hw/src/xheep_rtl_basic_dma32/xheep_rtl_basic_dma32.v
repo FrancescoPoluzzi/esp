@@ -39,7 +39,7 @@ module xheep_rtl_basic_dma32 (
     // I/O Ports
     // ========================================================================
     input clk;
-    input rst; // Active High usually in ESP accelerators
+    input rst; // Active-low reset coming from ESP shell (kept name for ESP instantiation)
 
     // Configuration Interface
     input [31:0]  conf_info_boot_exit_loop;
@@ -83,7 +83,7 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
 
     logic x_heep_rst_n;
-    assign x_heep_rst_n = ~rst; 
+    assign x_heep_rst_n = rst; 
 
     // X-HEEP OBI Interfaces (Master Port of X-HEEP)
     obi_pkg::obi_req_t  heep_core_data_req;
@@ -191,7 +191,7 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
     // Boot Controller
     // ========================================================================
-    xheep_boot_controller u_boot_ctrl (
+    xheep_boot_controller_dma32 u_boot_ctrl (
         .clk                 (clk),
         .rst_n               (x_heep_rst_n),
         
@@ -224,11 +224,11 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
     // Bridge: OBI (X-HEEP Core) <-> DMA (ESP)
     // ========================================================================
-    obi_to_esp_dma #(
+    obi_to_esp_dma32 #(
         .DATA_WIDTH(32)
     ) u_bridge (
         .clk(clk),
-        .rst(rst),
+        .rst(x_heep_rst_n),
         
         // X-HEEP Side
         .obi_req_i(heep_core_data_req),

@@ -1,4 +1,4 @@
-module obi_to_esp_dma #(
+module obi_to_esp_dma64 #(
     parameter int unsigned DATA_WIDTH = 64
 )(
     input logic clk,
