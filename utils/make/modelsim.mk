@@ -38,6 +38,42 @@ VCOM = vcom -quiet -93 $(VCOMOPT)
 VLOG = vlog -sv -quiet $(VLOGOPT)
 VSIM = VSIMOPT='$(VSIMOPT)' TECHLIB=$(TECHLIB) ESP_ROOT=$(ESP_ROOT) vsim $(VSIMOPT)
 
+### X-HEEP VLOG ###
+XHEEP_TECH_DIR := $(ESP_ROOT)/tech/$(TECHLIB)/acc/xheep_rtl
+ifneq ($(wildcard $(XHEEP_TECH_DIR)),)
+XHEEP_ENABLED := 1
+XHEEP_LIB := xheep_lib
+XHEEP_LIB_OPT := -L $(XHEEP_LIB)
+XHEEP_VENDOR_BASE := $(firstword $(filter-out ,\
+	$(wildcard $(XHEEP_TECH_DIR)/x-heep) \
+	$(wildcard $(XHEEP_TECH_DIR)/vendor/xheep) \
+	$(wildcard $(XHEEP_TECH_DIR)/vendor/x-heep) \
+	$(wildcard $(ESP_ROOT)/accelerators/rtl/xheep_rtl/vendor/xheep)))
+XHEEP_FILELIST_SV := $(ESP_ROOT)/accelerators/rtl/xheep_rtl/xheep.sverilog
+XHEEP_FILELIST_V  := $(ESP_ROOT)/accelerators/rtl/xheep_rtl/xheep.verilog
+XHEEP_FILELIST_SV_ABS := $(RTL_CFG_BUILD)/xheep_modelsim_sv.f
+XHEEP_FILELIST_V_ABS  := $(RTL_CFG_BUILD)/xheep_modelsim_v.f
+XHEEP_FLISTS_ABS := $(filter-out ,$(XHEEP_FILELIST_SV_ABS) $(XHEEP_FILELIST_V_ABS))
+XHEEP_PKG_DIR := $(XHEEP_TECH_DIR)/vlog_incdir
+XHEEP_VENDOR_PKG_DIR := $(ESP_ROOT)/accelerators/rtl/xheep_rtl/vlog_incdir
+XHEEP_PKG_SRCS := $(shell if test -d $(XHEEP_PKG_DIR); then find $(XHEEP_PKG_DIR) -name "*.sv" | sort; elif test -d $(XHEEP_VENDOR_PKG_DIR); then find $(XHEEP_VENDOR_PKG_DIR) -name "*.sv" | sort; fi)
+XHEEP_INCDIRS := $(XHEEP_PKG_DIR) $(XHEEP_VENDOR_PKG_DIR) \
+	$(XHEEP_VENDOR_BASE)/hw/vendor/openhwgroup_cv32e20/vendor/lowrisc_ip/dv/sv/dv_utils \
+	$(XHEEP_VENDOR_BASE)/hw/vendor/lowrisc_opentitan/hw/ip/prim/rtl \
+	$(XHEEP_VENDOR_BASE)/hw/vendor/pulp_platform_common_cells/include \
+	$(XHEEP_VENDOR_BASE)/hw/vendor/pulp_platform_register_interface/include \
+	$(XHEEP_VENDOR_BASE)/hw/vendor/openhwgroup_cv32e20/rtl \
+	$(XHEEP_VENDOR_BASE)/hw/ip/dma/data \
+	$(XHEEP_VENDOR_BASE)/tb
+INCDIR_XHEEP := $(foreach dir,$(filter-out ,$(XHEEP_INCDIRS)),+incdir+$(dir))
+XHEEP_DEFS += +define+MODELSIM
+XHEEP_VLOGOPT += -override_timescale 1ns/1ps
+
+# Keep vendor copies out of the generic compile loop to avoid oversized command lines.
+SIM_VLOG_SRCS := $(filter-out $(XHEEP_TECH_DIR)/vendor/% $(XHEEP_TECH_DIR)/x-heep/%,$(SIM_VLOG_SRCS))
+VSIMOPT += $(XHEEP_LIB_OPT)
+endif
+
 
 ### Xilinx Simulation libs targets ###
 $(ESP_ROOT)/.cache/modelsim/xilinx_lib:
@@ -59,6 +95,40 @@ $(ESP_ROOT)/.cache/modelsim/xilinx_lib:
 	sed -i '/\[msg_system\]/a suppress = 8780,8891,1491,12110\nwarning = 8891' modelsim.ini; \
 	cd ../;
 
+ifdef XHEEP_ENABLED
+$(XHEEP_FILELIST_SV_ABS): $(XHEEP_FILELIST_SV) | $(RTL_CFG_BUILD)
+	@if test -z "$(XHEEP_VENDOR_BASE)"; then \
+		echo "ERROR: Cannot locate X-HEEP sources for $(TECHLIB)"; exit 1; \
+	fi
+	@sed 's#^x-heep/#$(XHEEP_VENDOR_BASE)/#' $< > $@
+
+$(XHEEP_FILELIST_V_ABS): $(XHEEP_FILELIST_V) | $(RTL_CFG_BUILD)
+	@if test -z "$(XHEEP_VENDOR_BASE)"; then \
+		echo "ERROR: Cannot locate X-HEEP sources for $(TECHLIB)"; exit 1; \
+	fi
+	@sed 's#^x-heep/#$(XHEEP_VENDOR_BASE)/#' $< > $@
+
+xheep-lib: modelsim/modelsim.ini $(RTL_CFG_BUILD)/check_all_srcs.old $(PKG_LIST) $(XHEEP_FLISTS_ABS)
+	@cd modelsim; \
+	if ! test -e $(XHEEP_LIB); then \
+		vlib -type directory $(XHEEP_LIB); \
+		$(SPACING)vmap $(XHEEP_LIB) $(XHEEP_LIB); \
+	fi; \
+	if test -n "$(XHEEP_PKG_SRCS)"; then \
+		echo $(SPACES)"### Compile X-HEEP package/include files ###"; \
+		for rtl in $(XHEEP_PKG_SRCS); do \
+			echo $(SPACES)"$(VLOG) -work $(XHEEP_LIB) $$rtl"; \
+			$(VLOG) -work $(XHEEP_LIB) $(XHEEP_DEFS) $(XHEEP_VLOGOPT) $(INCDIR_XHEEP) $$rtl || exit 1; \
+		done; \
+	fi; \
+	for fl in $(XHEEP_FLISTS_ABS); do \
+		if test -s $$fl; then \
+			echo $(SPACES)"$(VLOG) -work $(XHEEP_LIB) -f $$fl"; \
+			$(VLOG) -work $(XHEEP_LIB) $(XHEEP_DEFS) $(XHEEP_VLOGOPT) $(INCDIR_XHEEP) -f $$fl || exit 1; \
+		fi; \
+	done
+endif
+
 modelsim/modelsim.ini: $(ESP_ROOT)/.cache/modelsim/xilinx_lib
 	$(QUIET_MAKE)mkdir -p modelsim
 	@cp $(ESP_ROOT)/.cache/modelsim/modelsim.ini $@
@@ -69,6 +139,9 @@ modelsim/modelsim.ini: $(ESP_ROOT)/.cache/modelsim/xilinx_lib
 # makefile for future compilation and all components are properly bound in simulation.
 # Please keep 2> /dev/null until the bug is fixed with a newer Modelsim release.
 modelsim/vsim.mk: modelsim/modelsim.ini $(RTL_CFG_BUILD)/check_all_srcs.old $(PKG_LIST)
+ifdef XHEEP_ENABLED
+modelsim/vsim.mk: xheep-lib
+endif
 	@cd modelsim; \
 	if ! test -e profpga; then \
 		vlib -type directory profpga; \
@@ -85,7 +158,7 @@ ifneq ($(findstring profpga, $(BOARD)),)
 	for ver in $(VERILOG_PROFPGA); do \
 		rtl=$(PROFPGA)/hdl/$$ver; \
 		echo $(SPACES)"$(VLOG) -work profpga"; \
-		$(VLOG) -work profpga $$rtl || exit; \
+		$(VLOG) -work profpga $(XHEEP_LIB_OPT) $$rtl || exit; \
 	done;
 endif
 	@cd modelsim; \
@@ -106,7 +179,7 @@ endif
 	echo $(SPACES)"### Compile Verilog source files ###"; \
 		for rtl in $(SIM_VLOG_SRCS); do \
 			echo $(SPACES)"$(VLOG) -work work $$rtl"; \
-			$(VLOG) -work work $$rtl || exit; \
+			$(VLOG) -work work $(XHEEP_LIB_OPT) $$rtl || exit; \
 		done;
 ifneq ("$(wildcard $(ESP_ROOT)/rtl/peripherals/bsg/.git)", "")
 	@echo $(SPACES)"### Compile BSG Verilog source files ###";
