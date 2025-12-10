@@ -60,4 +60,4 @@
 [submodule "accelerators/rtl/xheep_rtl/vendor/xheep"]
 	path = accelerators/rtl/xheep_rtl/vendor/xheep
 	url = https://github.com/FrancescoPoluzzi/x-heep.git
-	branch = esp-heep-native-acc
+	branch = esp-heep
