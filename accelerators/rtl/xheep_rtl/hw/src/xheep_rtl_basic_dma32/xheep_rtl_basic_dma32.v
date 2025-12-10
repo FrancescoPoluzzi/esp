@@ -39,7 +39,7 @@ module xheep_rtl_basic_dma32 (
     // I/O Ports
     // ========================================================================
     input clk;
-    input rst; // Active-low reset coming from ESP shell (kept name for ESP instantiation)
+    input rst;
 
     // Configuration Interface
     input [31:0]  conf_info_boot_exit_loop;
@@ -83,7 +83,10 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
 
     logic x_heep_rst_n;
-    assign x_heep_rst_n = rst; 
+
+    // X-HEEP reset gating
+    logic heep_hold_reset = 1'b0;
+    assign x_heep_rst_n = rst | heep_hold_reset;
 
     // X-HEEP OBI Interfaces (Master Port of X-HEEP)
     obi_pkg::obi_req_t  heep_core_data_req;
@@ -113,10 +116,6 @@ module xheep_rtl_basic_dma32 (
     logic [31:0] boot_dma_read_ctrl_length;
     logic [2:0]  boot_dma_read_ctrl_size;
     logic        boot_dma_read_chnl_ready;
-
-    // ========================================================================
-    // X-HEEP Instance
-    // ========================================================================
     
     // Tie-offs for XIF
     if_xif xif_compressed_if();
@@ -136,6 +135,9 @@ module xheep_rtl_basic_dma32 (
     assign xif_mem_result_if.mem_result       = '0;
     assign xif_result_if.result_ready         = 1'b0;
 
+    // ========================================================================
+    // X-HEEP Instance
+    // ========================================================================
     core_v_mini_mcu #(
         .EXT_XBAR_NMASTER(1)
     ) u_xheep (
@@ -193,13 +195,14 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
     xheep_boot_controller_dma32 u_boot_ctrl (
         .clk                 (clk),
-        .rst_n               (x_heep_rst_n),
+        .rst_n               (rst),
         
         // Triggers from ESP Config
         .trigger_fetch       (conf_info_boot_fetch_code[0]),
         .fetch_addr_byte     (conf_info_boot_fetch_code_addr),
         .fetch_size_words    (conf_info_code_size_words),
         .trigger_boot_exit   (conf_info_boot_exit_loop[0]),
+        .conf_done           (conf_done),
         
         // Boot DMA Read Control (Master)
         .dma_read_ctrl_valid       (boot_dma_read_ctrl_valid),
@@ -218,8 +221,15 @@ module xheep_rtl_basic_dma32 (
         .obi_resp_i          (boot_obi_resp),
         
         .busy                (boot_ctrl_busy),
-        .fetch_done_o        (boot_ctrl_fetch_done) // Connected new output
+        .fetch_done_o        (boot_ctrl_fetch_done)
     );
+
+    // Remember that the firmware fetch has completed once to preserve X-HEEP memory
+    always_ff @(posedge clk) begin
+        if (boot_ctrl_fetch_done) begin
+            heep_hold_reset <= 1'b1;
+        end
+    end
 
     // ========================================================================
     // Bridge: OBI (X-HEEP Core) <-> DMA (ESP)
@@ -228,7 +238,7 @@ module xheep_rtl_basic_dma32 (
         .DATA_WIDTH(32)
     ) u_bridge (
         .clk(clk),
-        .rst(x_heep_rst_n),
+        .rst(rst),
         
         // X-HEEP Side
         .obi_req_i(heep_core_data_req),
@@ -284,7 +294,6 @@ module xheep_rtl_basic_dma32 (
     // ========================================================================
     
     // acc_done is high if X-HEEP finishes executing OR if the Boot Fetch logic completes.
-    // The ESP driver will see the interrupt in both cases.
     assign acc_done = heep_exit_valid | boot_ctrl_fetch_done;
     
     assign debug = {29'b0, boot_ctrl_fetch_done, boot_ctrl_busy, heep_exit_valid};
