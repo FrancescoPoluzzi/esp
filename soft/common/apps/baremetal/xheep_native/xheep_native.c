@@ -36,6 +36,23 @@ static unsigned nchunk_for_size(size_t bytes)
     return (bytes + CHUNK_SIZE - 1) >> CHUNK_SHIFT;
 }
 
+/* Simple substring check to avoid pulling in libc strstr (not available in baremetal) */
+static bool contains_str(const char *haystack, const char *needle)
+{
+    if (!*needle) return true;
+    for (const char *h = haystack; *h; ++h) {
+        if (*h != *needle) continue;
+        const char *h_it = h;
+        const char *n_it = needle;
+        while (*h_it && *n_it && *h_it == *n_it) {
+            ++h_it;
+            ++n_it;
+        }
+        if (*n_it == '\0') return true;
+    }
+    return false;
+}
+
 static void flatten_firmware(uint8_t *buffer, size_t buffer_size)
 {
     for (unsigned s = 0; s < XHEEP_FIRMWARE_NUM_SECTIONS; ++s) {
@@ -121,7 +138,7 @@ int main(int argc, char **argv)
     printf("[DBG] fw_buffer @ 0x%08lx (size %d)\n", (unsigned long)fw_buffer, fw_buffer_size);
 
     // 3. Assign Output Buffer
-    free_mem_ptr = (free_mem_ptr + 7u) & ~7u; 
+    free_mem_ptr = (free_mem_ptr + 7u) & ~7u; // force 8-byte alignment
     uint8_t *out_buffer = (uint8_t *)free_mem_ptr;
     free_mem_ptr += out_buffer_size;
     printf("[DBG] out_buffer @ 0x%08lx (size %d)\n", (unsigned long)out_buffer, out_buffer_size);
@@ -159,6 +176,9 @@ int main(int argc, char **argv)
     /* ------------------------------------------------------------- */
     /* Logic Execution                                               */
     /* ------------------------------------------------------------- */
+
+    /* Clear output region */
+    memset(out_buffer, 0, out_buffer_size);
 
     /* Flatten firmware */
     flatten_firmware(fw_buffer, fw_buffer_size);
@@ -215,7 +235,7 @@ int main(int argc, char **argv)
     /* Read back result */
     volatile char *shared_str = (char *)out_buffer + XHEEP_SHARED_STR_ADDR;
     printf("X-HEEP message: \"%s\"\n", shared_str);
-    int status = (strstr((char *)shared_str, "Hello from X-Heep Native tile") != NULL) ? 0 : 1;
+    int status = contains_str((const char *)shared_str, "Hello from X-Heep Native tile") ? 0 : 1;
     if (status)
         printf("FAIL: Expected string not found\n");
     else
