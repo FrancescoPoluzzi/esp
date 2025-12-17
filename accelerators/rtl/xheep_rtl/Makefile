@@ -1,6 +1,6 @@
 ACCEL_NAME := xheep
 
-.PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-sverilog update-$(ACCEL_NAME)-verilog update-$(ACCEL_NAME)-sverilog-vivado update-$(ACCEL_NAME)-verilog-vivado generate-fpga-ips
+.PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-sverilog update-$(ACCEL_NAME)-verilog update-$(ACCEL_NAME)-sverilog-vivado update-$(ACCEL_NAME)-verilog-vivado
 
 ESP_TOP ?= $(abspath $(CURDIR)/../../..)
 ACCEL_PATH := accelerators/rtl/xheep_rtl
@@ -37,7 +37,6 @@ $(ACCEL_NAME)-vivado:
 	$(MAKE) vivado-setup
 	$(MAKE) update-$(ACCEL_NAME)-sverilog-vivado
 	$(MAKE) update-$(ACCEL_NAME)-verilog-vivado
-	$(MAKE) generate-fpga-ips
 	$(MAKE) sw
 
 mcu-gen:
@@ -131,10 +130,3 @@ sw:
 	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
 	cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
 	cp -r $(XH_ROOT)/sw/applications/$(XHEEP_APP)/common/. $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
-
-# Generate FPGA-specific Xilinx Block RAM IP cores
-generate-fpga-ips:
-	@echo "[$(ACCEL_NAME)] Generating Xilinx Block RAM IP cores"
-	@mkdir -p $(FPGA_OUT)
-	@cp $(XH_ROOT)/hw/fpga/scripts/generate_sram.tcl $(FPGA_OUT)/generate_$(ACCEL_NAME)_ips.tcl
-	@echo "[$(ACCEL_NAME)] Generated IP script at $(FPGA_OUT)/generate_$(ACCEL_NAME)_ips.tcl"
