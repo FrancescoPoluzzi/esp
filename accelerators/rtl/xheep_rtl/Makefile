@@ -26,6 +26,9 @@ FPGA_OUT := $(OUT_DIR)/fpga
 
 RISCV ?= /home/francesco/tools/riscv
 
+ESP_LINUX_APP ?= hello_xheep
+XHEEP_APP ?= esp_app_native
+
 # Run the X-HEEP generator, then update filelists
 hw: mcu-gen questa update-$(ACCEL_NAME)-sverilog update-$(ACCEL_NAME)-verilog
 
@@ -104,7 +107,7 @@ update-$(ACCEL_NAME)-verilog-vivado:
 
 sw:
 	rm -rf $(XH_ROOT)/sw/build
-	$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) ARCH=rv32imc app PROJECT=esp_app_native LINKER=on_chip TARGET=sim
+	$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) ARCH=rv32imc app PROJECT=$(XHEEP_APP) LINKER=on_chip TARGET=sim
 	mkdir -p $(XH_ROOT)/sw/generated
 	python3 $(XH_ROOT)/util/hex_to_c.py \
 		$(XH_ROOT)/sw/generated/$(ACCEL_NAME)_firmware.h \
@@ -115,13 +118,19 @@ sw:
 	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native
 	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native
 	cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native
-	cp -r $(XH_ROOT)/sw/applications/esp_app_native/common/. $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native
+	cp -r $(XH_ROOT)/sw/applications/$(XHEEP_APP)/common/. $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native
 
 	cp $(XH_ROOT)/sw/generated/$(ACCEL_NAME)_firmware.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
 	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
 	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
 	cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
-	cp -r $(XH_ROOT)/sw/applications/esp_app_native/common/. $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+	cp -r $(XH_ROOT)/sw/applications/$(XHEEP_APP)/common/. $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t
+
+	cp $(XH_ROOT)/sw/generated/$(ACCEL_NAME)_firmware.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
+	cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
+	cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
+	cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
+	cp -r $(XH_ROOT)/sw/applications/$(XHEEP_APP)/common/. $(ESP_TOP)/accelerators/rtl/xheep_rtl/sw/linux/app/$(ESP_LINUX_APP)
 
 # Generate FPGA-specific Xilinx Block RAM IP cores
 generate-fpga-ips:
