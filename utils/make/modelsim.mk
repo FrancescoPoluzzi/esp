@@ -31,20 +31,11 @@ VSIMOPT += -uvmcontrol=disable -suppress 3009,2685,2718 -t fs
 VSIMOPT += +notimingchecks
 VSIMOPT += $(SIMTOP) $(EXTRA_SIMTOP)
 VSIMOPT += -modelsimini modelsim.ini
-VSIMOPT += -voptargs=+acc
 
-ifdef RTL_CFG_BUILD
 SIM_LIBDIR ?= $(abspath $(RTL_CFG_BUILD)/sim_libs)
-else
-SIM_LIBDIR ?= $(abspath modelsim/sim_libs)
-endif
 
 ACC_TECH_ROOT := $(ESP_ROOT)/tech/$(TECHLIB)/acc
-ACC_RTL_LIST ?= $(RTL_ACC)
-ifeq ($(strip $(ACC_RTL_LIST)),)
-ACC_RTL_LIST := $(filter-out common,$(notdir $(wildcard $(ACC_TECH_ROOT)/*)))
-endif
-ACC_TECH_PRESENT := $(filter-out common,$(filter $(notdir $(wildcard $(ACC_TECH_ROOT)/*)),$(ACC_RTL_LIST)))
+ACC_TECH_PRESENT := $(filter-out common,$(filter $(notdir $(wildcard $(ACC_TECH_ROOT)/*)),$(RTL_ACC)))
 ACC_LIBS := $(addsuffix _lib,$(ACC_TECH_PRESENT))
 ACC_LIB_OPT := $(foreach lib,$(ACC_LIBS),-L $(lib))
 ACC_MODELSIM_DEFS ?= +define+MODELSIM
@@ -222,7 +213,7 @@ ifneq ($(findstring profpga, $(BOARD)),)
 	for ver in $(VERILOG_PROFPGA); do \
 		rtl=$(PROFPGA)/hdl/$$ver; \
 		echo $(SPACES)"$(VLOG) -work profpga"; \
-		$(VLOG) -work profpga $(ACC_LIB_OPT) $$rtl || exit; \
+		$(VLOG) -work profpga $$rtl || exit; \
 	done;
 endif
 	@cd modelsim; \
