@@ -88,13 +88,12 @@ module xheep_rtl_basic_dma64 (
     logic heep_hold_reset = 1'b0;
     assign x_heep_rst_n = rst | heep_hold_reset;
 
-    // X-HEEP OBI Interfaces (Master Port of X-HEEP)
+    // X-HEEP OBI Interfaces
     obi_pkg::obi_req_t  heep_core_data_req;
     obi_pkg::obi_resp_t heep_core_data_resp;
-    
-    // Boot Controller OBI Interface (Master Port of Controller -> Slave Port of X-HEEP)
     obi_pkg::obi_req_t  boot_obi_req;
     obi_pkg::obi_resp_t boot_obi_resp;
+    obi_pkg::obi_req_t  final_slave_obi_req;
 
     // X-HEEP Status
     logic heep_exit_valid;
@@ -108,7 +107,16 @@ module xheep_rtl_basic_dma64 (
     logic [31:0] bridge_dma_read_ctrl_index;
     logic [31:0] bridge_dma_read_ctrl_length;
     logic [2:0]  bridge_dma_read_ctrl_size;
+    logic [5:0]  bridge_dma_read_ctrl_user;
     logic        bridge_dma_read_chnl_ready;
+    
+    logic        bridge_dma_write_ctrl_valid;
+    logic [31:0] bridge_dma_write_ctrl_index;
+    logic [31:0] bridge_dma_write_ctrl_length;
+    logic [2:0]  bridge_dma_write_ctrl_size;
+    logic [5:0]  bridge_dma_write_ctrl_user;
+    logic        bridge_dma_write_chnl_valid;
+    logic [63:0] bridge_dma_write_chnl_data;
 
     // Boot Controller DMA Signals
     logic        boot_dma_read_ctrl_valid;
@@ -116,8 +124,12 @@ module xheep_rtl_basic_dma64 (
     logic [31:0] boot_dma_read_ctrl_length;
     logic [2:0]  boot_dma_read_ctrl_size;
     logic        boot_dma_read_chnl_ready;
+
+    // ========================================================================
+    // X-HEEP Instance
+    // ========================================================================
     
-    // Tie-offs for XIF
+    // Tie-offs
     if_xif xif_compressed_if();
     if_xif xif_issue_if();
     if_xif xif_commit_if();
@@ -135,17 +147,27 @@ module xheep_rtl_basic_dma64 (
     assign xif_mem_result_if.mem_result       = '0;
     assign xif_result_if.result_ready         = 1'b0;
 
-    // ========================================================================
-    // X-HEEP Instance
-    // ========================================================================
+    always_comb begin
+        if (boot_ctrl_busy) begin
+            final_slave_obi_req = boot_obi_req;
+        end else begin
+            // Default/Idle assignment
+            final_slave_obi_req.req   = 1'b0;
+            final_slave_obi_req.we    = 1'b0;
+            final_slave_obi_req.be    = 4'b0;
+            final_slave_obi_req.addr  = '0;
+            final_slave_obi_req.wdata = '0;
+        end
+    end
+
     core_v_mini_mcu #(
         .EXT_XBAR_NMASTER(1)
     ) u_xheep (
         .clk_i   (clk),
         .rst_ni  (x_heep_rst_n),
 
-        // External Slave Port: Connected to Boot Controller
-        .ext_xbar_master_req_i  (boot_obi_req),
+        // External Slave Port: Boot Controller
+        .ext_xbar_master_req_i  (final_slave_obi_req),
         .ext_xbar_master_resp_o (boot_obi_resp),
 
         .ext_ao_peripheral_slave_req_i ('0),
@@ -155,7 +177,6 @@ module xheep_rtl_basic_dma64 (
         .ext_core_data_req_o          (heep_core_data_req),
         .ext_core_data_resp_i         (heep_core_data_resp),
 
-        // Unused Ports
         .ext_core_instr_req_o         (), .ext_core_instr_resp_i        ('0),
         .ext_debug_master_req_o       (), .ext_debug_master_resp_i      ('0),
         .ext_dma_read_req_o           (), .ext_dma_read_resp_i          ('{default:'0}),
@@ -196,35 +217,30 @@ module xheep_rtl_basic_dma64 (
     xheep_boot_controller_dma64 u_boot_ctrl (
         .clk                 (clk),
         .rst_n               (rst),
-        
-        // Triggers from ESP Config
         .trigger_fetch       (conf_info_boot_fetch_code[0]),
         .fetch_addr_byte     (conf_info_boot_fetch_code_addr),
         .fetch_size_words    (conf_info_code_size_words),
         .trigger_boot_exit   (conf_info_boot_exit_loop[0]),
         .conf_done           (conf_done),
         
-        // Boot DMA Read Control (Master)
+        // Boot DMA Read (Master)
         .dma_read_ctrl_valid       (boot_dma_read_ctrl_valid),
         .dma_read_ctrl_ready       (dma_read_ctrl_ready && boot_ctrl_busy), 
         .dma_read_ctrl_data_index  (boot_dma_read_ctrl_index),
         .dma_read_ctrl_data_length (boot_dma_read_ctrl_length),
         .dma_read_ctrl_data_size   (boot_dma_read_ctrl_size),
         
-        // Boot DMA Read Channel (Slave)
+        // Boot DMA Read (Slave)
         .dma_read_chnl_valid       (dma_read_chnl_valid && boot_ctrl_busy),
         .dma_read_chnl_ready       (boot_dma_read_chnl_ready),
         .dma_read_chnl_data        (dma_read_chnl_data),
         
-        // OBI Master to X-HEEP
         .obi_req_o           (boot_obi_req),
         .obi_resp_i          (boot_obi_resp),
-        
         .busy                (boot_ctrl_busy),
         .fetch_done_o        (boot_ctrl_fetch_done)
     );
 
-    // Remember that the firmware fetch has completed once to preserve X-HEEP memory
     always_ff @(posedge clk) begin
         if (boot_ctrl_fetch_done) begin
             heep_hold_reset <= 1'b1;
@@ -250,54 +266,64 @@ module xheep_rtl_basic_dma64 (
         .dma_read_ctrl_data_index (bridge_dma_read_ctrl_index),
         .dma_read_ctrl_data_length(bridge_dma_read_ctrl_length),
         .dma_read_ctrl_data_size  (bridge_dma_read_ctrl_size),
+        .dma_read_ctrl_data_user  (bridge_dma_read_ctrl_user),
         
         .dma_write_ctrl_ready     (dma_write_ctrl_ready),
-        .dma_write_ctrl_valid     (dma_write_ctrl_valid),
-        .dma_write_ctrl_data_index(dma_write_ctrl_data_index),
-        .dma_write_ctrl_data_length(dma_write_ctrl_data_length),
-        .dma_write_ctrl_data_size (dma_write_ctrl_data_size),
+        .dma_write_ctrl_valid     (bridge_dma_write_ctrl_valid),
+        .dma_write_ctrl_data_index(bridge_dma_write_ctrl_index),
+        .dma_write_ctrl_data_length(bridge_dma_write_ctrl_length),
+        .dma_write_ctrl_data_size (bridge_dma_write_ctrl_size),
+        .dma_write_ctrl_data_user (bridge_dma_write_ctrl_user),
 
         // ESP DMA Data Channel Side
         .dma_read_chnl_valid      (dma_read_chnl_valid && !boot_ctrl_busy),
         .dma_read_chnl_ready      (bridge_dma_read_chnl_ready),
         .dma_read_chnl_data       (dma_read_chnl_data),
         
-        .dma_write_chnl_valid     (dma_write_chnl_valid),
+        .dma_write_chnl_valid     (bridge_dma_write_chnl_valid),
         .dma_write_chnl_ready     (dma_write_chnl_ready),
-        .dma_write_chnl_data      (dma_write_chnl_data)
+        .dma_write_chnl_data      (bridge_dma_write_chnl_data)
     );
 
     // ========================================================================
-    // Muxing: DMA Read Channel (Boot Controller vs Bridge)
+    // DMA Control & Data Muxing (Boot vs Bridge)
     // ========================================================================
-    
     always_comb begin
         if (boot_ctrl_busy) begin
-            // Boot Controller has priority/exclusivity
             dma_read_ctrl_valid       = boot_dma_read_ctrl_valid;
             dma_read_ctrl_data_index  = boot_dma_read_ctrl_index;
             dma_read_ctrl_data_length = boot_dma_read_ctrl_length;
             dma_read_ctrl_data_size   = boot_dma_read_ctrl_size;
-            dma_read_chnl_ready       = boot_dma_read_chnl_ready;
+            dma_read_ctrl_data_user   = '0; 
         end else begin
-            // X-HEEP Core via Bridge has control
             dma_read_ctrl_valid       = bridge_dma_read_ctrl_valid;
             dma_read_ctrl_data_index  = bridge_dma_read_ctrl_index;
             dma_read_ctrl_data_length = bridge_dma_read_ctrl_length;
             dma_read_ctrl_data_size   = bridge_dma_read_ctrl_size;
-            dma_read_chnl_ready       = bridge_dma_read_chnl_ready;
+            dma_read_ctrl_data_user   = bridge_dma_read_ctrl_user;
+        end
+        
+        if (boot_ctrl_busy) begin
+            dma_read_chnl_ready = boot_dma_read_chnl_ready;
+        end else begin
+            dma_read_chnl_ready = bridge_dma_read_chnl_ready;
         end
     end
+
+    assign dma_write_ctrl_valid       = bridge_dma_write_ctrl_valid;
+    assign dma_write_ctrl_data_index  = bridge_dma_write_ctrl_index;
+    assign dma_write_ctrl_data_length = bridge_dma_write_ctrl_length;
+    assign dma_write_ctrl_data_size   = bridge_dma_write_ctrl_size;
+    assign dma_write_ctrl_data_user   = bridge_dma_write_ctrl_user;
+    assign dma_write_chnl_valid       = bridge_dma_write_chnl_valid;
+    assign dma_write_chnl_data        = bridge_dma_write_chnl_data;
 
     // ========================================================================
     // Status & Debug
     // ========================================================================
     
-    // acc_done is high if X-HEEP finishes executing OR if the Boot Fetch logic completes.
     assign acc_done = heep_exit_valid | boot_ctrl_fetch_done;
     
     assign debug = {29'b0, boot_ctrl_fetch_done, boot_ctrl_busy, heep_exit_valid};
-    assign dma_read_ctrl_data_user  = '0;
-    assign dma_write_ctrl_data_user = '0;
 
 endmodule
