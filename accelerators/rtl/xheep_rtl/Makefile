@@ -51,58 +51,115 @@ vivado-setup:
 update-$(ACCEL_NAME)-sverilog:
 	@set -e; \
 	TCL="$(XH_ROOT)/$(MODELSIM_FILELIST)/edalize_build_rtl.tcl"; \
-	SV="$(VLOG_FILELIST)"; \
+	EDA="$(EDA_FILELIST)"; \
 	[ -f "$$TCL" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$TCL"; exit 1; }; \
-	t1="$$(mktemp)"; t2="$$(mktemp)"; \
-	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.sv$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
-	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" -v incdir="$(VLOG_INCDIRS)" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	[ -f "$$EDA" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$EDA"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; tinc="$$(mktemp)"; \
+	awk ' \
+		/^- / { inc=0 } \
+		/^[[:space:]]*is_include_file:[[:space:]]*true/ { inc=1 } \
+		/^[[:space:]]*name:[[:space:]]*/ { \
+			p=$$2; \
+			if (inc && p ~ /\.(sv|svh|v)$$/) { print p >> incout; next } \
+			if (!inc && p ~ /\.sv$$/) print p; \
+		} \
+	' incout="$$tinc" "$$EDA" > "$$t1"; \
+	mkdir -p "$(XHEEP_ROOT)/vlog_incdir"; \
+	while read p; do \
+		src="$(XH_ROOT)/$(MODELSIM_FILELIST)/$$p"; \
+		dst="$(XHEEP_ROOT)/vlog_incdir/$$(basename "$$p")"; \
+		if [ -f "$$src" ]; then cp -f -p "$$src" "$$dst"; fi; \
+	done < "$$tinc"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$SV" 2>/dev/null || true; } > "$$SV.new"; \
 	cat "$$t2" >> "$$SV.new"; \
 	mv "$$SV.new" "$$SV"; \
-	rm -f "$$t1" "$$t2"; \
-	echo "[$(ACCEL_NAME)] Updated $$SV from $$TCL"
+	rm -f "$$t1" "$$t2" "$$tinc"; \
+	echo "[$(ACCEL_NAME)] Updated $$SV from $$EDA"
 
 update-$(ACCEL_NAME)-verilog:
 	@set -e; \
-	TCL="$(XH_ROOT)/$(MODELSIM_FILELIST)/edalize_build_rtl.tcl"; \
+	EDA="$(EDA_FILELIST)"; \
 	VL="$(VLOG_VERILOG)"; \
-	[ -f "$$TCL" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$TCL"; exit 1; }; \
-	t1="$$(mktemp)"; t2="$$(mktemp)"; \
-	awk '/-work[ \t]+work/ { for (i=NF; i>0; i--) if ($$i ~ /\.v$$/) { print $$i; break } }' "$$TCL" > "$$t1"; \
-	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" -v incdir="$(VLOG_INCDIRS)" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	[ -f "$$EDA" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$EDA"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; tinc="$$(mktemp)"; \
+	awk ' \
+		/^- / { inc=0 } \
+		/^[[:space:]]*is_include_file:[[:space:]]*true/ { inc=1 } \
+		/^[[:space:]]*name:[[:space:]]*/ { \
+			p=$$2; \
+			if (inc && p ~ /\.(sv|svh|v)$$/) { print p >> incout; next } \
+			if (!inc && p ~ /\.v$$/) print p; \
+		} \
+	' incout="$$tinc" "$$EDA" > "$$t1"; \
+	mkdir -p "$(XHEEP_ROOT)/vlog_incdir"; \
+	while read p; do \
+		src="$(XH_ROOT)/$(MODELSIM_FILELIST)/$$p"; \
+		dst="$(XHEEP_ROOT)/vlog_incdir/$$(basename "$$p")"; \
+		if [ -f "$$src" ]; then cp -f -p "$$src" "$$dst"; fi; \
+	done < "$$tinc"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$VL" 2>/dev/null || true; } > "$$VL.new"; \
 	cat "$$t2" >> "$$VL.new"; \
 	mv "$$VL.new" "$$VL"; \
-	rm -f "$$t1" "$$t2"; \
-	echo "[$(ACCEL_NAME)] Updated $$VL from $$TCL"
+	rm -f "$$t1" "$$t2" "$$tinc"; \
+	echo "[$(ACCEL_NAME)] Updated $$VL from $$EDA"
 
 update-$(ACCEL_NAME)-sverilog-vivado:
 	@set -e; \
-	TCL="$(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_0.3.0.tcl"; \
+	EDA="$(EDA_FILELIST)"; \
 	SV="$(VLOG_FILELIST)"; \
-	[ -f "$$TCL" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$TCL"; exit 1; }; \
-	t1="$$(mktemp)"; t2="$$(mktemp)"; \
-	grep 'read_verilog -sv' "$$TCL" | sed 's/.*{\(.*\)}.*/\1/' | grep '\.sv$$' > "$$t1"; \
-	awk -v genpref="x-heep/$(VIVADO_FILELIST)/" -v incdir="$(VLOG_INCDIRS)" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	[ -f "$$EDA" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$EDA"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; tinc="$$(mktemp)"; \
+	awk ' \
+		/^- / { inc=0 } \
+		/^[[:space:]]*is_include_file:[[:space:]]*true/ { inc=1 } \
+		/^[[:space:]]*name:[[:space:]]*/ { \
+			p=$$2; \
+			if (inc && p ~ /\.(sv|svh|v)$$/) { print p >> incout; next } \
+			if (!inc && p ~ /\.sv$$/) print p; \
+		} \
+	' incout="$$tinc" "$$EDA" > "$$t1"; \
+	mkdir -p "$(XHEEP_ROOT)/vlog_incdir"; \
+	while read p; do \
+		src="$(XH_ROOT)/$(MODELSIM_FILELIST)/$$p"; \
+		dst="$(XHEEP_ROOT)/vlog_incdir/$$(basename "$$p")"; \
+		if [ -f "$$src" ]; then cp -f -p "$$src" "$$dst"; fi; \
+	done < "$$tinc"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$SV" 2>/dev/null || true; } > "$$SV.new"; \
 	cat "$$t2" >> "$$SV.new"; \
 	mv "$$SV.new" "$$SV"; \
-	rm -f "$$t1" "$$t2"; \
-	echo "[$(ACCEL_NAME)] Updated $$SV from Vivado $$TCL"
+	rm -f "$$t1" "$$t2" "$$tinc"; \
+	echo "[$(ACCEL_NAME)] Updated $$SV from $$EDA"
 
 update-$(ACCEL_NAME)-verilog-vivado:
 	@set -e; \
-	TCL="$(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_0.3.0.tcl"; \
+	EDA="$(EDA_FILELIST)"; \
 	VL="$(VLOG_VERILOG)"; \
-	[ -f "$$TCL" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$TCL"; exit 1; }; \
-	t1="$$(mktemp)"; t2="$$(mktemp)"; \
-	grep 'read_verilog' "$$TCL" | grep -v 'read_verilog -sv' | sed 's/.*{\(.*\)}.*/\1/' | grep '\.v$$' > "$$t1"; \
-	awk -v genpref="x-heep/$(VIVADO_FILELIST)/" -v incdir="$(VLOG_INCDIRS)" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } bn = p; sub(/^.*\//, "", bn); if (system("[ -f \"" incdir "/" bn "\" ]") == 0) { next } print p }' "$$t1" > "$$t2"; \
+	[ -f "$$EDA" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$EDA"; exit 1; }; \
+	t1="$$(mktemp)"; t2="$$(mktemp)"; tinc="$$(mktemp)"; \
+	awk ' \
+		/^- / { inc=0 } \
+		/^[[:space:]]*is_include_file:[[:space:]]*true/ { inc=1 } \
+		/^[[:space:]]*name:[[:space:]]*/ { \
+			p=$$2; \
+			if (inc && p ~ /\.(sv|svh|v)$$/) { print p >> incout; next } \
+			if (!inc && p ~ /\.v$$/) print p; \
+		} \
+	' incout="$$tinc" "$$EDA" > "$$t1"; \
+	mkdir -p "$(XHEEP_ROOT)/vlog_incdir"; \
+	while read p; do \
+		src="$(XH_ROOT)/$(MODELSIM_FILELIST)/$$p"; \
+		dst="$(XHEEP_ROOT)/vlog_incdir/$$(basename "$$p")"; \
+		if [ -f "$$src" ]; then cp -f -p "$$src" "$$dst"; fi; \
+	done < "$$tinc"; \
+	awk -v genpref="x-heep/$(MODELSIM_FILELIST)/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t1" > "$$t2"; \
 	{ grep -v '^x-heep' "$$VL" 2>/dev/null || true; } > "$$VL.new"; \
 	cat "$$t2" >> "$$VL.new"; \
 	mv "$$VL.new" "$$VL"; \
-	rm -f "$$t1" "$$t2"; \
-	echo "[$(ACCEL_NAME)] Updated $$VL from Vivado $$TCL"
+	rm -f "$$t1" "$$t2" "$$tinc"; \
+	echo "[$(ACCEL_NAME)] Updated $$VL from $$EDA"
 
 sw:
 	rm -rf $(XH_ROOT)/sw/build
