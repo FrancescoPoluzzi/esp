@@ -1,6 +1,6 @@
 ACCEL_NAME := xheep
 
-.PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-sverilog update-$(ACCEL_NAME)-verilog update-$(ACCEL_NAME)-sverilog-vivado update-$(ACCEL_NAME)-verilog-vivado
+.PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-sverilog update-$(ACCEL_NAME)-verilog update-$(ACCEL_NAME)-sverilog-vivado update-$(ACCEL_NAME)-verilog-vivado clean
 
 ESP_TOP ?= $(abspath $(CURDIR)/../../..)
 ACCEL_PATH := accelerators/rtl/$(ACCEL_NAME)_rtl
@@ -235,3 +235,9 @@ sw:
 		cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
 		cp -r $(XH_ROOT)/sw/esp_common/. $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
 	done
+
+clean:
+	$(MAKE) -C $(XH_ROOT) clean
+	rm -rf $(XHEEP_ROOT)/vlog_incdir
+	rm -rf $(XH_ROOT)/$(ACCEL_NAME).sverilog
+	rm -rf $(XH_ROOT)/$(ACCEL_NAME).verilog
