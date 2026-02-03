@@ -1,4 +1,6 @@
-module xheep_boot_controller_dma64 (
+module xheep_boot_controller_dma64  
+  import obi_pkg::*;
+    (
     input  logic        clk,
     input  logic        rst_n,
 
@@ -58,9 +60,11 @@ module xheep_boot_controller_dma64 (
     // Edge Detection
     logic rise_fetch;
     logic rise_exit;
+    logic trigger_boot_exit_q;
+    logic pending_exit;
 
     assign rise_fetch = conf_done && trigger_fetch;
-    assign rise_exit  = conf_done && trigger_boot_exit;
+    assign rise_exit  = conf_done && pending_exit;
     
     // Output logic
     always_comb begin
@@ -184,6 +188,8 @@ module xheep_boot_controller_dma64 (
             boot_buffered_valid_q <= 1'b0;
             boot_buffered_use_upper_q <= 1'b0;
             boot_buffered_upper_pending_q <= 1'b0;
+            trigger_boot_exit_q <= 1'b0;
+            pending_exit <= 1'b0;
         end else begin
             state_q <= state_d;
             boot_ram_addr_q   <= boot_ram_addr_d;
@@ -192,6 +198,12 @@ module xheep_boot_controller_dma64 (
             boot_buffered_valid_q <= boot_buffered_valid_d;
             boot_buffered_use_upper_q <= boot_buffered_use_upper_d;
             boot_buffered_upper_pending_q <= boot_buffered_upper_pending_d;
+            trigger_boot_exit_q <= trigger_boot_exit;
+            if (trigger_boot_exit && !trigger_boot_exit_q) begin
+                pending_exit <= 1'b1;
+            end else if (rise_exit) begin
+                pending_exit <= 1'b0;
+            end
         end
     end
 
