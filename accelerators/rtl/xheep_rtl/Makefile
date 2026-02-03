@@ -28,8 +28,9 @@ FPGA_OUT := $(OUT_DIR)/fpga
 
 RISCV ?= /home/francesco/tools/riscv
 
-ESP_LINUX_APP ?= hello_xheep
-XHEEP_APPS ?= esp_app_native
+ESP_LINUX_APP ?= 
+ESP_BAREMETAL_APP ?= 
+XHEEP_APPS ?= 
 
 # Run the X-HEEP generator, then update filelists
 hw: mcu-gen questa
@@ -126,7 +127,7 @@ sw:
 	rm -rf $(XH_ROOT)/sw/build
 	@for app_cur in $(XHEEP_APPS); do \
 		echo "[$(ACCEL_NAME)] Building X-HEEP app $$app_cur"; \
-		$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) ARCH=rv32imc app PROJECT=$$app_cur LINKER=on_chip TARGET=sim COMPILER_FLAGS+=" -I$(XH_ROOT)/sw/esp_common" || exit $$?; \
+		$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) ARCH=rv32imc app PROJECT=$$app_cur LINKER=on_chip TARGET=sim COMPILER_FLAGS+=" -I$(XH_ROOT)/sw/vendor/esp_common" || exit $$?; \
 		header="$(ACCEL_NAME)_fw_$${app_cur}.h"; \
 		fw_symbol="$(ACCEL_NAME)_fw_$${app_cur}"; \
 		mkdir -p $(XH_ROOT)/sw/generated; \
@@ -134,23 +135,24 @@ sw:
 			$(XH_ROOT)/sw/generated/$$header \
 			$(XH_ROOT)/sw/build/main.hex \
 			--name $$fw_symbol || exit $$?; \
-		mkdir -p $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		mkdir -p $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native/common; \
-		cp $(XH_ROOT)/sw/generated/$$header $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		cp -r $(XH_ROOT)/sw/esp_common/. $(ESP_TOP)/soft/common/apps/baremetal/$(ACCEL_NAME)_native; \
-		cp $(XH_ROOT)/sw/generated/$$header $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t; \
-		cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t; \
-		cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t; \
-		cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t; \
-		cp -r $(XH_ROOT)/sw/esp_common/. $(ESP_TOP)/socs/xilinx-vc707-xc7vx485t; \
-		cp $(XH_ROOT)/sw/generated/$$header $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
-		cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
-		cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
-		cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
-		cp -r $(XH_ROOT)/sw/esp_common/. $(ESP_TOP)/accelerators/rtl/$(ACCEL_NAME)_rtl/sw/linux/app/$(ESP_LINUX_APP); \
+		if [ -n "$(ESP_BAREMETAL_APP)" ]; then \
+			mkdir -p $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp $(XH_ROOT)/sw/generated/$$header $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp -r $(XH_ROOT)/sw/applications/$${app_cur}/common/. $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
+			cp -r $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP) $(ESP_TOP)/soft/common/apps/baremetal; \
+			cp -r $(XHEEP_ROOT)/sw/baremetal/include $(ESP_TOP)/soft/common/apps/baremetal/$(ESP_BAREMETAL_APP); \
+		fi; \
+		if [ -n "$(ESP_LINUX_APP)" ]; then \
+			mkdir -p $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			cp $(XH_ROOT)/sw/generated/$$header $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			cp -r $(XH_ROOT)/sw/applications/$${app_cur}/common/. $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+		fi; \
 	done
 
 clean:
