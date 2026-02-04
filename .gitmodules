@@ -57,7 +57,7 @@
 	path = accelerators/third-party/xheep/ip/x-heep
 	url = https://github.com/FrancescoPoluzzi/x-heep.git
 	branch = esp-heep
-[submodule "accelerators/rtl/xheep_rtl/vendor/xheep"]
-	path = accelerators/rtl/xheep_rtl/vendor/xheep
-	url = https://github.com/FrancescoPoluzzi/x-heep.git
-	branch = esp-heep
+[submodule "accelerators/rtl/xheep_rtl/vendor/x-heep"]
+    path = accelerators/rtl/xheep_rtl/vendor/x-heep
+    url = https://github.com/FrancescoPoluzzi/x-heep.git
+    branch = esp-heep
