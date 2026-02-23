@@ -18,10 +18,10 @@ $(info [$(ACCEL_NAME)] VLOG_INCDIRS=$(VLOG_INCDIRS))
 
 X_HEEP_CFG ?= configs/esp_heep.hjson
 XHEEP_FPGA_BOARD ?= nexys-a7-100t
-MODELSIM_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/sim-modelsim
-VIVADO_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_0.3.0/$(XHEEP_FPGA_BOARD)-vivado
-EDA_FILELIST_MODELSIM := $(XH_ROOT)/$(MODELSIM_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_0.3.0.eda.yml
-EDA_FILELIST_VIVADO := $(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_0.3.0.eda.yml
+MODELSIM_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/sim-modelsim
+VIVADO_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/$(XHEEP_FPGA_BOARD)-vivado
+EDA_FILELIST_MODELSIM := $(XH_ROOT)/$(MODELSIM_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION).eda.yml
+EDA_FILELIST_VIVADO := $(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION).eda.yml
 
 OUT_DIR := $(XHEEP_ROOT)/out
 FPGA_OUT := $(OUT_DIR)/fpga
@@ -48,7 +48,7 @@ mcu-gen:
 	$(MAKE) -C $(XH_ROOT) mcu-gen X_HEEP_CFG=$(X_HEEP_CFG)
 
 questa:
-	$(MAKE) -C $(XH_ROOT) questasim-sim
+	$(MAKE) -C $(XH_ROOT) questasim-build 
 
 vivado-setup:
 	$(MAKE) -C $(XH_ROOT) vivado-fpga-nobuild FPGA_BOARD=$(XHEEP_FPGA_BOARD)
@@ -64,7 +64,7 @@ update-$(ACCEL_NAME)-filelists:
 	if [ "$$FLOW" = "vivado" ]; then \
 		FILELIST_DIR="$(VIVADO_FILELIST)"; \
 		EDA="$(EDA_FILELIST_VIVADO)"; \
-		TCL="$(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_0.3.0.tcl"; \
+		TCL="$(XH_ROOT)/$(VIVADO_FILELIST)/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION).tcl"; \
 		[ -f "$$TCL" ] || { echo "[$(ACCEL_NAME)][ERROR] Missing $$TCL"; exit 1; }; \
 	else \
 		FILELIST_DIR="$(MODELSIM_FILELIST)"; \
