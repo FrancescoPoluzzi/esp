@@ -32,6 +32,8 @@ module xheep_rtl_basic_dma64
     dma_write_chnl_ready
 );
 
+    localparam bit QUADRILATERO = 1'b0;
+
     // ========================================================================
     // I/O Ports
     // ========================================================================
@@ -81,9 +83,8 @@ module xheep_rtl_basic_dma64
 
     logic x_heep_rst_n;
 
-    // X-HEEP reset gating
-    logic heep_hold_reset = 1'b0;
-    assign x_heep_rst_n = rst | heep_hold_reset;
+    // X-HEEP reset: pass through directly.
+    assign x_heep_rst_n = rst;
 
     // X-HEEP OBI Interfaces
     obi_pkg::obi_req_t  heep_core_data_req;
@@ -164,23 +165,27 @@ module xheep_rtl_basic_dma64
     // X-HEEP Instance
     // ========================================================================
     
-    // Tie-offs
-    if_xif xif_compressed_if();
-    if_xif xif_issue_if();
-    if_xif xif_commit_if();
-    if_xif xif_mem_if();
-    if_xif xif_mem_result_if();
-    if_xif xif_result_if();
+    // Tie-offs / XIF interface
+    localparam int XIF_NUM_RS = QUADRILATERO ? 3 : 2;
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_compressed_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_issue_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_commit_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_result_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_result_if();
 
-    assign xif_compressed_if.compressed_ready = 1'b0;
-    assign xif_compressed_if.compressed_resp  = '0;
-    assign xif_issue_if.issue_ready           = 1'b0;
-    assign xif_issue_if.issue_resp            = '0;
-    assign xif_mem_if.mem_ready               = 1'b0;
-    assign xif_mem_if.mem_resp                = '0;
-    assign xif_mem_result_if.mem_result_valid = 1'b0;
-    assign xif_mem_result_if.mem_result       = '0;
-    assign xif_result_if.result_ready         = 1'b0;
+    generate
+        if (QUADRILATERO == 0) begin : gen_xif_tieoff
+            assign xif_compressed_if.compressed_ready = 1'b0;
+            assign xif_compressed_if.compressed_resp  = '0;
+            assign xif_issue_if.issue_ready           = 1'b0;
+            assign xif_issue_if.issue_resp            = '0;
+            assign xif_mem_if.mem_valid               = 1'b0;
+            assign xif_mem_if.mem_req                 = '0;
+            assign xif_result_if.result_valid         = 1'b0;
+            assign xif_result_if.result               = '0;
+        end
+    endgenerate
 
     always_comb begin
         if (boot_ctrl_busy) begin
@@ -198,7 +203,8 @@ module xheep_rtl_basic_dma64
     end
 
     core_v_mini_mcu #(
-        .EXT_XBAR_NMASTER(1)
+        .EXT_XBAR_NMASTER(1),
+        .QUADRILATERO(QUADRILATERO)
     ) u_xheep (
         .clk_i   (clk),
         .rst_ni  (x_heep_rst_n),
@@ -278,11 +284,42 @@ module xheep_rtl_basic_dma64
         .fetch_done_o        (boot_ctrl_fetch_done)
     );
 
-    always_ff @(posedge clk) begin
-        if (boot_ctrl_fetch_done) begin
-            heep_hold_reset <= 1'b1;
-        end
-    end
+    typedef enum logic [2:0] {
+        BURST_IDLE,
+        BURST_DMA_REQ_RD,
+        BURST_STREAM_RD,
+        BURST_DMA_REQ_WR,
+        BURST_STREAM_WR
+    } burst_state_t;
+
+    burst_state_t burst_state_d, burst_state_q;
+
+    logic [31:0] burst_dma_index_q;
+    logic [31:0] burst_dma_len_beats_q;
+    logic [31:0] burst_beats_remaining_q;
+    logic [63:0] burst_beat_data_q;
+    logic        burst_beat_valid_q;
+    logic        burst_beat_upper_q;
+    logic        burst_beat_last_q;
+    logic [2:0]  burst_last_bytes_q;
+    logic [31:0] burst_xheep_addr_q;
+    logic        burst_dir_q;
+
+    logic [63:0] burst_wr_beat_q;
+    logic        burst_wr_beat_valid_q;
+    logic        burst_wr_half_q;
+    logic        burst_wr_pending_q;
+    logic [63:0] burst_wr_data_out;
+    logic [31:0] burst_addr_offset;
+    logic [31:0] burst_addr_index;
+
+    logic        burst_start_accept;
+    logic        burst_done_set;
+    logic [3:0]  burst_lower_be;
+    logic [3:0]  burst_upper_be;
+    logic        burst_upper_needed;
+    logic        burst_dma_read_chnl_valid;
+    logic        burst_write_active;
 
     // ========================================================================
     // Bridge: OBI (X-HEEP Core) <-> DMA (ESP)
@@ -359,42 +396,6 @@ module xheep_rtl_basic_dma64
     localparam logic [31:0] EXT_SLAVE_START_ADDR = 32'hF000_0000;
     localparam logic [2:0]  DMA_SIZE_DWORD = 3'b011;
 
-    typedef enum logic [2:0] {
-        BURST_IDLE,
-        BURST_DMA_REQ_RD,
-        BURST_STREAM_RD,
-        BURST_DMA_REQ_WR,
-        BURST_STREAM_WR
-    } burst_state_t;
-
-    burst_state_t burst_state_d, burst_state_q;
-
-    logic [31:0] burst_dma_index_q;
-    logic [31:0] burst_dma_len_beats_q;
-    logic [31:0] burst_beats_remaining_q;
-    logic [63:0] burst_beat_data_q;
-    logic        burst_beat_valid_q;
-    logic        burst_beat_upper_q;
-    logic        burst_beat_last_q;
-    logic [2:0]  burst_last_bytes_q;
-    logic [31:0] burst_xheep_addr_q;
-    logic        burst_dir_q;
-
-    logic [63:0] burst_wr_beat_q;
-    logic        burst_wr_beat_valid_q;
-    logic        burst_wr_half_q;
-    logic        burst_wr_pending_q;
-    logic [63:0] burst_wr_data_out;
-    logic [31:0] burst_addr_offset;
-    logic [31:0] burst_addr_index;
-
-    logic        burst_start_accept;
-    logic        burst_done_set;
-    logic [3:0]  burst_lower_be;
-    logic [3:0]  burst_upper_be;
-    logic        burst_upper_needed;
-    logic        burst_dma_read_chnl_valid;
-    logic        burst_write_active;
 
     function automatic [3:0] be_mask(input logic [2:0] count);
         case (count)

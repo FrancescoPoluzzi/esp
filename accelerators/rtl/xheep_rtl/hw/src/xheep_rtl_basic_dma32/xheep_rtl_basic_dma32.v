@@ -1,6 +1,6 @@
 // xheep_rtl_basic_dma32.v
 
-module xheep_rtl_basic_dma32  
+module xheep_rtl_basic_dma32 
   import obi_pkg::*;
     (
     clk,
@@ -34,6 +34,7 @@ module xheep_rtl_basic_dma32
     // ========================================================================
     // Parameters & Imports
     // ========================================================================
+    localparam bit QUADRILATERO = 1'b0;
     parameter AXI_ADDR_WIDTH = 32;
     parameter AXI_DATA_WIDTH = 32;
 
@@ -86,9 +87,8 @@ module xheep_rtl_basic_dma32
 
     logic x_heep_rst_n;
 
-    // X-HEEP reset gating
-    logic heep_hold_reset = 1'b0;
-    assign x_heep_rst_n = rst | heep_hold_reset;
+    // X-HEEP reset: pass through directly.
+    assign x_heep_rst_n = rst;
 
     // X-HEEP OBI Interfaces (Master Port of X-HEEP)
     obi_pkg::obi_req_t  heep_core_data_req;
@@ -168,22 +168,26 @@ module xheep_rtl_basic_dma32
     logic [31:0]       burst_obi_rdata;
     
     // Tie-offs for XIF
-    if_xif xif_compressed_if();
-    if_xif xif_issue_if();
-    if_xif xif_commit_if();
-    if_xif xif_mem_if();
-    if_xif xif_mem_result_if();
-    if_xif xif_result_if();
+    localparam int XIF_NUM_RS = QUADRILATERO ? 3 : 2;
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_compressed_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_issue_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_commit_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_result_if();
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_result_if();
 
-    assign xif_compressed_if.compressed_ready = 1'b0;
-    assign xif_compressed_if.compressed_resp  = '0;
-    assign xif_issue_if.issue_ready           = 1'b0;
-    assign xif_issue_if.issue_resp            = '0;
-    assign xif_mem_if.mem_ready               = 1'b0;
-    assign xif_mem_if.mem_resp                = '0;
-    assign xif_mem_result_if.mem_result_valid = 1'b0;
-    assign xif_mem_result_if.mem_result       = '0;
-    assign xif_result_if.result_ready         = 1'b0;
+    generate
+        if (QUADRILATERO == 0) begin : gen_xif_tieoff
+            assign xif_compressed_if.compressed_ready = 1'b0;
+            assign xif_compressed_if.compressed_resp  = '0;
+            assign xif_issue_if.issue_ready           = 1'b0;
+            assign xif_issue_if.issue_resp            = '0;
+            assign xif_mem_if.mem_valid               = 1'b0;
+            assign xif_mem_if.mem_req                 = '0;
+            assign xif_result_if.result_valid         = 1'b0;
+            assign xif_result_if.result               = '0;
+        end
+    endgenerate
 
     always_comb begin
         if (boot_ctrl_busy) begin
@@ -203,7 +207,8 @@ module xheep_rtl_basic_dma32
     // X-HEEP Instance
     // ========================================================================
     core_v_mini_mcu #(
-        .EXT_XBAR_NMASTER(1)
+        .EXT_XBAR_NMASTER(1),
+        .QUADRILATERO(QUADRILATERO)
     ) u_xheep (
         .clk_i   (clk),
         .rst_ni  (x_heep_rst_n),
@@ -288,12 +293,38 @@ module xheep_rtl_basic_dma32
         .fetch_done_o        (boot_ctrl_fetch_done)
     );
 
-    // Remember that the firmware fetch has completed once to preserve X-HEEP memory
-    always_ff @(posedge clk) begin
-        if (boot_ctrl_fetch_done) begin
-            heep_hold_reset <= 1'b1;
-        end
-    end
+    typedef enum logic [2:0] {
+        BURST_IDLE,
+        BURST_DMA_REQ_RD,
+        BURST_STREAM_RD,
+        BURST_DMA_REQ_WR,
+        BURST_STREAM_WR
+    } burst_state_t;
+
+    burst_state_t burst_state_d, burst_state_q;
+
+    logic [31:0] burst_dma_index_q;
+    logic [31:0] burst_dma_len_beats_q;
+    logic [31:0] burst_beats_remaining_q;
+    logic [31:0] burst_beat_data_q;
+    logic        burst_beat_valid_q;
+    logic        burst_beat_last_q;
+    logic [1:0]  burst_last_bytes_q;
+    logic [31:0] burst_xheep_addr_q;
+    logic        burst_dir_q;
+
+    logic [31:0] burst_wr_beat_q;
+    logic        burst_wr_beat_valid_q;
+    logic        burst_wr_pending_q;
+    logic [31:0] burst_wr_data_out;
+    logic [31:0] burst_addr_offset;
+    logic [31:0] burst_addr_index;
+
+    logic        burst_start_accept;
+    logic        burst_done_set;
+    logic [3:0]  burst_be_mask;
+    logic        burst_dma_read_chnl_valid;
+    logic        burst_write_active;
 
     // ========================================================================
     // Bridge: OBI (X-HEEP Core) <-> DMA (ESP)
@@ -370,38 +401,6 @@ module xheep_rtl_basic_dma32
     localparam logic [31:0] EXT_SLAVE_START_ADDR = 32'hF000_0000;
     localparam logic [2:0]  DMA_SIZE_WORD = 3'b010;
 
-    typedef enum logic [2:0] {
-        BURST_IDLE,
-        BURST_DMA_REQ_RD,
-        BURST_STREAM_RD,
-        BURST_DMA_REQ_WR,
-        BURST_STREAM_WR
-    } burst_state_t;
-
-    burst_state_t burst_state_d, burst_state_q;
-
-    logic [31:0] burst_dma_index_q;
-    logic [31:0] burst_dma_len_beats_q;
-    logic [31:0] burst_beats_remaining_q;
-    logic [31:0] burst_beat_data_q;
-    logic        burst_beat_valid_q;
-    logic        burst_beat_last_q;
-    logic [1:0]  burst_last_bytes_q;
-    logic [31:0] burst_xheep_addr_q;
-    logic        burst_dir_q;
-
-    logic [31:0] burst_wr_beat_q;
-    logic        burst_wr_beat_valid_q;
-    logic        burst_wr_pending_q;
-    logic [31:0] burst_wr_data_out;
-    logic [31:0] burst_addr_offset;
-    logic [31:0] burst_addr_index;
-
-    logic        burst_start_accept;
-    logic        burst_done_set;
-    logic [3:0]  burst_be_mask;
-    logic        burst_dma_read_chnl_valid;
-    logic        burst_write_active;
 
     function automatic [3:0] be_mask(input logic [1:0] count);
         case (count)
@@ -690,7 +689,6 @@ module xheep_rtl_basic_dma32
     // Status & Debug
     // ========================================================================
     
-    // acc_done is high if X-HEEP finishes executing OR if the Boot Fetch logic completes.
     assign acc_done = heep_exit_valid | boot_ctrl_fetch_done;
     
     assign debug = {29'b0, boot_ctrl_fetch_done, boot_ctrl_busy, heep_exit_valid};

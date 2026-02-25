@@ -33,8 +33,10 @@ module xheep_boot_controller_dma32
 );
 
     // X-HEEP Memory Map Constants (must match core_v_mini_mcu definitions)
-    localparam logic [31:0] XHEEP_RAM_START_ADDR = 32'h0000_0000;
-    localparam logic [31:0] XHEEP_SOC_CTRL_ADDR  = 32'h2000_000c; 
+    localparam logic [31:0] XHEEP_RAM_START_ADDR           = 32'h0000_0000;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_VALID_ADDR = 32'h2000_0000;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_VALUE_ADDR = 32'h2000_0004;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_LOOP_ADDR  = 32'h2000_000c;
 
     // DMA Constants
     localparam logic [2:0]  DMA_SIZE_WORD = 3'b010; // 32-bit
@@ -44,6 +46,7 @@ module xheep_boot_controller_dma32
         IDLE,
         DMA_REQ,        // Issue Read Command to ESP
         DMA_WAIT_DATA,  // Receive Data from ESP and push to OBI
+        CLEAR_SOC_CTRL, // Clear SOC_CTRL software-visible completion state
         EXIT_WRITE      // Write to SOC_CTRL to release CPU
     } state_t;
 
@@ -56,6 +59,7 @@ module xheep_boot_controller_dma32
     // Edge Detection
     logic rise_fetch;
     logic rise_exit;
+    logic [1:0] clear_soc_ctrl_idx_d, clear_soc_ctrl_idx_q;
 
     // one word buffer for incoming DMA data
     logic [31:0] buffered_word_d,  buffered_word_q;
@@ -70,6 +74,7 @@ module xheep_boot_controller_dma32
         state_d = state_q;
         current_ram_addr_d = current_ram_addr_q;
         beat_cnt_d = beat_cnt_q;
+        clear_soc_ctrl_idx_d = clear_soc_ctrl_idx_q;
         
         busy = 1'b0;
         fetch_done_o = 1'b0;
@@ -154,15 +159,42 @@ module xheep_boot_controller_dma32
                         beat_cnt_d         = beat_cnt_q + 1;
 
                         if (beat_cnt_d == fetch_size_words) begin
-                            state_d      = IDLE;
-                            fetch_done_o = 1'b1;
+                            state_d = CLEAR_SOC_CTRL;
+                            clear_soc_ctrl_idx_d = 2'd0;
                         end
                     end
                 end
             end
 
             // ---------------------------------------------------------
-            // PHASE 3: Boot Exit (Write to CSR)
+            // PHASE 3: Post-Fetch Sanitization
+            // ---------------------------------------------------------
+            CLEAR_SOC_CTRL: begin
+                busy = 1'b1;
+                obi_req_o.req   = 1'b1;
+                obi_req_o.we    = 1'b1;
+                obi_req_o.wdata = 32'd0;
+                obi_req_o.be    = 4'b1111;
+
+                case (clear_soc_ctrl_idx_q)
+                    2'd0: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_VALID_ADDR;
+                    2'd1: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_VALUE_ADDR;
+                    2'd2: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
+                    default: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
+                endcase
+
+                if (obi_resp_i.gnt) begin
+                    if (clear_soc_ctrl_idx_q == 2'd2) begin
+                        state_d = IDLE;
+                        fetch_done_o = 1'b1;
+                    end else begin
+                        clear_soc_ctrl_idx_d = clear_soc_ctrl_idx_q + 2'd1;
+                    end
+                end
+            end
+
+            // ---------------------------------------------------------
+            // PHASE 4: Boot Exit (Write to CSR)
             // ---------------------------------------------------------
             EXIT_WRITE: begin
                 busy = 1'b1;
@@ -170,7 +202,7 @@ module xheep_boot_controller_dma32
                 // Write to SOC_CTRL to start X-Heep execution
                 obi_req_o.req   = 1'b1;
                 obi_req_o.we    = 1'b1;
-                obi_req_o.addr  = XHEEP_SOC_CTRL_ADDR;
+                obi_req_o.addr  = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
                 obi_req_o.wdata = 32'd1; 
                 obi_req_o.be    = 4'b1111;
 
@@ -189,10 +221,12 @@ module xheep_boot_controller_dma32
 
             buffered_word_q      <= '0;
             buffered_valid_q     <= 1'b0;
+            clear_soc_ctrl_idx_q <= 2'd0;
         end else begin
             state_q              <= state_d;
             current_ram_addr_q   <= current_ram_addr_d;
             beat_cnt_q           <= beat_cnt_d;
+            clear_soc_ctrl_idx_q <= clear_soc_ctrl_idx_d;
 
             buffered_word_q      <= buffered_word_d;
             buffered_valid_q     <= buffered_valid_d;

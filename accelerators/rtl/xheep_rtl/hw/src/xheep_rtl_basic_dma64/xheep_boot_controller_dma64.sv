@@ -33,17 +33,20 @@ module xheep_boot_controller_dma64
 );
 
     // X-HEEP Memory Map Constants (must match core_v_mini_mcu definitions)
-    localparam logic [31:0] XHEEP_RAM_START_ADDR = 32'h0000_0000;
-    localparam logic [31:0] XHEEP_SOC_CTRL_ADDR  = 32'h2000_000c; 
+    localparam logic [31:0] XHEEP_RAM_START_ADDR          = 32'h0000_0000;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_VALID_ADDR = 32'h2000_0000;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_VALUE_ADDR = 32'h2000_0004;
+    localparam logic [31:0] XHEEP_SOC_CTRL_EXIT_LOOP_ADDR  = 32'h2000_000c;
 
     // DMA Constants
     localparam logic [2:0]  DMA_SIZE_WORD = 3'b011; // 64-bit
 
     // State Machine
-    typedef enum logic [1:0] {
+    typedef enum logic [2:0] {
         IDLE,
         DMA_REQ,
         DMA_WAIT_DATA,
+        CLEAR_SOC_CTRL,
         EXIT_WRITE
     } state_t;
 
@@ -57,14 +60,13 @@ module xheep_boot_controller_dma64
     logic        boot_buffered_use_upper_d, boot_buffered_use_upper_q;
     logic        boot_buffered_upper_pending_d, boot_buffered_upper_pending_q;
 
-    // Edge Detection
+    // Trigger sampling
     logic rise_fetch;
     logic rise_exit;
-    logic trigger_boot_exit_q;
-    logic pending_exit;
+    logic [1:0] clear_soc_ctrl_idx_d, clear_soc_ctrl_idx_q;
 
     assign rise_fetch = conf_done && trigger_fetch;
-    assign rise_exit  = conf_done && pending_exit;
+    assign rise_exit  = conf_done && trigger_boot_exit;
     
     // Output logic
     always_comb begin
@@ -72,6 +74,7 @@ module xheep_boot_controller_dma64
         state_d = state_q;
         boot_ram_addr_d = boot_ram_addr_q;
         boot_word_cnt_d = boot_word_cnt_q;
+        clear_soc_ctrl_idx_d = clear_soc_ctrl_idx_q;
 
         busy = 1'b0;
         fetch_done_o = 1'b0;
@@ -158,9 +161,35 @@ module xheep_boot_controller_dma64
                         end
 
                         if (boot_word_cnt_d == fetch_size_words) begin
-                            state_d      = IDLE;
-                            fetch_done_o = 1'b1;
+                            state_d = CLEAR_SOC_CTRL;
+                            clear_soc_ctrl_idx_d = 2'd0;
                         end
+                    end
+                end
+            end
+
+            // =========================================================
+            // POST-FETCH SANITIZATION
+            // =========================================================
+            CLEAR_SOC_CTRL: begin
+                busy = 1'b1;
+                obi_req_o.req   = 1'b1;
+                obi_req_o.we    = 1'b1;
+                obi_req_o.wdata = 32'd0;
+
+                case (clear_soc_ctrl_idx_q)
+                    2'd0: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_VALID_ADDR;
+                    2'd1: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_VALUE_ADDR;
+                    2'd2: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
+                    default: obi_req_o.addr = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
+                endcase
+
+                if (obi_resp_i.gnt) begin
+                    if (clear_soc_ctrl_idx_q == 2'd2) begin
+                        state_d = IDLE;
+                        fetch_done_o = 1'b1;
+                    end else begin
+                        clear_soc_ctrl_idx_d = clear_soc_ctrl_idx_q + 2'd1;
                     end
                 end
             end
@@ -169,7 +198,7 @@ module xheep_boot_controller_dma64
                 busy = 1'b1;
                 obi_req_o.req   = 1'b1;
                 obi_req_o.we    = 1'b1;
-                obi_req_o.addr  = XHEEP_SOC_CTRL_ADDR;
+                obi_req_o.addr  = XHEEP_SOC_CTRL_EXIT_LOOP_ADDR;
                 obi_req_o.wdata = 32'd1; 
 
                 if (obi_resp_i.gnt) begin
@@ -188,22 +217,16 @@ module xheep_boot_controller_dma64
             boot_buffered_valid_q <= 1'b0;
             boot_buffered_use_upper_q <= 1'b0;
             boot_buffered_upper_pending_q <= 1'b0;
-            trigger_boot_exit_q <= 1'b0;
-            pending_exit <= 1'b0;
+            clear_soc_ctrl_idx_q <= 2'd0;
         end else begin
             state_q <= state_d;
             boot_ram_addr_q   <= boot_ram_addr_d;
             boot_word_cnt_q   <= boot_word_cnt_d;
+            clear_soc_ctrl_idx_q <= clear_soc_ctrl_idx_d;
             boot_buffered_data_q  <= boot_buffered_data_d;
             boot_buffered_valid_q <= boot_buffered_valid_d;
             boot_buffered_use_upper_q <= boot_buffered_use_upper_d;
             boot_buffered_upper_pending_q <= boot_buffered_upper_pending_d;
-            trigger_boot_exit_q <= trigger_boot_exit;
-            if (trigger_boot_exit && !trigger_boot_exit_q) begin
-                pending_exit <= 1'b1;
-            end else if (rise_exit) begin
-                pending_exit <= 1'b0;
-            end
         end
     end
 
