@@ -269,7 +269,7 @@ def native_flow():
 
         # Ignore build directories and the script itself
         for name in names:
-            if name.startswith("hls-work-") or name == "hls" or name == "create_xheep_instance.py":
+            if name.startswith("hls-work-") or name == "hls":
                 ignored.add(name)
                 
         return ignored
