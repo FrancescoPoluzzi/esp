@@ -1,8 +1,10 @@
 // xheep_rtl_basic_dma64.v
 
-module xheep_rtl_basic_dma64  
+module xheep_rtl_basic_dma64
   import obi_pkg::*;
-    (
+#(
+    parameter bit QUADRILATERO = 1'b1
+) (
     clk,
     rst,
     dma_read_chnl_valid,
@@ -31,8 +33,6 @@ module xheep_rtl_basic_dma64
     dma_write_chnl_data,
     dma_write_chnl_ready
 );
-
-    localparam bit QUADRILATERO = 1'b0;
 
     // ========================================================================
     // I/O Ports
@@ -95,6 +95,15 @@ module xheep_rtl_basic_dma64
     obi_pkg::obi_req_t  boot_obi_req;
     obi_pkg::obi_resp_t boot_obi_resp;
     obi_pkg::obi_req_t  final_slave_obi_req;
+    localparam int unsigned EXT_XBAR_NMASTER = QUADRILATERO ? 5 : 1;
+    localparam int unsigned EXT_XBAR_NMASTER_RND = (EXT_XBAR_NMASTER == 0) ? 1 : EXT_XBAR_NMASTER;
+    localparam int unsigned EXT_MASTER_BOOT_IDX = 0;
+    localparam int unsigned EXT_MASTER4_IDX = 1;
+    localparam int unsigned EXT_MASTER5_IDX = 2;
+    localparam int unsigned EXT_MASTER6_IDX = 3;
+    localparam int unsigned EXT_MASTER7_IDX = 4;
+    obi_pkg::obi_req_t  [EXT_XBAR_NMASTER_RND-1:0] ext_xbar_master_req;
+    obi_pkg::obi_resp_t [EXT_XBAR_NMASTER_RND-1:0] ext_xbar_master_resp;
 
     // X-HEEP Status
     logic heep_exit_valid;
@@ -165,25 +174,19 @@ module xheep_rtl_basic_dma64
     // X-HEEP Instance
     // ========================================================================
     
-    // Tie-offs / XIF interface
-    localparam int XIF_NUM_RS = QUADRILATERO ? 3 : 2;
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_compressed_if();
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_issue_if();
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_commit_if();
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_if();
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_mem_result_if();
-    if_xif #(.X_NUM_RS(XIF_NUM_RS)) xif_result_if();
+    localparam int XIF_NUM_RS = 2;
+    if_xif #(.X_NUM_RS(XIF_NUM_RS)) ext_if();
 
     generate
         if (QUADRILATERO == 0) begin : gen_xif_tieoff
-            assign xif_compressed_if.compressed_ready = 1'b0;
-            assign xif_compressed_if.compressed_resp  = '0;
-            assign xif_issue_if.issue_ready           = 1'b0;
-            assign xif_issue_if.issue_resp            = '0;
-            assign xif_mem_if.mem_valid               = 1'b0;
-            assign xif_mem_if.mem_req                 = '0;
-            assign xif_result_if.result_valid         = 1'b0;
-            assign xif_result_if.result               = '0;
+            assign ext_if.compressed_ready = 1'b0;
+            assign ext_if.compressed_resp  = '0;
+            assign ext_if.issue_ready      = 1'b0;
+            assign ext_if.issue_resp       = '0;
+            assign ext_if.mem_valid        = 1'b0;
+            assign ext_if.mem_req          = '0;
+            assign ext_if.result_valid     = 1'b0;
+            assign ext_if.result           = '0;
         end
     endgenerate
 
@@ -202,16 +205,45 @@ module xheep_rtl_basic_dma64
         end
     end
 
+    assign ext_xbar_master_req[EXT_MASTER_BOOT_IDX] = final_slave_obi_req;
+    assign boot_obi_resp = ext_xbar_master_resp[EXT_MASTER_BOOT_IDX];
+
+    generate
+        if (QUADRILATERO == 1) begin : gen_quadrilatero_wrapper
+            quadrilatero_wrapper #(
+                .MATRIX_FPU(0)
+            ) quadrilatero_wrapper_i (
+                .clk_i(clk),
+                .rst_ni(x_heep_rst_n),
+                // eXtension Interface
+                .xif_compressed_if      (ext_if),
+                .xif_issue_if           (ext_if),
+                .xif_commit_if          (ext_if),
+                .xif_mem_if             (ext_if),
+                .xif_mem_result_if      (ext_if),
+                .xif_result_if          (ext_if),
+                // OBI signals
+                .quadrilatero_ch0_req_o (ext_xbar_master_req[EXT_MASTER4_IDX]),
+                .quadrilatero_ch0_resp_i(ext_xbar_master_resp[EXT_MASTER4_IDX]),
+                .quadrilatero_ch1_req_o (ext_xbar_master_req[EXT_MASTER5_IDX]),
+                .quadrilatero_ch1_resp_i(ext_xbar_master_resp[EXT_MASTER5_IDX]),
+                .quadrilatero_ch2_req_o (ext_xbar_master_req[EXT_MASTER6_IDX]),
+                .quadrilatero_ch2_resp_i(ext_xbar_master_resp[EXT_MASTER6_IDX]),
+                .quadrilatero_ch3_req_o (ext_xbar_master_req[EXT_MASTER7_IDX]),
+                .quadrilatero_ch3_resp_i(ext_xbar_master_resp[EXT_MASTER7_IDX])
+            );
+        end
+    endgenerate
+
     core_v_mini_mcu #(
-        .EXT_XBAR_NMASTER(1),
-        .QUADRILATERO(QUADRILATERO)
+        .EXT_XBAR_NMASTER(EXT_XBAR_NMASTER)
     ) u_xheep (
         .clk_i   (clk),
         .rst_ni  (x_heep_rst_n),
 
         // External Slave Port: Boot Controller
-        .ext_xbar_master_req_i  (final_slave_obi_req),
-        .ext_xbar_master_resp_o (boot_obi_resp),
+        .ext_xbar_master_req_i  (ext_xbar_master_req),
+        .ext_xbar_master_resp_o (ext_xbar_master_resp),
 
         .ext_ao_peripheral_slave_req_i ('0),
         .ext_ao_peripheral_slave_resp_o(),
@@ -245,12 +277,12 @@ module xheep_rtl_basic_dma64
         .cpu_subsystem_powergate_switch_ack_ni        (1'b1),
         .peripheral_subsystem_powergate_switch_ack_ni (1'b1),
         .external_subsystem_powergate_switch_ack_ni   (1'b1),
-        .xif_compressed_if(xif_compressed_if),
-        .xif_issue_if(xif_issue_if),
-        .xif_commit_if(xif_commit_if),
-        .xif_mem_if(xif_mem_if),
-        .xif_mem_result_if(xif_mem_result_if),
-        .xif_result_if(xif_result_if),
+        .xif_compressed_if(ext_if),
+        .xif_issue_if(ext_if),
+        .xif_commit_if(ext_if),
+        .xif_mem_if(ext_if),
+        .xif_mem_result_if(ext_if),
+        .xif_result_if(ext_if),
         .xheep_instance_id_i(32'd0)
     );
 

@@ -1,9 +1,25 @@
 ACCEL_NAME := xheep
 
+# Set QUADRILATERO=1 to enable Quadrilatero matrix extension support
+QUADRILATERO ?= 0
+
 .PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-filelists clean
 
 ESP_TOP ?= $(abspath $(CURDIR)/../../..)
 ACCEL_PATH := accelerators/rtl/$(ACCEL_NAME)_rtl
+
+# Quadrilatero-specific flags
+ifeq ($(QUADRILATERO),1)
+QUADRILATERO_MCU_FLAGS := QUADRILATERO=1
+QUADRILATERO_APP_FLAGS := COMPILER_FLAGS=-menable-experimental-extensions ARCH=rv32imc_zicsr_xtheadmatrix0p1 COMPILER=clang CLANG_LINKER_USE_LD=1 
+QUADRILATERO_FUSESOC_FLAGS := FUSESOC_PARAM="--COMMON_CELLS_ASSERTS_OFF"
+else
+QUADRILATERO_MCU_FLAGS := 
+QUADRILATERO_APP_FLAGS := ARCH=rv32imc
+QUADRILATERO_FUSESOC_FLAGS := FUSESOC_PARAM="--COMMON_CELLS_ASSERTS_OFF"
+endif
+
+COREV_VERSION ?= 1.0.4
 
 # Roots
 XHEEP_ROOT := $(ESP_TOP)/$(ACCEL_PATH)
@@ -17,6 +33,7 @@ $(info [$(ACCEL_NAME)] VLOG_FILELIST=$(VLOG_FILELIST))
 $(info [$(ACCEL_NAME)] VLOG_INCDIRS=$(VLOG_INCDIRS))
 
 X_HEEP_CFG ?= configs/esp_heep.hjson
+PYTHON_X_HEEP_CFG ?= configs/esp_heep.py
 XHEEP_FPGA_BOARD ?= nexys-a7-100t
 MODELSIM_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/sim-modelsim
 VIVADO_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/$(XHEEP_FPGA_BOARD)-vivado
@@ -45,13 +62,13 @@ $(ACCEL_NAME)-vivado:
 	$(MAKE) sw
 
 mcu-gen:
-	$(MAKE) -C $(XH_ROOT) mcu-gen X_HEEP_CFG=$(X_HEEP_CFG)
+	$(MAKE) -C $(XH_ROOT) mcu-gen X_HEEP_CFG=$(X_HEEP_CFG) $(QUADRILATERO_MCU_FLAGS) PYTHON_X_HEEP_CFG=$(PYTHON_X_HEEP_CFG)
 
 questa:
-	$(MAKE) -C $(XH_ROOT) questasim-build 
+	$(MAKE) -C $(XH_ROOT) questasim-build $(QUADRILATERO_FUSESOC_FLAGS)
 
 vivado-setup:
-	$(MAKE) -C $(XH_ROOT) vivado-fpga-nobuild FPGA_BOARD=$(XHEEP_FPGA_BOARD)
+	$(MAKE) -C $(XH_ROOT) vivado-fpga-nobuild FPGA_BOARD=$(XHEEP_FPGA_BOARD) $(QUADRILATERO_FUSESOC_FLAGS)
 
 update-$(ACCEL_NAME)-filelists:
 	@set -e; \
@@ -127,7 +144,7 @@ sw:
 	rm -rf $(XH_ROOT)/sw/build
 	@for app_cur in $(XHEEP_APPS); do \
 		echo "[$(ACCEL_NAME)] Building X-HEEP app $$app_cur"; \
-		$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) ARCH=rv32imc app PROJECT=$$app_cur LINKER=on_chip TARGET=sim COMPILER_FLAGS+=" -I$(XH_ROOT)/sw/vendor/esp_common" || exit $$?; \
+		$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) app PROJECT=$$app_cur LINKER=on_chip TARGET=sim  $(QUADRILATERO_APP_FLAGS) COMPILER_FLAGS+=" -I$(XH_ROOT)/sw/vendor/esp_common" || exit $$?; \
 		header="$(ACCEL_NAME)_fw_$${app_cur}.h"; \
 		fw_symbol="$(ACCEL_NAME)_fw_$${app_cur}"; \
 		mkdir -p $(XH_ROOT)/sw/generated; \
