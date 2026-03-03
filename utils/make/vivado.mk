@@ -17,12 +17,12 @@ endif
 
 ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 
-ACC_TECH_DIR   := $(ESP_ROOT)/tech/$(TECHLIB)/acc
-ACC_TECH_PRESENT := $(filter-out common,$(filter $(notdir $(wildcard $(ACC_TECH_DIR)/*)),$(RTL_ACC)))
-ACC_VHDL_SRCS  := $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VHDL_SRCS))
-ACC_VLOG_SRCS  := $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VLOG_SRCS))
-BASE_VHDL_SRCS := $(filter-out $(ACC_VHDL_SRCS),$(VHDL_SRCS))
-BASE_VLOG_SRCS := $(filter-out $(ACC_VLOG_SRCS),$(VLOG_SRCS))
+ACC_TECH_DIR   = $(ESP_ROOT)/tech/$(TECHLIB)/acc
+ACC_TECH_PRESENT = $(filter-out common,$(filter $(notdir $(wildcard $(ACC_TECH_DIR)/*)),$(RTL_ACC)))
+ACC_VHDL_SRCS  = $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VHDL_SRCS))
+ACC_VLOG_SRCS  = $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VLOG_SRCS))
+BASE_VHDL_SRCS = $(filter-out $(ACC_VHDL_SRCS),$(VHDL_SRCS))
+BASE_VLOG_SRCS = $(filter-out $(ACC_VLOG_SRCS),$(VLOG_SRCS))
 
 XDC   = $(ESP_ROOT)/constraints/$(BOARD)/$(BOARD)$(XDC_SUFFIX).xdc
 XDC  += $(ESP_ROOT)/constraints/$(BOARD)/$(BOARD)$(XDC_SUFFIX)-mig-pins.xdc
@@ -74,6 +74,11 @@ endif
 		echo "read_vhdl $$rtl" >> $@; \
 	done;
 	@for rtl in $(BASE_VLOG_SRCS); do \
+		case "$$rtl" in \
+			$(ACC_TECH_DIR)/*) \
+				accname=$$(printf "%s\n" "$$rtl" | awk -F/ '{for(i=1;i<=NF;i++) if($$i=="acc"){print $$(i+1); exit}}'); \
+				case " $(RTL_ACC) " in *" $$accname "*) continue ;; esac ;; \
+		esac; \
 		echo "read_verilog -sv $$rtl" >> $@; \
 	done;
 	@if test -d $(ACC_TECH_DIR); then \
@@ -81,7 +86,7 @@ endif
 			if test -d "$$accdir"; then \
 				accname=`basename "$$accdir"`; \
 				case " $(RTL_ACC) " in *" $$accname "*) ;; *) continue ;; esac; \
-				acclib=acc_`echo $$accname | sed 's/[^A-Za-z0-9_]/_/g'`; \
+				acclib=$$accname; \
 				accsrc="$(ESP_ROOT)/accelerators/rtl/$$accname"; \
 				incroot="$$accsrc/vlog_incdir"; \
 				echo "# Accelerator $$accname (library $$acclib)" >> $@; \
@@ -289,10 +294,21 @@ vivado/syn.tcl: vivado
 	@echo "get_ips" >> $@
 	@echo "wait_on_run -timeout 360 synth_1" >> $@
 	@echo "set_msg_config -suppress -id {Drc 23-20}" >> $@
-	@echo "launch_runs impl_1 -jobs 12" >> $@
+	@echo "set_property STEPS.OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
+	@echo "set_property STEPS.PLACE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
+	@echo "set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
+	@echo "set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
+	@echo "launch_runs impl_1 -to_step route_design -jobs 12" >> $@
 	@echo "wait_on_run -timeout 360 impl_1" >> $@
-	@echo "launch_runs impl_1 -to_step write_bitstream" >> $@
-	@echo "wait_on_run -timeout 60 impl_1" >> $@
+	@echo "open_run impl_1" >> $@
+	@echo "report_methodology -checks [get_methodology_checks {TIMING-* XDC*}] -file methodology_impl.rpt" >> $@
+	@echo "check_timing -file check_timing_impl.rpt" >> $@
+	@echo "report_timing_summary -file timing_summary_impl.rpt" >> $@
+	@echo "report_timing -delay_type min -sort_by slack -max_paths 200 -path_type full_clock -file hold_200_pre_holdfix.rpt" >> $@
+	@echo "phys_opt_design -hold_fix" >> $@
+	@echo "report_timing -delay_type min -sort_by slack -max_paths 200 -path_type full_clock -file hold_200_post_holdfix.rpt" >> $@
+	@echo "report_timing -delay_type max -sort_by slack -max_paths 50 -path_type full_clock -file setup_50_post_holdfix.rpt" >> $@
+	@echo "write_bitstream -force [get_property DIRECTORY [get_runs impl_1]]/top.bit" >> $@
 
 vivado/syn_emu.tcl: vivado
 	$(QUIET_INFO)echo "generating synthesis script for Vivado"
