@@ -2,9 +2,7 @@
 
 module xheep_rtl_basic_dma32
   import obi_pkg::*;
-#(
-    parameter bit QUADRILATERO = 1'b1
-) (
+(
     clk,
     rst,
     dma_read_chnl_valid,
@@ -33,6 +31,8 @@ module xheep_rtl_basic_dma32
     dma_write_chnl_data,
     dma_write_chnl_ready
 );
+
+    localparam bit QUADRILATERO = 1'b0;
 
     parameter AXI_ADDR_WIDTH = 32;
     parameter AXI_DATA_WIDTH = 32;

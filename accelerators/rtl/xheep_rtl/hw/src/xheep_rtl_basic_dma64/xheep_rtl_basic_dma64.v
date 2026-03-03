@@ -2,9 +2,7 @@
 
 module xheep_rtl_basic_dma64
   import obi_pkg::*;
-#(
-    parameter bit QUADRILATERO = 1'b1
-) (
+ (
     clk,
     rst,
     dma_read_chnl_valid,
@@ -33,6 +31,8 @@ module xheep_rtl_basic_dma64
     dma_write_chnl_data,
     dma_write_chnl_ready
 );
+
+    localparam bit QUADRILATERO = 1'b0;
 
     // ========================================================================
     // I/O Ports
@@ -174,6 +174,7 @@ module xheep_rtl_basic_dma64
     // X-HEEP Instance
     // ========================================================================
     
+    // Quadrilatero uses two source operands on CV-X-IF.
     localparam int XIF_NUM_RS = 2;
     if_xif #(.X_NUM_RS(XIF_NUM_RS)) ext_if();
 
