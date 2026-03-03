@@ -1,10 +1,16 @@
 This document describes how the X-Heep RTL accelerator is integrated into ESP and how to build and interface with it.
 
+## Setup
+To setup the environment for X-Heep, follow the X-Heep [setup guide](https://x-heep.readthedocs.io/en/latest/GettingStarted/Setup.html).
+A complete guide on how to use X-Heep can be found in the X-Heep [manual](https://x-heep.readthedocs.io/en/latest/index.html).
+
 ## Main make targets
 These are the make targets for the X-Heep flow:
-- `sw`: builds the X-Heep firmware and generates the header/blob that ESP will embed and load at runtime.
-- `hw`: builds the RTL wrappers and integrates the accelerator into the ESP build.
-- `xheep-vivado`: runs the Vivado flow for the X-Heep-enabled design.
+- Simulation flow (modelsim)
+  - `sw`: builds the X-Heep firmware and generates the header/blob that ESP will embed and load at runtime.
+  - `hw`: builds the RTL wrappers and integrates the accelerator into the ESP build.
+- FPGA flow (Vivado)
+  - `xheep-vivado`: runs the Vivado flow for the X-Heep-enabled design.
 
 ## Folder structure (accelerators/rtl/xheep_rtl)
 - `hw/`: RTL wrappers that instantiate X-Heep inside ESP.
@@ -13,12 +19,21 @@ These are the make targets for the X-Heep flow:
   - `hw/src/xheep_rtl_basic_dma64/xheep_boot_controller_dma64.sv`: boot controller and code fetch logic.
   - same for the 32bit versions.
 - `sw/`: software side for X-Heep (headers, build rules, and examples).
+  - `sw/baremetal/app`: Baremetal apps ran by ESP.
+  - `sw/linux/app`: Linux apps ran by ESP.
+  - `sw/baremetal/include/xheep_rtl_accelerator.h`: Baremetal library for communicating with the X-Heep tile.
 - `vendor/x-heep/`: upstream X-Heep repository.
-- `create_xheep_instance.py`: helper script to generate a new instance/variant.
-
-
-## Creating a new X-Heep instance
-Use `accelerators/rtl/xheep_rtl/create_xheep_instance.py` to generate a new instance with a different configuration. The script generates the RTL and software scaffolding for a new variant; keep the resulting instance under `accelerators/rtl/xheep_rtl/hw` and its matching software under `accelerators/rtl/xheep_rtl/sw` so the build system can pick it up.
+  - `vendor/x-heep/sw/applications`: Apps ran by X-Heep, compiled and turned onto a binary header.
+    - `vendor/x-heep/sw/applications/<app_name>/common`: Headers shared by both X-Heep and ESP app (containing for example common addresses).
+  - `vendor/x-heep/sw/vendor/esp_common`: Header used by the X-heep app for communicating with the host ESP system.
+  - `vendor/x-heep/sw/vendor/configs/esp_heep.hjson`, `vendor/x-heep/sw/vendor/configs/esp_heep.py`: X-Heep configuration files used by the **mcu-gen** tool to generate the MCU.  
+- `Makefile`: make targets for generating the MCU, generating file lists and compiling the X-Heep software. Paramters to modify there:
+  - **XHEEP_APPS** : X-Heep applications to be compiled and copied to the baremetal ESP app.
+  - **ESP_BAREMETAL_APP** : Target bare-metal application ran by ESP (must be in `sw/baremetal/app`).
+  - **ESP_LINUX_APP** : Target linux application ran by ESP (must be in `sw/linux/app`).
+  - **QUADRILATERO** : Set to 1 to instatiate the [Quadrilatero](https://github.com/pulp-platform/quadrilatero) accelerator in the X-Heep tile.
+  - **FPU** : Set to 1 to instatiate the floating-point unit in X-Heep (needs the cv32e40px CPU).
+- `create_xheep_instance.py`: helper script to generate a new instance/variant. Only needed for instantating multiple **heterogeneous** X-Heep tiles.
 
 ## Interface between X-Heep and ESP
 The integration is bidirectional:
