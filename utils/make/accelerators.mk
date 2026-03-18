@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024 Columbia University, System Level Design Group
+# Copyright (c) 2011-2025 Columbia University, System Level Design Group
 # SPDX-License-Identifier: Apache-2.0
 
 STRATUSHLS_ACC_PATH      = $(ESP_ROOT)/accelerators/stratus_hls
@@ -69,7 +69,7 @@ THIRDPARTY_PATH = $(ESP_ROOT)/accelerators/third-party
 ifdef CPU_ARCH
 THIRDPARTY_ACC  = $(foreach acc, $(shell ls $(THIRDPARTY_PATH)), $(shell if grep -q $(CONFIG_DMA_NOC_WIDTH) $(THIRDPARTY_PATH)/$(acc)/$(acc).dma_widths; then echo $(acc); fi))
 else
-THIRDPARTY_ACC  = ""
+THIRDPARTY_ACC  =
 endif
 THIRDPARTY_ACC-clean     = $(addsuffix -clean, $(THIRDPARTY_ACC))
 THIRDPARTY_ACC-distclean = $(addsuffix -distclean, $(THIRDPARTY_ACC))
@@ -421,7 +421,7 @@ $(ESP_ROOT)/tech/$(TECHLIB)/acc/installed.log:
 SOCKETGEN_DEPS  = $(ESP_ROOT)/tech/$(TECHLIB)/acc/installed.log
 SOCKETGEN_DEPS += $(ESP_ROOT)/tools/socketgen/socketgen.py
 SOCKETGEN_DEPS += $(wildcard $(ESP_ROOT)/tools/socketgen/templates/*.vhd)
-SOCKETGEN_DEPS += $(ESP_CFG_BUILD)/socmap.vhd $(ESP_CFG_BUILD)/esp_global.vhd
+SOCKETGEN_DEPS += $(ESP_CFG_BUILD)/socmap.vhd $(ESP_CFG_BUILD)/esp_global.vhd $(ESP_CFG_BUILD)/esp_global_sv.sv
 
 ### ESP Wrappers ###
 socketgen: $(SOCKETGEN_DEPS)

@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 -----------------------------------------------------------------------------
 --  Testbench for ESP on Xilinx VCU118
@@ -135,7 +135,7 @@ begin
   uart_rxd  <= '0';
   uart_ctsn <= '0';
 
-  cpu : top
+  soc_inst : top
     generic map (
       SIMULATION      => SIMULATION)
     port map (

@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 -----------------------------------------------------------------------------
 --  Testbench for ESP on Xilinx VC707
@@ -144,7 +144,7 @@ begin
   switch <= (others => '0');
 
 
-  top_1 : entity work.top
+  soc_inst : entity work.top
     generic map (
       SIMULATION      => SIMULATION)
     port map (

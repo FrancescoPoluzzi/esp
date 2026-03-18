@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 ------------------------------------------------------------------------------
@@ -33,6 +33,7 @@ use work.config.all;
 use work.esp_global.all;
 use work.socmap.all;
 use work.tiles_pkg.all;
+use work.axi2mig_pkg.all;
 
 entity top is
   generic (
@@ -250,39 +251,6 @@ end;
 
 architecture rtl of top is
 
-  component ahb2mig_ebddr4r5 is
-    generic (
-      hindex : integer;
-      haddr  : integer;
-      hmask  : integer
-      );
-    port (
-      c0_sys_clk_p     : in    std_logic;
-      c0_sys_clk_n     : in    std_logic;
-      c0_ddr4_act_n    : out   std_logic;
-      c0_ddr4_adr      : out   std_logic_vector(16 downto 0);
-      c0_ddr4_ba       : out   std_logic_vector(1 downto 0);
-      c0_ddr4_bg       : out   std_logic_vector(1 downto 0);
-      c0_ddr4_cke      : out   std_logic_vector(1 downto 0);
-      c0_ddr4_odt      : out   std_logic_vector(1 downto 0);
-      c0_ddr4_cs_n     : out   std_logic_vector(1 downto 0);
-      c0_ddr4_ck_t     : out   std_logic_vector(0 downto 0);
-      c0_ddr4_ck_c     : out   std_logic_vector(0 downto 0);
-      c0_ddr4_reset_n  : out   std_logic;
-      c0_ddr4_dm_dbi_n : inout std_logic_vector(8 downto 0);
-      c0_ddr4_dq       : inout std_logic_vector(71 downto 0);
-      c0_ddr4_dqs_c    : inout std_logic_vector(8 downto 0);
-      c0_ddr4_dqs_t    : inout std_logic_vector(8 downto 0);
-      ahbso            : out   ahb_slv_out_type;
-      ahbsi            : in    ahb_slv_in_type;
-      calib_done       : out   std_logic;
-      rst_n_syn        : in    std_logic;
-      rst_n_async      : in    std_logic;
-      clk_amba         : in    std_logic;
-      ui_clk           : out   std_logic;
-      ui_clk_sync_rst  : out   std_logic);
-  end component ahb2mig_ebddr4r5;
-
   function set_ddr_index (
     constant n : integer range 0 to 7)
     return integer is
@@ -363,11 +331,11 @@ architecture rtl of top is
 
 constant MAX_NMEM_TILES : integer := 8;
 -- Memory controller DDR4
-  signal ddr_ahbsi : ahb_slv_in_vector_type(0 to MAX_NMEM_TILES - 1);
-  signal ddr_ahbso : ahb_slv_out_vector_type(0 to MAX_NMEM_TILES - 1);
+  signal ddr_axi_si   : axi_mosi_vector(0 to MAX_NMEM_TILES-1);
+  signal ddr_axi_so   : axi_somi_vector(0 to MAX_NMEM_TILES-1);
 
 -- Ethernet
-constant CPU_FREQ : integer := 100000;  -- cpu frequency in KHz
+  constant CPU_FREQ : integer := 100000;  -- cpu frequency in KHz
 
   signal eth0_apbi   : apb_slv_in_type;
   signal eth0_apbo   : apb_slv_out_type;
@@ -628,7 +596,7 @@ begin
   reset_pad : inpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v) port map (reset, rst);
   rst0      : rstgen                    -- reset generator
     generic map (acthigh => 1, syncin => 0)
-    port map (rst, clkm, lock, rstn, open);
+    port map (rst, chip_refclk, lock, rstn, open);
 
   mig_rst0 : rstgen                         -- reset generator
     generic map (acthigh => 1)
@@ -683,11 +651,10 @@ begin
 ----------------------------------------------------------------------
 
   gen_mig : if (SIMULATION /= true) generate
-    ddrc0 : ahb2mig_ebddr4r5
+    ddrc0 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(0)),
-        hmask  => ddr_hmask(this_ddr_index(0)))
+	    AXIDW => MEM_AXIDW
+	  )
       port map (
         c0_sys_clk_p     => c0_sys_clk_p,
         c0_sys_clk_n     => c0_sys_clk_n,
@@ -705,21 +672,20 @@ begin
         c0_ddr4_dq       => c0_ddr4_dq,
         c0_ddr4_dqs_c    => c0_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c0_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(0),
-        ahbsi            => ddr_ahbsi(0),
+        ddr_axi_si  	 => ddr_axi_si(0),
+        ddr_axi_so  	 => ddr_axi_so(0),
         calib_done       => c0_calib_done,
         rst_n_syn        => migrstn,
         rst_n_async      => rstraw,
-        clk_amba         => clkm,
+        clk_amba         => open,
         ui_clk           => clkm,
         ui_clk_sync_rst  => clkm_sync_rst
         );
 
-    ddrc1 : ahb2mig_ebddr4r5
+    ddrc1 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(1)),
-        hmask  => ddr_hmask(this_ddr_index(1)))
+        AXIDW => MEM_AXIDW 
+       )
       port map (
         c0_sys_clk_p     => c1_sys_clk_p,
         c0_sys_clk_n     => c1_sys_clk_n,
@@ -737,21 +703,20 @@ begin
         c0_ddr4_dq       => c1_ddr4_dq,
         c0_ddr4_dqs_c    => c1_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c1_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(1),
-        ahbsi            => ddr_ahbsi(1),
+        ddr_axi_si  	 => ddr_axi_si(1),
+        ddr_axi_so  	 => ddr_axi_so(1),
         calib_done       => c1_calib_done,
         rst_n_syn        => migrstn_1,
         rst_n_async      => rstraw_1,
-        clk_amba         => clkm_1,
+        clk_amba         => open,
         ui_clk           => clkm_1,
         ui_clk_sync_rst  => clkm_sync_rst_1
         );
 
-    ddrc2 : ahb2mig_ebddr4r5
+    ddrc2 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(2)),
-        hmask  => ddr_hmask(this_ddr_index(2)))
+        AXIDW  => MEM_AXIDW
+	  )
       port map (
         c0_sys_clk_p     => c2_sys_clk_p,
         c0_sys_clk_n     => c2_sys_clk_n,
@@ -769,21 +734,20 @@ begin
         c0_ddr4_dq       => c2_ddr4_dq,
         c0_ddr4_dqs_c    => c2_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c2_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(2),
-        ahbsi            => ddr_ahbsi(2),
+        ddr_axi_si  	 => ddr_axi_si(2),
+        ddr_axi_so  	 => ddr_axi_so(2),
         calib_done       => c2_calib_done,
         rst_n_syn        => migrstn_2,
         rst_n_async      => rstraw_2,
-        clk_amba         => clkm_2,
+        clk_amba         => open,
         ui_clk           => clkm_2,
         ui_clk_sync_rst  => clkm_sync_rst_2
         );
 
-    ddrc3 : ahb2mig_ebddr4r5
+    ddrc3 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(3)),
-        hmask  => ddr_hmask(this_ddr_index(3)))
+        AXIDW  => MEM_AXIDW
+        )
       port map (
         c0_sys_clk_p     => c3_sys_clk_p,
         c0_sys_clk_n     => c3_sys_clk_n,
@@ -801,21 +765,20 @@ begin
         c0_ddr4_dq       => c3_ddr4_dq,
         c0_ddr4_dqs_c    => c3_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c3_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(3),
-        ahbsi            => ddr_ahbsi(3),
+        ddr_axi_si  	 => ddr_axi_si(3),
+        ddr_axi_so  	 => ddr_axi_so(3),
         calib_done       => c3_calib_done,
         rst_n_syn        => migrstn_3,
         rst_n_async      => rstraw_3,
-        clk_amba         => clkm_3,
+        clk_amba         => open,
         ui_clk           => clkm_3,
         ui_clk_sync_rst  => clkm_sync_rst_3
         );
 
-    ddrc4 : ahb2mig_ebddr4r5
+    ddrc4 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(4)),
-        hmask  => ddr_hmask(this_ddr_index(4)))
+        AXIDW  => MEM_AXIDW 
+        )
       port map (
         c0_sys_clk_p     => c4_sys_clk_p,
         c0_sys_clk_n     => c4_sys_clk_n,
@@ -833,21 +796,20 @@ begin
         c0_ddr4_dq       => c4_ddr4_dq,
         c0_ddr4_dqs_c    => c4_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c4_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(4),
-        ahbsi            => ddr_ahbsi(4),
+        ddr_axi_si  	 => ddr_axi_si(4),
+        ddr_axi_so  	 => ddr_axi_so(4),
         calib_done       => c4_calib_done,
         rst_n_syn        => migrstn_4,
         rst_n_async      => rstraw_4,
-        clk_amba         => clkm_4,
+        clk_amba         => open,
         ui_clk           => clkm_4,
         ui_clk_sync_rst  => clkm_sync_rst_4
         );
 
-    ddrc5 : ahb2mig_ebddr4r5
+    ddrc5 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(5)),
-        hmask  => ddr_hmask(this_ddr_index(5)))
+        AXIDW => MEM_AXIDW	
+      )
       port map (
         c0_sys_clk_p     => c5_sys_clk_p,
         c0_sys_clk_n     => c5_sys_clk_n,
@@ -865,21 +827,20 @@ begin
         c0_ddr4_dq       => c5_ddr4_dq,
         c0_ddr4_dqs_c    => c5_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c5_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(5),
-        ahbsi            => ddr_ahbsi(5),
+        ddr_axi_si  	 => ddr_axi_si(5),
+        ddr_axi_so  	 => ddr_axi_so(5),
         calib_done       => c5_calib_done,
         rst_n_syn        => migrstn_5,
         rst_n_async      => rstraw_5,
-        clk_amba         => clkm_5,
+        clk_amba         => open,
         ui_clk           => clkm_5,
         ui_clk_sync_rst  => clkm_sync_rst_5
         );
 
-    ddrc6 : ahb2mig_ebddr4r5
+    ddrc6 : axi2mig_ebddr4r5
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(this_ddr_index(6)),
-        hmask  => ddr_hmask(this_ddr_index(6)))
+		AXIDW => MEM_AXIDW
+	  )
       port map (
         c0_sys_clk_p     => c6_sys_clk_p,
         c0_sys_clk_n     => c6_sys_clk_n,
@@ -897,194 +858,147 @@ begin
         c0_ddr4_dq       => c6_ddr4_dq,
         c0_ddr4_dqs_c    => c6_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c6_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(6),
-        ahbsi            => ddr_ahbsi(6),
+        ddr_axi_si  	 => ddr_axi_si(6),
+        ddr_axi_so  	 => ddr_axi_so(6),
         calib_done       => c6_calib_done,
         rst_n_syn        => migrstn_6,
         rst_n_async      => rstraw_6,
-        clk_amba         => clkm_6,
+        clk_amba         => open,
         ui_clk           => clkm_6,
         ui_clk_sync_rst  => clkm_sync_rst_6
         );
 
---    ddrc7 : ahb2mig_ebddr4r5
---      generic map (
---        hindex => 0,
---        haddr  => ddr_haddr(this_ddr_index(7)),
---        hmask  => ddr_hmask(this_ddr_index(7)))
---      port map (
---        c0_sys_clk_p     => c7_sys_clk_p,
---        c0_sys_clk_n     => c7_sys_clk_n,
---        c0_ddr4_act_n    => c7_ddr4_act_n,
---        c0_ddr4_adr      => c7_ddr4_adr,
---        c0_ddr4_ba       => c7_ddr4_ba,
---        c0_ddr4_bg       => c7_ddr4_bg,
---        c0_ddr4_cke      => c7_ddr4_cke,
---        c0_ddr4_odt      => c7_ddr4_odt,
---        c0_ddr4_cs_n     => c7_ddr4_cs_n,
---        c0_ddr4_ck_t     => c7_ddr4_ck_t,
---        c0_ddr4_ck_c     => c7_ddr4_ck_c,
---        c0_ddr4_reset_n  => c7_ddr4_reset_n,
---        c0_ddr4_dm_dbi_n => c7_ddr4_dm_dbi_n,
---        c0_ddr4_dq       => c7_ddr4_dq,
---        c0_ddr4_dqs_c    => c7_ddr4_dqs_c,
---        c0_ddr4_dqs_t    => c7_ddr4_dqs_t,
---        ahbso            => ddr_ahbso(7),
---        ahbsi            => ddr_ahbsi(7),
---        calib_done       => c7_calib_done,
---        rst_n_syn        => migrstn_7,
---        rst_n_async      => rstraw_7,
---        clk_amba         => clkm_7,
---        ui_clk           => clkm_7,
---        ui_clk_sync_rst  => clkm_sync_rst_7
---        );
      end generate gen_mig;
 
   gen_mig_model : if (SIMULATION = true) generate
     -- pragma translate_off
 
-    mig_ahbram : ahbram_sim
+    mig_axiram_0 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(0)),
-        hmask => ddr_hmask(this_ddr_index(0)),
-        ahbsi => ddr_ahbsi(0),
-        ahbso => ddr_ahbso(0)
+        ddr_axi_si  => ddr_axi_si(0),
+        ddr_axi_so  => ddr_axi_so(0)
         );
 
-    mig_ahbram1 : ahbram_sim
+    mig_axiram_1 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(1)),
-        hmask => ddr_hmask(this_ddr_index(1)),
-        ahbsi => ddr_ahbsi(1),
-        ahbso => ddr_ahbso(1)
+        ddr_axi_si  => ddr_axi_si(1),
+        ddr_axi_so  => ddr_axi_so(1)
         );
 
-    mig_ahbram2 : ahbram_sim
+    mig_axiram_2 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(2)),
-        hmask => ddr_hmask(this_ddr_index(2)),
-        ahbsi => ddr_ahbsi(2),
-        ahbso => ddr_ahbso(2)
+        ddr_axi_si  => ddr_axi_si(2),
+        ddr_axi_so  => ddr_axi_so(2)
         );
 
-    mig_ahbram3 : ahbram_sim
+    mig_axiram_3 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(3)),
-        hmask => ddr_hmask(this_ddr_index(3)),
-        ahbsi => ddr_ahbsi(3),
-        ahbso => ddr_ahbso(3)
+        ddr_axi_si  => ddr_axi_si(3),
+        ddr_axi_so  => ddr_axi_so(3)
         );
 
-    mig_ahbram4 : ahbram_sim
+    mig_axiram_4 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(4)),
-        hmask => ddr_hmask(this_ddr_index(4)),
-        ahbsi => ddr_ahbsi(4),
-        ahbso => ddr_ahbso(4)
+        ddr_axi_si  => ddr_axi_si(4),
+        ddr_axi_so  => ddr_axi_so(4)
         );
 
-    mig_ahbram5 : ahbram_sim
+    mig_axiram_5 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(5)),
-        hmask => ddr_hmask(this_ddr_index(5)),
-        ahbsi => ddr_ahbsi(5),
-        ahbso => ddr_ahbso(5)
+        ddr_axi_si  => ddr_axi_si(5),
+        ddr_axi_so  => ddr_axi_so(5)
         );
 
-    mig_ahbram6 : ahbram_sim
+    mig_axiram_6 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(6)),
-        hmask => ddr_hmask(this_ddr_index(6)),
-        ahbsi => ddr_ahbsi(6),
-        ahbso => ddr_ahbso(6)
+        ddr_axi_si  => ddr_axi_si(6),
+        ddr_axi_so  => ddr_axi_so(6)
         );
 
-    mig_ahbram7 : ahbram_sim
+    mig_axiram_7 : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 1000,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
         rst   => rstn,
         clk   => clkm,
-        haddr => ddr_haddr(this_ddr_index(7)),
-        hmask => ddr_hmask(this_ddr_index(7)),
-        ahbsi => ddr_ahbsi(7),
-        ahbso => ddr_ahbso(7)
+        ddr_axi_si  => ddr_axi_si(7),
+        ddr_axi_so  => ddr_axi_so(7)
         );
 
     c0_ddr4_act_n    <= '1';
@@ -1434,11 +1348,6 @@ begin
   sys_clk(4)     <= clkm_4;
   sys_clk(5)     <= clkm_5;
   sys_clk(6)     <= clkm_6;
---  sys_clk(7)     <= clkm_7;
-
-  set_upper_ahbsi : for i in CFG_NMEM_TILE to MAX_NMEM_TILES-1 generate
-        ddr_ahbsi(i) <= ahbs_in_none; 
-  end generate set_upper_ahbsi; 
 
   esp_1 : esp
     generic map (
@@ -1452,8 +1361,8 @@ begin
       uart_ctsn   => uart_ctsn_int,
       uart_rtsn   => uart_rtsn_int,
       cpuerr      => cpuerr,
-      ddr_ahbsi   => ddr_ahbsi(0 to MEM_ID_RANGE_MSB),
-      ddr_ahbso   => ddr_ahbso(0 to MEM_ID_RANGE_MSB),
+      ddr_axi_si  => ddr_axi_si(0 to MEM_ID_RANGE_MSB),
+      ddr_axi_so  => ddr_axi_so(0 to MEM_ID_RANGE_MSB),
       eth0_apbi   => eth0_apbi,
       eth0_apbo   => eth0_apbo,
       edcl_ahbmo  => edcl_ahbmo,
@@ -1481,13 +1390,13 @@ begin
     
     gen_mon_ddr : for i in 0 to MEM_ID_RANGE_MSB generate
         mon_ddr(i).clk <= sys_clk(i);
-        detect_ddr_access : process (ddr_ahbsi)
+        detect_ddr_access : process (ddr_axi_si)
         begin  -- process detect_mem_access
           mon_ddr(i).word_transfer <= '0';
 
-          if ((ddr_ahbsi(i).haddr(31 downto 20) xor conv_std_logic_vector(ddr_haddr(i), 12))
+          if ((ddr_axi_si(i).aw.addr(31 downto 20) xor conv_std_logic_vector(ddr_haddr(i), 12))
               and conv_std_logic_vector(ddr_hmask(i), 12)) = zero32(31 downto 20) then
-            if ddr_ahbsi(i).hready = '1' and ddr_ahbsi(i).htrans /= HTRANS_IDLE then
+            if ddr_axi_si(i).w.valid = '1' and ddr_axi_so(i).w.ready = '1' then
               mon_ddr(i).word_transfer <= '1';
             end if;
           end if;

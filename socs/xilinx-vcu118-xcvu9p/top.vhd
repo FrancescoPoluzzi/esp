@@ -30,6 +30,7 @@ use work.config.all;
 use work.esp_global.all;
 use work.socmap.all;
 use work.tiles_pkg.all;
+use work.axi2mig_pkg.all;
 
 entity top is
   generic (
@@ -53,6 +54,22 @@ entity top is
     c0_ddr4_dq       : inout std_logic_vector(63 downto 0);
     c0_ddr4_dqs_c    : inout std_logic_vector(7 downto 0);
     c0_ddr4_dqs_t    : inout std_logic_vector(7 downto 0);
+    c1_sys_clk_p     : in    std_logic;      -- 250 MHz clock
+    c1_sys_clk_n     : in    std_logic;      -- 250 MHz clock
+    c1_ddr4_act_n    : out   std_logic;
+    c1_ddr4_adr      : out   std_logic_vector(16 downto 0);
+    c1_ddr4_ba       : out   std_logic_vector(1 downto 0);
+    c1_ddr4_bg       : out   std_logic_vector(0 downto 0);
+    c1_ddr4_cke      : out   std_logic_vector(0 downto 0);
+    c1_ddr4_odt      : out   std_logic_vector(0 downto 0);
+    c1_ddr4_cs_n     : out   std_logic_vector(0 downto 0);
+    c1_ddr4_ck_t     : out   std_logic_vector(0 downto 0);
+    c1_ddr4_ck_c     : out   std_logic_vector(0 downto 0);
+    c1_ddr4_reset_n  : out   std_logic;
+    c1_ddr4_dm_dbi_n : inout std_logic_vector(7 downto 0);
+    c1_ddr4_dq       : inout std_logic_vector(63 downto 0);
+    c1_ddr4_dqs_c    : inout std_logic_vector(7 downto 0);
+    c1_ddr4_dqs_t    : inout std_logic_vector(7 downto 0);
     gtrefclk_p       : in    std_logic;
     gtrefclk_n       : in    std_logic;
     txp              : out   std_logic;
@@ -100,53 +117,16 @@ architecture rtl of top is
       apbo     : out apb_slv_out_type);
   end component sgmii_vcu118;
 
--- FPGA DDR4 Controller. Must be moved to FPGA partition
-  component ahb2mig_up is
-    generic (
-      hindex : integer;
-      haddr  : integer;
-      hmask  : integer;
-      clamshell : integer range 0 to 1);
-    port (
-      c0_sys_clk_p     : in    std_logic;
-      c0_sys_clk_n     : in    std_logic;
-      c0_ddr4_act_n    : out   std_logic;
-      c0_ddr4_adr      : out   std_logic_vector(16 downto 0);
-      c0_ddr4_ba       : out   std_logic_vector(1 downto 0);
-      c0_ddr4_bg       : out   std_logic_vector(0 downto 0);
-      c0_ddr4_cke      : out   std_logic_vector(0 downto 0);
-      c0_ddr4_odt      : out   std_logic_vector(0 downto 0);
-      c0_ddr4_cs_n     : out   std_logic_vector(1 downto 0);
-      c0_ddr4_ck_t     : out   std_logic_vector(0 downto 0);
-      c0_ddr4_ck_c     : out   std_logic_vector(0 downto 0);
-      c0_ddr4_reset_n  : out   std_logic;
-      c0_ddr4_dm_dbi_n : inout std_logic_vector(7 downto 0);
-      c0_ddr4_dq       : inout std_logic_vector(63 downto 0);
-      c0_ddr4_dqs_c    : inout std_logic_vector(7 downto 0);
-      c0_ddr4_dqs_t    : inout std_logic_vector(7 downto 0);
-      ahbso            : out   ahb_slv_out_type;
-      ahbsi            : in    ahb_slv_in_type;
-      calib_done       : out   std_logic;
-      rst_n_syn        : in    std_logic;
-      rst_n_async      : in    std_logic;
-      clk_amba         : in    std_logic;
-      ui_clk           : out   std_logic;
-      ui_clk_slow      : out   std_logic;
-      ui_clk_sync_rst  : out   std_logic);
-  end component ahb2mig_up;
-
-
 -- Switches
   signal sel0, sel1, sel2, sel3 : std_ulogic;
 
 -- clock and reset
-  signal clkm                  : std_ulogic := '0';
-  signal rstn, rstraw          : std_ulogic;
-  signal lock, calib_done, rst : std_ulogic;
-  signal migrstn               : std_logic;
-
-
--- Tiles
+  signal clkm, clkm1                : std_ulogic := '0';
+  signal rstn, rstraw               : std_ulogic;
+  signal lock, rst                  : std_ulogic;
+  signal calib_done, calib_done1    : std_ulogic;
+  signal migrstn, migrstn1          : std_logic;
+  signal mig_rstraw, mig_rstraw1    : std_logic;
 
 -- UART
   signal uart_rxd_int  : std_logic;       -- UART1_RX (u1i.rxd)
@@ -155,9 +135,11 @@ architecture rtl of top is
   signal uart_rtsn_int : std_logic;       -- UART1_RTSN (u1o.rtsn)
 
 -- Memory controller DDR4
-  signal ddr_ahbsi   : ahb_slv_in_vector_type(0 to MEM_ID_RANGE_MSB);
-  signal ddr_ahbso   : ahb_slv_out_vector_type(0 to MEM_ID_RANGE_MSB);
+  constant MAX_NMEM_TILES : integer := 2;
+  signal ddr_axi_si   : axi_mosi_vector(0 to MAX_NMEM_TILES);
+  signal ddr_axi_so   : axi_somi_vector(0 to MAX_NMEM_TILES);
   signal c0_ddr4_cs_n_vec : std_logic_vector(1 downto 0);
+  signal c1_ddr4_cs_n_vec : std_logic_vector(1 downto 0);
 
 -- DVI (unused on this board)
   signal dvi_apbi  : apb_slv_in_type;
@@ -187,11 +169,11 @@ architecture rtl of top is
   signal edcl_ahbmo : ahb_mst_out_type;
 
 -- CPU flags
-signal cpuerr : std_ulogic;
+  signal cpuerr : std_ulogic;
 
 -- NOC
   signal chip_rst       : std_ulogic;
-  signal sys_clk : std_logic_vector(0 to 0);
+  signal sys_clk : std_logic_vector(0 to MAX_NMEM_TILES - 1);
   signal chip_refclk    : std_ulogic := '0';
 
 constant CPU_FREQ : integer := 78125;  -- cpu frequency in KHz
@@ -199,8 +181,10 @@ constant CPU_FREQ : integer := 78125;  -- cpu frequency in KHz
   attribute keep         : boolean;
   attribute syn_keep     : string;
   attribute keep of clkm : signal is true;
+  attribute keep of clkm1 : signal is true;
   attribute keep of chip_refclk : signal is true;
   attribute syn_keep of clkm : signal is "true";
+  attribute syn_keep of clkm1 : signal is "true";
   attribute syn_keep of chip_refclk : signal is "true";
 
 begin
@@ -208,8 +192,6 @@ begin
 -------------------------------------------------------------------------------
 -- Leds -----------------------------------------------------------------------
 -------------------------------------------------------------------------------
-
-
   -- From CPU 0
   led0_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
     port map (led(0), cpuerr);
@@ -223,18 +205,18 @@ begin
   --pragma translate_on
 
   -- From DDR controller (on FPGA)
+  led1_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
+    port map (led(1), calib_done);
   led2_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
-    port map (led(2), calib_done);
+    port map (led(2), calib_done1);
   led3_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
     port map (led(3), lock);
   led4_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
-    port map (led(4), ddr_ahbso(0).hready);
+    port map (led(4), ddr_axi_so(0).ar.ready);
+  led5_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
+    port map (led(5), ddr_axi_so(1).ar.ready);
 
   -- unused
-  led1_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
-    port map (led(1), '0');
-  led5_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
-    port map (led(5), '0');
   led6_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x12v, strength => 8)
     port map (led(6), '0');
 
@@ -266,12 +248,15 @@ begin
   rst0      : rstgen                    -- reset generator
     generic map (acthigh => 1, syncin => 0)
     port map (rst, clkm, lock, rstn, rstraw);
-  lock <= calib_done;
+  lock <= calib_done and calib_done1;
 
   rst1 : rstgen                         -- reset generator
     generic map (acthigh => 1)
-    port map (rst, clkm, lock, migrstn, open);
+    port map (rst, clkm, lock, migrstn, mig_rstraw);
 
+  rst2 : rstgen                         -- reset generator
+    generic map (acthigh => 1)
+    port map (rst, clkm, lock, migrstn1, mig_rstraw1);
 
 -----------------------------------------------------------------------------
 -- UART pads
@@ -285,15 +270,13 @@ begin
 ----------------------------------------------------------------------
 ---  DDR4 memory controller ------------------------------------------
 ----------------------------------------------------------------------
-
-  gen_mig : if (SIMULATION /= true) generate
-    ddrc : ahb2mig_up
+    gen_mig : if (SIMULATION /= true) generate
+        ddrc : axi2mig_up
       generic map (
-        hindex    => 0,
-        haddr     => ddr_haddr(0),
-        hmask     => ddr_hmask(0),
-        clamshell => 0)
-      port map (
+        AXIDW => MEM_AXIDW,
+        clamshell => 0
+      )
+      port map(
         c0_sys_clk_p     => c0_sys_clk_p,
         c0_sys_clk_n     => c0_sys_clk_n,
         c0_ddr4_act_n    => c0_ddr4_act_n,
@@ -310,41 +293,72 @@ begin
         c0_ddr4_dq       => c0_ddr4_dq,
         c0_ddr4_dqs_c    => c0_ddr4_dqs_c,
         c0_ddr4_dqs_t    => c0_ddr4_dqs_t,
-        ahbso            => ddr_ahbso(0),
-        ahbsi            => ddr_ahbsi(0),
-        calib_done       => calib_done,
-        rst_n_syn        => migrstn,
-        rst_n_async      => rstraw,
-        clk_amba         => clkm,
-        ui_clk           => clkm,
-        ui_clk_slow      => chip_refclk,
-        ui_clk_sync_rst  => open
+        calib_done      => calib_done,
+        rst_n_syn       => migrstn,
+        rst_n_async     => rstraw,
+        ui_clk          => clkm,
+        ui_clk_slow     => chip_refclk, 
+        ui_clk_sync_rst => open,
+        ddr_axi_si      => ddr_axi_si(0),
+        ddr_axi_so      => ddr_axi_so(0)
+    );
+
+    ddrc1 : axi2mig_up
+      generic map (
+        AXIDW => MEM_AXIDW,
+        clamshell => 0
+      )
+      port map (
+        c0_sys_clk_p     => c1_sys_clk_p,
+        c0_sys_clk_n     => c1_sys_clk_n,
+        c0_ddr4_act_n    => c1_ddr4_act_n,
+        c0_ddr4_adr      => c1_ddr4_adr,
+        c0_ddr4_ba       => c1_ddr4_ba,
+        c0_ddr4_bg       => c1_ddr4_bg,
+        c0_ddr4_cke      => c1_ddr4_cke,
+        c0_ddr4_odt      => c1_ddr4_odt,
+        c0_ddr4_cs_n     => c1_ddr4_cs_n_vec,
+        c0_ddr4_ck_t     => c1_ddr4_ck_t,
+        c0_ddr4_ck_c     => c1_ddr4_ck_c,
+        c0_ddr4_reset_n  => c1_ddr4_reset_n,
+        c0_ddr4_dm_dbi_n => c1_ddr4_dm_dbi_n,
+        c0_ddr4_dq       => c1_ddr4_dq,
+        c0_ddr4_dqs_c    => c1_ddr4_dqs_c,
+        c0_ddr4_dqs_t    => c1_ddr4_dqs_t,
+        calib_done       => calib_done1,
+        rst_n_syn        => migrstn1,
+        rst_n_async      => mig_rstraw1,
+        ui_clk           => clkm1,
+        ui_clk_slow      => open,
+        ui_clk_sync_rst  => open,
+        ddr_axi_si      => ddr_axi_si(1),
+        ddr_axi_so      => ddr_axi_so(1)
         );
 
     c0_ddr4_cs_n <= c0_ddr4_cs_n_vec(0 downto 0);
+    c1_ddr4_cs_n <= c1_ddr4_cs_n_vec(0 downto 0);
 
   end generate gen_mig;
+
 
   gen_mig_model : if (SIMULATION = true) generate
     -- pragma translate_off
 
-    mig_ahbram : ahbram_sim
+    mig_axiram : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 2048,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes          => 2 * 1024,
+        DATA_WIDTH      => MEM_AXIDW,
+        ADDR_WIDTH      => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH      => AW,
+        ID_WIDTH        => 8,
+        PIPELINE_OUTPUT => 0
         )
       port map(
-        rst   => rstn,
-        clk   => clkm,
-        haddr => ddr_haddr(0),
-        hmask => ddr_hmask(0),
-        ahbsi => ddr_ahbsi(0),
-        ahbso => ddr_ahbso(0)
-        );
+        clk     => clkm,
+        rst     => rstn,
+        ddr_axi_si  => ddr_axi_si(0),
+        ddr_axi_so  => ddr_axi_so(0)
+     );
 
     c0_ddr4_act_n    <= '1';
     c0_ddr4_adr      <= (others => '0');
@@ -363,9 +377,44 @@ begin
 
     calib_done <= '1';
     clkm       <= not clkm after 3.2 ns;
+    
+    mig_axiram1 : axi_ram_sim
+      generic map (
+        kbytes          => 2 * 1024,
+        DATA_WIDTH      => MEM_AXIDW,
+        ADDR_WIDTH      => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH      => AW,
+        ID_WIDTH        => 8,
+        PIPELINE_OUTPUT => 0
+        )
+      port map(
+        clk     => clkm,
+        rst     => rstn,
+        ddr_axi_si  => ddr_axi_si(1),
+        ddr_axi_so  => ddr_axi_so(1)
+     );
+
+    c1_ddr4_act_n    <= '1';
+    c1_ddr4_adr      <= (others => '0');
+    c1_ddr4_ba       <= (others => '0');
+    c1_ddr4_bg       <= (others => '0');
+    c1_ddr4_cke      <= (others => '0');
+    c1_ddr4_odt      <= (others => '0');
+    c1_ddr4_cs_n     <= (others => '0');
+    c1_ddr4_ck_t     <= (others => '0');
+    c1_ddr4_ck_c     <= (others => '0');
+    c1_ddr4_reset_n  <= '1';
+    c1_ddr4_dm_dbi_n <= (others => 'Z');
+    c1_ddr4_dq       <= (others => 'Z');
+    c1_ddr4_dqs_c    <= (others => 'Z');
+    c1_ddr4_dqs_t    <= (others => 'Z');
+
+    calib_done1 <= '1';
+    clkm1       <= not clkm1 after 3.2 ns;
+
     chip_refclk <= not chip_refclk after 6.4 ns;
 
-  -- pragma translate_on
+    -- pragma translate_on
   end generate gen_mig_model;
 
 -----------------------------------------------------------------------
@@ -478,31 +527,31 @@ begin
   -----------------------------------------------------------------------------
   chip_rst       <= rstn;
   sys_clk(0)     <= clkm;
+  sys_clk(1)     <= clkm1;
 
-  esp_1 : esp
+  esp_1: esp
     generic map (
       SIMULATION => SIMULATION)
     port map (
-      rst         => chip_rst,
-      sys_clk     => sys_clk(0 to MEM_ID_RANGE_MSB),
-      refclk      => chip_refclk,
-      uart_rxd    => uart_rxd_int,
-      uart_txd    => uart_txd_int,
-      uart_ctsn   => uart_ctsn_int,
-      uart_rtsn   => uart_rtsn_int,
-      cpuerr      => cpuerr,
-      ddr_ahbsi   => ddr_ahbsi,
-      ddr_ahbso   => ddr_ahbso,
-      eth0_ahbmi  => eth0_ahbmi,
-      eth0_ahbmo  => eth0_ahbmo,
-      edcl_ahbmo  => edcl_ahbmo,
-      eth0_apbi   => eth0_apbi,
-      eth0_apbo   => eth0_apbo,
-      sgmii0_apbi => sgmii0_apbi,
-      sgmii0_apbo => sgmii0_apbo,
-      dvi_apbi    => dvi_apbi,
-      dvi_apbo    => dvi_apbo,
-      dvi_ahbmi   => dvi_ahbmi,
-      dvi_ahbmo   => dvi_ahbmo);
-
+      rst            => chip_rst,
+      sys_clk        => sys_clk(0 to MEM_ID_RANGE_MSB),
+      refclk         => chip_refclk,
+      uart_rxd       => uart_rxd_int,
+      uart_txd       => uart_txd_int,
+      uart_ctsn      => uart_ctsn_int,
+      uart_rtsn      => uart_rtsn_int,
+      cpuerr         => cpuerr,
+      ddr_axi_si     => ddr_axi_si(0 to MEM_ID_RANGE_MSB),
+      ddr_axi_so     => ddr_axi_so(0 to MEM_ID_RANGE_MSB),
+      eth0_ahbmi     => eth0_ahbmi,
+      eth0_ahbmo     => eth0_ahbmo,
+      edcl_ahbmo     => edcl_ahbmo,
+      eth0_apbi      => eth0_apbi,
+      eth0_apbo      => eth0_apbo,
+      sgmii0_apbi    => sgmii0_apbi,
+      sgmii0_apbo    => sgmii0_apbo,
+      dvi_apbi       => dvi_apbi,
+      dvi_apbo       => dvi_apbo,
+      dvi_ahbmi      => dvi_ahbmi,
+      dvi_ahbmo      => dvi_ahbmo);
 end;

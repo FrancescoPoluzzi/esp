@@ -30,6 +30,7 @@ use work.config.all;
 use work.esp_global.all;
 use work.socmap.all;
 use work.tiles_pkg.all;
+use work.axi2mig_pkg.all;
 
 entity top is
   generic (
@@ -101,43 +102,20 @@ component sgmii_vc707
   );
 end component;
 
--- FPGA DDR3 Controller. Must be moved to FPGA partition
-component ahb2mig_7series
-  generic(
-    hindex     : integer := 0;
-    haddr      : integer := 0;
-    hmask      : integer := 16#f00#
-  );
-  port(
-    ddr3_dq           : inout std_logic_vector(63 downto 0);
-    ddr3_dqs_p        : inout std_logic_vector(7 downto 0);
-    ddr3_dqs_n        : inout std_logic_vector(7 downto 0);
-    ddr3_addr         : out   std_logic_vector(13 downto 0);
-    ddr3_ba           : out   std_logic_vector(2 downto 0);
-    ddr3_ras_n        : out   std_logic;
-    ddr3_cas_n        : out   std_logic;
-    ddr3_we_n         : out   std_logic;
-    ddr3_reset_n      : out   std_logic;
-    ddr3_ck_p         : out   std_logic_vector(0 downto 0);
-    ddr3_ck_n         : out   std_logic_vector(0 downto 0);
-    ddr3_cke          : out   std_logic_vector(0 downto 0);
-    ddr3_cs_n         : out   std_logic_vector(0 downto 0);
-    ddr3_dm           : out   std_logic_vector(7 downto 0);
-    ddr3_odt          : out   std_logic_vector(0 downto 0);
-    ahbso             : out   ahb_slv_out_type;
-    ahbsi             : in    ahb_slv_in_type;
-    calib_done        : out   std_logic;
-    rst_n_syn         : in    std_logic;
-    rst_n_async       : in    std_logic;
-    clk_amba          : in    std_logic;
-    sys_clk_p         : in    std_logic;
-    sys_clk_n         : in    std_logic;
-    clk_ref_i         : in    std_logic;
-    ui_clk            : out   std_logic;
-    ui_clk_sync_rst   : out   std_logic
-   );
-end component ;
-
+function fix_endian (
+le : std_logic_vector((MEM_AXIDW/8) - 1 downto 0))
+return std_logic_vector is
+variable be : std_logic_vector((MEM_AXIDW/8) - 1 downto 0);
+begin
+if GLOB_CPU_RISCV = 0 then
+  be := le;
+else
+  for i in 0 to (MEM_AXIDW/8) - 1 loop
+	be(i) := le(MEM_AXIDW/8 - (i + 1));
+  end loop;  -- i
+end if;
+return be;
+end fix_endian;
 
 -- constants
 signal vcc, gnd   : std_logic_vector(31 downto 0);
@@ -154,8 +132,9 @@ signal lock, calib_done, rst : std_ulogic;
 signal clkref  : std_logic;
 signal migrstn : std_logic;
 
-
--- Tiles
+-- Memory controller DDR3
+signal ddr_axi_si   : axi_mosi_vector(0 to MEM_ID_RANGE_MSB);
+signal ddr_axi_so   : axi_somi_vector(0 to MEM_ID_RANGE_MSB);
 
 -- UART
 signal uart_rxd_int  : std_logic;       -- UART1_RX (u1i.rxd)
@@ -164,8 +143,6 @@ signal uart_ctsn_int : std_logic;       -- UART1_RTSN (u1i.ctsn)
 signal uart_rtsn_int : std_logic;       -- UART1_RTSN (u1o.rtsn)
 
 -- Memory controller DDR3
-signal ddr_ahbsi   : ahb_slv_in_vector_type(0 to MEM_ID_RANGE_MSB);
-signal ddr_ahbso   : ahb_slv_out_vector_type(0 to MEM_ID_RANGE_MSB);
 
 -- DVI (unused on this board)
 signal dvi_apbi  : apb_slv_in_type;
@@ -234,7 +211,7 @@ begin
   led3_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x18v)
     port map (led(3), lock);
   led4_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x18v)
-    port map (led(4), ddr_ahbso(0).hready);
+    port map (led(4), ddr_axi_so(0).ar.ready);
 
   -- Unused
   led1_pad : outpad generic map (tech => CFG_FABTECH, level => cmos, voltage => x18v)
@@ -301,13 +278,11 @@ begin
     generic map (CFG_FABTECH, 16, 32, 0, 0, 0, 0, 0, 100000)
     port map (clkm, clkm, chip_refclk, open, clkref, open, open, cgi, cgo, open, open, open);
 
-
-  gen_mig : if (SIMULATION /= true) generate
-    ddrc : ahb2mig_7series
+    gen_mig : if (SIMULATION /= true) generate
+        ddrc : axi2mig_7series
       generic map (
-        hindex => 0,
-        haddr  => ddr_haddr(0),
-        hmask  => ddr_hmask(0))
+        AXIDW => MEM_AXIDW
+	  )
       port map(
         ddr3_dq         => ddr3_dq,
         ddr3_dqs_p      => ddr3_dqs_p,
@@ -324,40 +299,37 @@ begin
         ddr3_cs_n       => ddr3_cs_n,
         ddr3_dm         => ddr3_dm,
         ddr3_odt        => ddr3_odt,
-        ahbsi           => ddr_ahbsi(0),
-        ahbso           => ddr_ahbso(0),
-        calib_done      => calib_done,
-        rst_n_syn       => migrstn,
-        rst_n_async     => rstraw,
-        clk_amba        => clkm,
+		calib_done     	=> calib_done,
+		rst_n_syn      	=> migrstn,
+		rst_n_async     => rstraw,
         sys_clk_p       => sys_clk_p,
         sys_clk_n       => sys_clk_n,
         clk_ref_i       => clkref,
         ui_clk          => clkm,
-        ui_clk_sync_rst => open
+        ui_clk_sync_rst => open,
+        ddr_axi_si      => ddr_axi_si(0),
+    	ddr_axi_so      => ddr_axi_so(0)
         );
 
   end generate gen_mig;
 
   gen_mig_model : if (SIMULATION = true) generate
     -- pragma translate_off
-
-    mig_ahbram : ahbram_sim
+ 
+	mig_axiram : axi_ram_sim
       generic map (
-        hindex => 0,
-        tech   => 0,
-        kbytes => 2 * 1024,
-        pipe   => 0,
-        maccsz => AHBDW,
-        fname  => "ram.srec"
+        kbytes            => 2 * 1024,
+        DATA_WIDTH        => MEM_AXIDW,
+        ADDR_WIDTH        => GLOB_PHYS_ADDR_BITS,
+        STRB_WIDTH        => AW,
+        ID_WIDTH          => 8,
+        PIPELINE_OUTPUT   => 0
         )
       port map(
-        rst     => rstn,
-        clk     => clkm,
-        haddr   => ddr_haddr(0),
-        hmask   => ddr_hmask(0),
-        ahbsi   => ddr_ahbsi(0),
-        ahbso   => ddr_ahbso(0)
+        rst   => rstn,
+        clk   => clkm,
+		ddr_axi_si	=> ddr_axi_si(0),
+        ddr_axi_so	=> ddr_axi_so(0)
         );
 
     ddr3_dq           <= (others => 'Z');
@@ -502,8 +474,8 @@ begin
       uart_ctsn      => uart_ctsn_int,
       uart_rtsn      => uart_rtsn_int,
       cpuerr         => cpuerr,
-      ddr_ahbsi      => ddr_ahbsi,
-      ddr_ahbso      => ddr_ahbso,
+      ddr_axi_si     => ddr_axi_si(0 to MEM_ID_RANGE_MSB),
+      ddr_axi_so	 => ddr_axi_so(0 to MEM_ID_RANGE_MSB), 
       eth0_ahbmi     => eth0_ahbmi,
       eth0_ahbmo     => eth0_ahbmo,
       edcl_ahbmo     => edcl_ahbmo,

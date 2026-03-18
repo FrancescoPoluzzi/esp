@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024 Columbia University, System Level Design Group
+# Copyright (c) 2011-2025 Columbia University, System Level Design Group
 # SPDX-License-Identifier: Apache-2.0
 
 VPATH  += $(UTILS_GRLIB)/software/leon3
@@ -82,7 +82,7 @@ $(SOFT_BUILD)/grlib/grspwtdp.o : grspwtdp.c grspwtdp.h grspwtdp-regs.h
 $(SOFT_BUILD)/lib3tests.a: $(OFILES)
 	$(QUIET_AR)$(XAR) -cr $@ $(OFILES)
 
-leon3-soft: $(SOFT_BUILD)/prom.srec $(SOFT_BUILD)/ram.srec
+leon3-soft: $(SOFT_BUILD)/prom.srec $(SOFT_BUILD)/ram.srec $(SOFT_BUILD)/ram.vhx
 
 $(SOFT_BUILD)/systest.exe: systest.c $(SOFT_BUILD)/lib3tests.a
 	$(QUIET_CC)$(XCC) $(XCFLAGS) systest.c $(XLDFLAGS) -o $@
@@ -92,6 +92,11 @@ $(SOFT_BUILD)/ram.srec: $(TEST_PROGRAM)
 	@if [ -n "$(SIM_DATA_FILES)" ]; then\
 		python3 $(ESP_ROOT)/utils/scripts/srec/modify_srec.py $@ $(SIM_DATA_FILES) $(START_ADDRS);\
 	fi
+
+$(SOFT_BUILD)/ram.vhx: $(SOFT_BUILD)/systest.bin $(SOFT_BUILD)/vhx.bin
+
+$(SOFT_BUILD)/vhx.bin: $(TEST_PROGRAM)
+	python3 $(ESP_ROOT)/utils/scripts/file_handling/bin2txt_vhx.py 32 leon3
 
 leon3-soft-clean:
 	$(QUIET_CLEAN)$(RM) $(OFILES) $(SOFT_BUILD)/lib3tests.a $(SOFT_BUILD)/prom.o

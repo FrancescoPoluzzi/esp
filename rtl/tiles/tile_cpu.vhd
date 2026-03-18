@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 -----------------------------------------------------------------------------
@@ -480,9 +480,10 @@ begin
     end if;
   end process cpu_rstn_state_update;
 
+
   cpu_rstn_gen_sim: if SIMULATION = true and CFG_IOLINK_EN = 0 generate
 
-    cpu_rstn_sim_fsm: process (cpu_rstn_state, cleanrstn) is
+    cpu_rstn_sim_fsm: process (cpu_rstn_state, cleanrstn, srst) is
     begin
       cpu_rstn_next <= cpu_rstn_state;
       cpurstn <= '0';
@@ -513,10 +514,16 @@ begin
           cpu_rstn_next <= soft_reset_4_h;
 
         when soft_reset_4_h =>
-          cpu_rstn_next <= run;
+          if srst = '0' then
+            cpu_rstn_next <= run;
+          end if;
+          --cpu_rstn_next <= run;
 
         when run =>
           cpurstn <= '1';
+          if srst = '1' then
+            cpu_rstn_next <= soft_reset_1_h;
+          end if;
 
         when others =>
           cpu_rstn_next <= por;
@@ -525,6 +532,8 @@ begin
     end process cpu_rstn_sim_fsm;
 
   end generate cpu_rstn_gen_sim;
+
+
 
   cpu_rstn_gen: if SIMULATION = false or CFG_IOLINK_EN = 1 generate
 

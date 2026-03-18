@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 library ieee;
@@ -248,9 +248,9 @@ package tiles_fpga_pkg is
       tile_clk           : out std_ulogic;
       tile_rstn          : out std_ulogic;
       -- DDR controller ports (this_has_ddr -> 1)
-      ddr_ahbsi          : out ahb_slv_in_type;
-      ddr_ahbso          : in  ahb_slv_out_type;
-      -- Test interface
+      ddr_axi_si         : out   axi_mosi_type;
+      ddr_axi_so         : in    axi_somi_type;
+	  -- Test interface
       tdi                : in  std_logic;
       tdo                : out std_logic;
       tms                : in  std_logic;

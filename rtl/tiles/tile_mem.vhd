@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 -----------------------------------------------------------------------------
@@ -56,9 +56,9 @@ entity tile_mem is
     dco_clk_div2_90    : out std_ulogic;
     tile_rstn_out          : out std_ulogic;
     phy_rstn           : out std_ulogic;
-    ddr_ahbsi          : out ahb_slv_in_type;
-    ddr_ahbso          : in  ahb_slv_out_type;
-    -- FPGA proxy memory link (this_has_ddr -> 0)
+    ddr_axi_si         : out   axi_mosi_type;
+    ddr_axi_so         : in    axi_somi_type;
+	-- FPGA proxy memory link (this_has_ddr -> 0)
     fpga_data_in       : in  std_logic_vector(CFG_MEM_LINK_BITS - 1 downto 0);
     fpga_data_out      : out std_logic_vector(CFG_MEM_LINK_BITS - 1 downto 0);
     fpga_oen           : out std_ulogic;
@@ -202,13 +202,8 @@ architecture rtl of tile_mem is
   -- Bus
   signal ahbsi : ahb_slv_in_type;
   signal ahbso : ahb_slv_out_vector;
-  signal ahbmi : ahb_mst_in_type;
-  signal ahbmo : ahb_mst_out_vector;
   signal apbi  : apb_slv_in_type;
   signal apbo  : apb_slv_out_vector;
-
-  signal ctrl_ahbmi : ahb_mst_in_type;
-  signal ctrl_ahbmo : ahb_mst_out_vector;
 
   -- Mon
   signal mon_mem_int    : monitor_mem_type;
@@ -237,6 +232,28 @@ architecture rtl of tile_mem is
   signal this_local_y      : local_yx;
   signal this_local_x      : local_yx;
 
+  -- AXI Crossbar Signals
+  signal mst0_out  : axi_mosi_type;
+  signal mst0_in   : axi_somi_type;
+  signal mst1_out  : axi_mosi_type;
+  signal mst1_in   : axi_somi_type;
+  signal mst2_out  : axi_mosi_type;
+  signal mst2_in   : axi_somi_type;
+  signal rom_out   : axi_mosi_type;
+  signal rom_in    : axi_somi_type;
+  signal ddr_axi_si_temp   : axi_mosi_type;
+
+  signal dram_aw_qos      : std_logic_vector(3 downto 0);
+  signal dram_aw_atop     : std_logic_vector(5 downto 0);
+  signal dram_aw_region   : std_logic_vector(3 downto 0);
+  signal dram_aw_user     : std_logic_vector(3 downto 0);
+  signal dram_w_user      : std_logic_vector(3 downto 0);
+  signal dram_b_user      : std_logic_vector(3 downto 0);
+  signal dram_ar_qos      : std_logic_vector(3 downto 0);
+  signal dram_ar_region   : std_logic_vector(3 downto 0);
+  signal dram_ar_user     : std_logic_vector(3 downto 0);
+  signal dram_r_user      : std_logic_vector(3 downto 0);
+
   constant this_local_apb_en : std_logic_vector(0 to NAPBSLV - 1) := (
     0 => '1',                           -- CSRs
     1 => to_std_logic(CFG_LLC_ENABLE),  -- last-level cache
@@ -246,7 +263,36 @@ architecture rtl of tile_mem is
     0      => '1',  -- memory
     others => '0');
 
-  attribute keep              : string;
+  attribute keep       : string;
+  attribute mark_debug : string;
+  attribute mark_debug of remote_ahbm_rcv_rdreq  : signal is "true";
+  attribute mark_debug of remote_ahbm_rcv_data_out : signal is "true";
+  attribute mark_debug of remote_ahbm_rcv_empty : signal is "true";
+  attribute mark_debug of remote_ahbm_snd_wrreq : signal is "true"; 
+  attribute mark_debug of remote_ahbm_snd_data_in : signal is "true"; 
+  attribute mark_debug of remote_ahbm_snd_full : signal is "true";
+  
+  --attribute mark_debug of coherence_req_rdreq        : signal is "true"; 
+  --attribute mark_debug of coherence_req_data_out     : signal is "true"; 
+  --attribute mark_debug of coherence_req_empty        : signal is "true"; 
+  --attribute mark_debug of coherence_fwd_wrreq        : signal is "true"; 
+  --attribute mark_debug of coherence_fwd_data_in      : signal is "true"; 
+  --attribute mark_debug of coherence_fwd_full         : signal is "true"; 
+  --attribute mark_debug of coherence_rsp_snd_wrreq    : signal is "true"; 
+  --attribute mark_debug of coherence_rsp_snd_data_in  : signal is "true"; 
+  --attribute mark_debug of coherence_rsp_snd_full     : signal is "true"; 
+  --attribute mark_debug of coherence_rsp_rcv_rdreq    : signal is "true"; 
+  --attribute mark_debug of coherence_rsp_rcv_data_out : signal is "true";
+  --attribute mark_debug of coherence_rsp_rcv_empty    : signal is "true"; 
+
+  --attribute mark_debug of dma_rcv_rdreq           : signal is "true"; 
+  --attribute mark_debug of dma_rcv_data_out        : signal is "true"; 
+  --attribute mark_debug of dma_rcv_empty           : signal is "true"; 
+  --attribute mark_debug of dma_snd_wrreq           : signal is "true"; 
+  --attribute mark_debug of dma_snd_data_in         : signal is "true"; 
+  --attribute mark_debug of dma_snd_full            : signal is "true"; 
+  --attribute mark_debug of dma_snd_atleast_4slots  : signal is "true"; 
+  --attribute mark_debug of dma_snd_exactly_3slots  : signal is "true"; 
 
 begin
 
@@ -355,61 +401,272 @@ begin
   -----------------------------------------------------------------------------
   -- Bus
   -----------------------------------------------------------------------------
+  ddr_axi_si_temp.aw.user(9 downto 4) <= (others => '0');
+  ddr_axi_si_temp.aw.id(9 downto 4)   <= (others => '0');
+  ddr_axi_si_temp.w.user(9 downto 4)  <= (others => '0');
+  ddr_axi_si_temp.ar.id(9 downto 4)   <= (others => '0');
+  ddr_axi_si_temp.ar.user(9 downto 4) <= (others => '0');
 
-  ahb_bus_gen: if this_has_ddr /= 0 generate
+  axi_crossbar_gen: if this_has_ddr /= 0 generate
   -- instantiate the bus if using on-chip DDR controller
-  ahb2 : ahbctrl                        -- AHB arbiter/multiplexer
-    generic map (defmast => CFG_DEFMST, split => CFG_SPLIT,
-                 rrobin  => CFG_RROBIN, ioaddr => CFG_AHBIO, fpnpen => CFG_FPNPEN,
-                 nahbm   => maxahbm, nahbs => maxahbs,
-                 cfgmask => 0)
-    port map (rst, tile_clk, ahbmi, ahbmo, ahbsi, ahbso);
-  end generate ahb_bus_gen;
+  axi2 : crossbar_wrap                       -- AXICrossbar
+    generic map (
+      NMST 		=> 3,
+      NSLV 		=> 2,
+      AXI_ID_WIDTH 	=>  2,
+      AXI_ID_WIDTH_SLV 	=>  4,
+      AXI_ADDR_WIDTH 	=> GLOB_PHYS_ADDR_BITS,
+      AXI_DATA_WIDTH 	=> AXIDW,
+      AXI_USER_WIDTH 	=>  4,
+      AXI_STRB_WIDTH 	=> AW,
+      ROMBase 		=> X"0000_0000",
+      ROMLength 	=> X"0000_1000",
+      DRAMBase 		=> DRAM_BASE,
+      DRAMLength 	=> X"4000_0000"
+    )
+    port map (
+      clk 		    => tile_clk,
+      rstn 		    => rst,
+      mst0_aw_id 	=> mst0_out.aw.id(1 downto 0),
+      mst0_aw_addr 	=> mst0_out.aw.addr,
+      mst0_aw_len 	=> mst0_out.aw.len,
+      mst0_aw_size 	=> mst0_out.aw.size,
+      mst0_aw_burst => mst0_out.aw.burst,
+      mst0_aw_lock 	=> mst0_out.aw.lock,
+      mst0_aw_cache => (others => '0'),
+      mst0_aw_prot 	=> mst0_out.aw.prot,
+      mst0_aw_qos 	=> (others => '0'),
+      mst0_aw_atop 	=> (others => '0'),
+      mst0_aw_region => (others => '0'),
+      mst0_aw_user 	=> (others => '0'),
+      mst0_aw_valid => mst0_out.aw.valid,
+      mst0_aw_ready => mst0_in.aw.ready,
+      mst0_w_data 	=> mst0_out.w.data,
+      mst0_w_strb 	=> mst0_out.w.strb,
+      mst0_w_last 	=> mst0_out.w.last,
+      mst0_w_user 	=> (others => '0'),
+      mst0_w_valid 	=> mst0_out.w.valid,
+      mst0_w_ready 	=> mst0_in.w.ready,
+      mst0_b_id 	=> mst0_in.b.id(1 downto 0),
+      mst0_b_resp 	=> mst0_in.b.resp,
+      mst0_b_user 	=> mst0_in.b.user(3 downto 0),
+      mst0_b_valid 	=> mst0_in.b.valid,
+      mst0_b_ready 	=> mst0_out.b.ready,
+      mst0_ar_id 	=> mst0_out.ar.id(1 downto 0),
+      mst0_ar_addr 	=> mst0_out.ar.addr,
+      mst0_ar_len 	=> mst0_out.ar.len,
+      mst0_ar_size 	=> mst0_out.ar.size,
+      mst0_ar_burst => mst0_out.ar.burst,
+      mst0_ar_lock 	=> mst0_out.ar.lock,
+      mst0_ar_cache => (others => '0'),
+      mst0_ar_prot 	=> mst0_out.ar.prot,
+      mst0_ar_qos 	 => (others => '0'),
+      mst0_ar_region => (others => '0'),
+      mst0_ar_user 	 => (others => '0'),
+      mst0_ar_valid => mst0_out.ar.valid,
+      mst0_ar_ready => mst0_in.ar.ready,
+      mst0_r_id 	=> mst0_in.r.id(1 downto 0),
+      mst0_r_data 	=> mst0_in.r.data,
+      mst0_r_resp 	=> mst0_in.r.resp,
+      mst0_r_last 	=> mst0_in.r.last,
+      mst0_r_user 	=> mst0_in.r.user(3 downto 0),
+      mst0_r_valid	=> mst0_in.r.valid,
+      mst0_r_ready 	=> mst0_out.r.ready,
 
-  no_ahb_bus_gen: if this_has_ddr = 0 generate
-    ahbsi <= ahbs_in_none;
-    ahbmi <= ahbm_in_none;
-  end generate no_ahb_bus_gen;
+      mst1_aw_id 	=> mst1_out.aw.id(1 downto 0),
+      mst1_aw_addr 	=> mst1_out.aw.addr,
+      mst1_aw_len 	=> mst1_out.aw.len,
+      mst1_aw_size 	=> mst1_out.aw.size,
+      mst1_aw_burst => mst1_out.aw.burst,
+      mst1_aw_lock 	=> mst1_out.aw.lock,
+      mst1_aw_cache => (others => '0'),
+      mst1_aw_prot 	=> mst1_out.aw.prot,
+      mst1_aw_qos 	=> (others => '0'),
+      mst1_aw_atop 	=> (others => '0'),
+      mst1_aw_region => (others => '0'),
+      mst1_aw_user 	=> (others => '0'),
+      mst1_aw_valid	=> mst1_out.aw.valid,
+      mst1_aw_ready => mst1_in.aw.ready,
+      mst1_w_data 	=> mst1_out.w.data,
+      mst1_w_strb 	=> mst1_out.w.strb,
+      mst1_w_last 	=> mst1_out.w.last,
+      mst1_w_user 	=> (others => '0'),
+      mst1_w_valid 	=> mst1_out.w.valid,
+      mst1_w_ready 	=> mst1_in.w.ready,
+      mst1_b_id 	=> mst1_in.b.id(1 downto 0),
+      mst1_b_resp 	=> mst1_in.b.resp,
+      mst1_b_user 	=> mst1_in.b.user(3 downto 0),
+      mst1_b_valid 	=> mst1_in.b.valid,
+      mst1_b_ready 	=> mst1_out.b.ready,
+      mst1_ar_id	=> mst1_out.ar.id(1 downto 0),
+      mst1_ar_addr 	=> mst1_out.ar.addr,
+      mst1_ar_len 	=> mst1_out.ar.len,
+      mst1_ar_size 	=> mst1_out.ar.size,
+      mst1_ar_burst	=> mst1_out.ar.burst,
+      mst1_ar_lock 	=> mst1_out.ar.lock,
+      mst1_ar_cache	=> (others => '0'),
+      mst1_ar_prot 	=> mst1_out.ar.prot,
+      mst1_ar_qos 	=> (others => '0'),
+      mst1_ar_region => (others => '0'),
+      mst1_ar_user 	=> (others => '0'),
+      mst1_ar_valid => mst1_out.ar.valid,
+      mst1_ar_ready => mst1_in.ar.ready,
+      mst1_r_id 	=> mst1_in.r.id(1 downto 0),
+      mst1_r_data 	=> mst1_in.r.data,
+      mst1_r_resp 	=> mst1_in.r.resp,
+      mst1_r_last 	=> mst1_in.r.last,
+      mst1_r_user 	=> mst1_in.r.user(3 downto 0),
+      mst1_r_valid 	=> mst1_in.r.valid,
+      mst1_r_ready 	=> mst1_out.r.ready,
 
+      mst2_aw_id 	=> mst2_out.aw.id(1 downto 0),
+      mst2_aw_addr 	=> mst2_out.aw.addr,
+      mst2_aw_len 	=> mst2_out.aw.len,
+      mst2_aw_size 	=> mst2_out.aw.size,
+      mst2_aw_burst => mst2_out.aw.burst,
+      mst2_aw_lock 	=> mst2_out.aw.lock,
+      mst2_aw_cache => (others => '0'),
+      mst2_aw_prot 	=> mst2_out.aw.prot,
+      mst2_aw_qos 	=> (others => '0'),
+      mst2_aw_atop 	=> (others => '0'),
+      mst2_aw_region => (others => '0'),
+      mst2_aw_user 	=> (others => '0'),
+      mst2_aw_valid	=> mst2_out.aw.valid,
+      mst2_aw_ready => mst2_in.aw.ready,
+      mst2_w_data 	=> mst2_out.w.data,
+      mst2_w_strb 	=> mst2_out.w.strb,
+      mst2_w_last 	=> mst2_out.w.last,
+      mst2_w_user 	=> (others => '0'),
+      mst2_w_valid 	=> mst2_out.w.valid,
+      mst2_w_ready 	=> mst2_in.w.ready,
+      mst2_b_id 	=> mst2_in.b.id(1 downto 0),
+      mst2_b_resp 	=> mst2_in.b.resp,
+      mst2_b_user 	=> mst2_in.b.user(3 downto 0),
+      mst2_b_valid 	=> mst2_in.b.valid,
+      mst2_b_ready 	=> mst2_out.b.ready,
+      mst2_ar_id	=> mst2_out.ar.id(1 downto 0),
+      mst2_ar_addr 	=> mst2_out.ar.addr,
+      mst2_ar_len 	=> mst2_out.ar.len,
+      mst2_ar_size 	=> mst2_out.ar.size,
+      mst2_ar_burst => mst2_out.ar.burst,
+      mst2_ar_lock 	=> mst2_out.ar.lock,
+      mst2_ar_cache => (others => '0'),
+      mst2_ar_prot 	=> mst2_out.ar.prot,
+      mst2_ar_qos 	=> (others => '0'),
+      mst2_ar_region => (others => '0'),
+      mst2_ar_user 	=> (others => '0'),
+      mst2_ar_valid => mst2_out.ar.valid,
+      mst2_ar_ready => mst2_in.ar.ready,
+      mst2_r_id 	=> mst2_in.r.id(1 downto 0),
+      mst2_r_data 	=> mst2_in.r.data,
+      mst2_r_resp 	=> mst2_in.r.resp,
+      mst2_r_last 	=> mst2_in.r.last,
+      mst2_r_user 	=> mst2_in.r.user(3 downto 0),
+      mst2_r_valid 	=> mst2_in.r.valid,
+      mst2_r_ready 	=> mst2_out.r.ready,
+
+      rom_aw_id 	=> rom_out.aw.id(3 downto 0),
+      rom_aw_addr 	=> rom_out.aw.addr,
+      rom_aw_len 	=> rom_out.aw.len,
+      rom_aw_size 	=> rom_out.aw.size,
+      rom_aw_burst 	=> rom_out.aw.burst,
+      rom_aw_lock 	=> rom_out.aw.lock,
+      rom_aw_cache 	=> rom_out.aw.cache,
+      rom_aw_prot 	=> rom_out.aw.prot,
+      rom_aw_qos 	=> rom_out.aw.qos,
+      rom_aw_atop 	=> rom_out.aw.atop,
+      rom_aw_region => rom_out.aw.region,
+      rom_aw_user 	=> rom_out.aw.user(3 downto 0),
+      rom_aw_valid 	=> rom_out.aw.valid,
+      rom_aw_ready 	=> '0',
+      rom_w_data 	=> rom_out.w.data,
+      rom_w_strb 	=> rom_out.w.strb,
+      rom_w_last 	=> rom_out.w.last,
+      rom_w_user 	=> rom_out.w.user(3 downto 0),
+      rom_w_valid 	=> rom_out.w.valid,
+      rom_w_ready 	=> '0',
+      rom_b_id 		=> (others => '0'),
+      rom_b_resp 	=> (others => '0'),
+      rom_b_user 	=> (others => '0'),
+      rom_b_valid 	=> '0',
+      rom_b_ready 	=> rom_out.b.ready,
+      rom_ar_id 	=> rom_out.ar.id(3 downto 0),
+      rom_ar_addr 	=> rom_out.ar.addr,
+      rom_ar_len 	=> rom_out.ar.len,
+      rom_ar_size 	=> rom_out.ar.size,
+      rom_ar_burst 	=> rom_out.ar.burst,
+      rom_ar_lock 	=> rom_out.ar.lock,
+      rom_ar_cache 	=> rom_out.ar.cache,
+      rom_ar_prot 	=> rom_out.ar.prot,
+      rom_ar_qos 	=> rom_out.ar.qos,
+      rom_ar_region => rom_out.ar.region,
+      rom_ar_user 	=> rom_out.ar.user(3 downto 0),
+      rom_ar_valid 	=> rom_out.ar.valid,
+      rom_ar_ready 	=> '0',
+      rom_r_id 		=> (others => '0'),
+      rom_r_data 	=> (others => '0'),
+      rom_r_resp 	=> (others => '0'),
+      rom_r_last 	=> '0',
+      rom_r_user 	=> (others => '0'),
+      rom_r_valid 	=> '0',
+      rom_r_ready 	=> rom_out.r.ready,
+      dram_aw_id 	=> ddr_axi_si_temp.aw.id(3 downto 0),
+      dram_aw_addr 	=> ddr_axi_si_temp.aw.addr,
+      dram_aw_len 	=> ddr_axi_si_temp.aw.len,
+      dram_aw_size 	=> ddr_axi_si_temp.aw.size,
+      dram_aw_burst => ddr_axi_si_temp.aw.burst,
+      dram_aw_lock 	=> ddr_axi_si_temp.aw.lock,
+      dram_aw_cache => ddr_axi_si_temp.aw.cache,
+      dram_aw_prot 	=> ddr_axi_si_temp.aw.prot,
+      dram_aw_qos 	=> ddr_axi_si_temp.aw.qos,
+      dram_aw_atop 	=> ddr_axi_si_temp.aw.atop,
+      dram_aw_region => ddr_axi_si_temp.aw.region,
+      dram_aw_user 	 => ddr_axi_si_temp.aw.user(3 downto 0),
+      dram_aw_valid	=> ddr_axi_si_temp.aw.valid,
+      dram_aw_ready	=> ddr_axi_so.aw.ready,
+      dram_w_data 	=> ddr_axi_si_temp.w.data,
+      dram_w_strb 	=> ddr_axi_si_temp.w.strb,
+      dram_w_last 	=> ddr_axi_si_temp.w.last,
+      dram_w_user 	=> ddr_axi_si_temp.w.user(3 downto 0),
+      dram_w_valid 	=> ddr_axi_si_temp.w.valid,
+      dram_w_ready 	=> ddr_axi_so.w.ready,
+      dram_b_id 	=> ddr_axi_so.b.id(3 downto 0),
+      dram_b_resp 	=> ddr_axi_so.b.resp,
+      dram_b_user 	=> dram_b_user,
+      
+	  dram_b_valid 	=> ddr_axi_so.b.valid,
+      dram_b_ready 	=> ddr_axi_si_temp.b.ready,
+      dram_ar_id 	=> ddr_axi_si_temp.ar.id(3 downto 0),
+      dram_ar_addr 	=> ddr_axi_si_temp.ar.addr,
+      dram_ar_len 	=> ddr_axi_si_temp.ar.len,
+      dram_ar_size 	=> ddr_axi_si_temp.ar.size,
+      dram_ar_burst	=> ddr_axi_si_temp.ar.burst,
+      dram_ar_lock 	=> ddr_axi_si_temp.ar.lock,
+      dram_ar_cache => ddr_axi_si_temp.ar.cache,
+      dram_ar_prot 	=> ddr_axi_si_temp.ar.prot,
+      dram_ar_qos 	=> ddr_axi_si_temp.ar.qos,
+      dram_ar_region => ddr_axi_si_temp.ar.region,
+      dram_ar_user 	=> ddr_axi_si_temp.ar.user(3 downto 0),
+      dram_ar_valid	=> ddr_axi_si_temp.ar.valid,
+      dram_ar_ready => ddr_axi_so.ar.ready,
+      dram_r_id 	=> ddr_axi_so.r.id(3 downto 0),
+      dram_r_data 	=> ddr_axi_so.r.data,
+      dram_r_resp 	=> ddr_axi_so.r.resp,
+      dram_r_last 	=> ddr_axi_so.r.last,
+      dram_r_user 	=> dram_r_user,
+      dram_r_valid 	=> ddr_axi_so.r.valid,
+      dram_r_ready 	=> ddr_axi_si_temp.r.ready
+    );
+  end generate axi_crossbar_gen;
 
   -----------------------------------------------------------------------
   ---  Drive unused bus ports
   -----------------------------------------------------------------------
-
-  no_hmst_gen : for i in 3 to NAHBMST-1 generate
-    ahbmo(i) <= ahbm_none;
-  end generate;
-
-  no_hslv_gen : for i in 0 to NAHBSLV - 1 generate
-    no_hslv_i_gen : if this_local_ahb_en(i) = '0' generate
-      ahbso(i) <= ahbs_none;
-    end generate no_hslv_i_gen;
-  end generate;
-
   no_pslv_gen : for i in 0 to NAPBSLV - 1 generate
     no_pslv_i_gen : if this_local_apb_en(i) = '0' generate
       apbo(i) <= apb_none;
     end generate no_pslv_i_gen;
   end generate no_pslv_gen;
-
-  -----------------------------------------------------------------------------
-  -- Local devices
-  -----------------------------------------------------------------------------
-
-  -- DDR Controller
-  ddr_gen: if this_has_ddr = 1 generate
-    ddr_ahbso_gen: process (ddr_ahbso, this_ddr_hconfig) is
-    begin  -- process ddr_ahbso_gen
-      ahbso(0)         <= ddr_ahbso;
-      ahbso(0).hconfig <= this_ddr_hconfig;
-    end process ddr_ahbso_gen;
-  end generate ddr_gen;
-
-  fpga_mem_gen: if this_has_ddr = 0 generate
-    ahbso(0) <= ahbs_none;
-  end generate fpga_mem_gen;
-
-  ddr_ahbsi <= ahbsi;
 
   -----------------------------------------------------------------------------
   -- Services
@@ -439,13 +696,14 @@ begin
   mon_mem <= mon_mem_int;
 
   mon_cache <= mon_cache_int;
+  ddr_axi_si <= ddr_axi_si_temp;
 
   mon_ddr.clk <= tile_clk;
-  detect_ddr_access : process(ahbsi)
+  detect_ddr_access : process(ddr_axi_si_temp, ddr_axi_so)
   begin
     if this_has_ddr = 1 then
       mon_ddr.word_transfer <= '0';
-      if ahbsi.hready =  '1' and ahbsi.htrans /= HTRANS_IDLE then
+      if ddr_axi_si_temp.w.valid = '1' and ddr_axi_so.w.ready = '1' then
         mon_ddr.word_transfer <= '1';
       end if;
     else
@@ -482,46 +740,76 @@ begin
 
   -- FROM NoC
   no_cache_coherence : if CFG_LLC_ENABLE = 0 generate
-
-    -- Hendle CPU coherent requests and accelerator non-coherent DMA
-    noc2ahbmst_1 : noc2ahbmst
+    -- Handle CPU coherent requests and accelerator non-coherent DMA
+    noc2aximst_1 : noc2aximst
       generic map (
-        tech                => CFG_FABTECH,
-        hindex              => 0,
-        axitran             => GLOB_CPU_AXI,
-        little_end          => GLOB_CPU_RISCV,
-        eth_dma             => 0,
-        narrow_noc          => 0,
-        cacheline           => CFG_DLINE,
-        l2_cache_en         => CFG_L2_ENABLE,
-        this_coh_flit_size  => COH_NOC_FLIT_SIZE)
+        tech        		=> CFG_FABTECH,
+        mst_index   		=> 0,
+        axitran     		=> GLOB_CPU_AXI,
+        little_end  		=> GLOB_CPU_RISCV,
+        eth_dma     		=> 0,
+        narrow_noc  		=> 0,
+        cacheline   		=> CFG_DLINE,	
+		this_coh_flit_size  => COH_NOC_FLIT_SIZE)
       port map (
-        rst                       => rst,
-        clk                       => tile_clk,
-        local_y                   => this_local_y,
-        local_x                   => this_local_x,
-        ahbmi                     => ahbmi,
-        ahbmo                     => ahbmo(0),
-        coherence_req_rdreq       => coherence_req_rdreq,
-        coherence_req_data_out    => coherence_req_data_out,
-        coherence_req_empty       => coherence_req_empty,
-        coherence_fwd_wrreq       => coherence_fwd_wrreq,
-        coherence_fwd_data_in     => coherence_fwd_data_in,
-        coherence_fwd_full        => coherence_fwd_full,
-        coherence_rsp_snd_wrreq   => coherence_rsp_snd_wrreq,
-        coherence_rsp_snd_data_in => coherence_rsp_snd_data_in,
-        coherence_rsp_snd_full    => coherence_rsp_snd_full,
-        dma_rcv_rdreq             => dma_rcv_rdreq,
-        dma_rcv_data_out          => dma_rcv_data_out,
-        dma_rcv_empty             => dma_rcv_empty,
-        dma_snd_wrreq             => dma_snd_wrreq,
-        dma_snd_data_in           => dma_snd_data_in,
-        dma_snd_full              => dma_snd_full,
-        dma_snd_atleast_4slots    => dma_snd_atleast_4slots,
-        dma_snd_exactly_3slots    => dma_snd_exactly_3slots);
+        ACLK  		=> tile_clk,
+        ARESETn 	=> rst,
+        local_y 	=> this_local_y,
+        local_x 	=> this_local_x,
+        --AR Channel
+        AR_ID 		=> mst0_out.ar.id(1 downto 0),
+        AR_ADDR 	=> mst0_out.ar.addr,
+        AR_LEN 		=> mst0_out.ar.len,
+        AR_SIZE 	=> mst0_out.ar.size,
+        AR_BURST 	=> mst0_out.ar.burst,
+        AR_LOCK 	=> mst0_out.ar.lock,
+        AR_PROT 	=> mst0_out.ar.prot,
+        AR_VALID 	=> mst0_out.ar.valid,
+        AR_READY 	=> mst0_in.ar.ready,
+        --R Channel
+        R_ID    	=> mst0_in.r.id(1 downto 0),
+        R_DATA  	=> mst0_in.r.data,
+        R_RESP  	=> mst0_in.r.resp,
+        R_LAST  	=> mst0_in.r.last,
+        R_VALID 	=> mst0_in.r.valid,
+        R_READY 	=> mst0_out.r.ready,
+        --AW Channel
+        AW_ID 		=> mst0_out.aw.id(1 downto 0),
+        AW_ADDR 	=> mst0_out.aw.addr,
+        AW_LEN 		=> mst0_out.aw.len,
+        AW_SIZE 	=> mst0_out.aw.size,
+        AW_BURST 	=> mst0_out.aw.burst,
+        AW_LOCK 	=> mst0_out.aw.lock,
+        AW_PROT 	=> mst0_out.aw.prot,
+        AW_VALID 	=> mst0_out.aw.valid,
+        AW_READY 	=> mst0_in.aw.ready,
+        --W Channel
+        W_DATA 		=> mst0_out.w.data,
+        W_STRB 		=> mst0_out.w.strb,
+        W_LAST 		=> mst0_out.w.last,
+        W_VALID 	=> mst0_out.w.valid,
+        W_READY 	=> mst0_in.w.ready,
+        --B Channel
+        B_ID 		=> mst0_in.b.id(1 downto 0),
+        B_RESP 		=> mst0_in.b.resp,
+        B_VALID 	=> mst0_in.b.valid,
+        B_READY 	=> mst0_out.b.ready,
+        --NoC
+        coherence_req_rdreq 		=> coherence_req_rdreq,
+        coherence_req_data_out 		=> coherence_req_data_out,
+        coherence_req_empty			=> coherence_req_empty,
+        coherence_rsp_snd_wrreq 	=> coherence_rsp_snd_wrreq,
+        coherence_rsp_snd_data_in 	=> coherence_rsp_snd_data_in,
+        coherence_rsp_snd_full 		=> coherence_rsp_snd_full,
+        dma_rcv_rdreq             	=> dma_rcv_rdreq,
+        dma_rcv_data_out          	=> dma_rcv_data_out,
+        dma_rcv_empty             	=> dma_rcv_empty,
+        dma_snd_wrreq             	=> dma_snd_wrreq,
+        dma_snd_data_in           	=> dma_snd_data_in,
+        dma_snd_full              	=> dma_snd_full
+      );
 
     -- No LLC wrapper
-    ahbmo(2)      <= ahbm_none;
     mon_cache_int <= monitor_cache_none;
 
     -- FPGA-based memory link is not supported when ESP cahces are not enabled
@@ -532,90 +820,160 @@ begin
     fpga_credit_out <= '0';
 
     -- Handle JTAG or EDCL requests to memory as well as ETH DMA
-    noc2ahbmst_2 : noc2ahbmst
+    noc2aximst_2 : noc2aximst
       generic map (
-        tech                => CFG_FABTECH,
-        hindex              => 1,
-        axitran             => 0,
-        little_end          => 0,
-        eth_dma             => 1,               -- Exception for fixed 32-bits DMA
-        narrow_noc          => 0,
-        cacheline           => 1,
-        l2_cache_en         => 0,
-        this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
+        tech        => CFG_FABTECH,
+        mst_index   => 1,
+        axitran     => 0,
+        little_end  => 0,
+        eth_dma     => 1,
+        narrow_noc  => 0,
+        cacheline   => 1,
+		this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
       port map (
-        rst                       => rst,
-        clk                       => tile_clk,
-        local_y                   => this_local_y,
-        local_x                   => this_local_x,
-        ahbmi                     => ahbmi,
-        ahbmo                     => ahbmo(1),
-        coherence_req_rdreq       => remote_ahbm_rcv_rdreq,
-        coherence_req_data_out    => remote_ahbm_rcv_data_out,
-        coherence_req_empty       => remote_ahbm_rcv_empty,
-        coherence_fwd_wrreq       => open,
-        coherence_fwd_data_in     => open,
-        coherence_fwd_full        => '0',
-        coherence_rsp_snd_wrreq   => remote_ahbm_snd_wrreq,
-        coherence_rsp_snd_data_in => remote_ahbm_snd_data_in,
-        coherence_rsp_snd_full    => remote_ahbm_snd_full,
-        -- These requests are treated as non-coherent when no LLC is present!
-        dma_rcv_rdreq             => coherent_dma_rcv_rdreq,
-        dma_rcv_data_out          => coherent_dma_rcv_data_out,
-        dma_rcv_empty             => coherent_dma_rcv_empty,
-        dma_snd_wrreq             => coherent_dma_snd_wrreq,
-        dma_snd_data_in           => coherent_dma_snd_data_in,
-        dma_snd_full              => coherent_dma_snd_full,
-        dma_snd_atleast_4slots    => coherent_dma_snd_atleast_4slots,
-        dma_snd_exactly_3slots    => coherent_dma_snd_exactly_3slots);
+        ACLK  		=> tile_clk,
+        ARESETn 	=> rst,
+        local_y 	=> this_local_y,
+        local_x 	=> this_local_x,
+        --AR Channel
+        AR_ID 		=> mst1_out.ar.id(1 downto 0),
+        AR_ADDR 	=> mst1_out.ar.addr,
+        AR_LEN 		=> mst1_out.ar.len,
+        AR_SIZE 	=> mst1_out.ar.size,
+        AR_BURST 	=> mst1_out.ar.burst,
+        AR_LOCK 	=> mst1_out.ar.lock,
+        AR_PROT 	=> mst1_out.ar.prot,
+        AR_VALID 	=> mst1_out.ar.valid,
+        AR_READY 	=> mst1_in.ar.ready,
+        --R Channel
+        R_ID 		=> mst1_in.r.id(1 downto 0),
+        R_DATA 		=> mst1_in.r.data,
+        R_RESP 		=> mst1_in.r.resp,
+        R_LAST 		=> mst1_in.r.last,
+        R_VALID 	=> mst1_in.r.valid,
+        R_READY 	=> mst1_out.r.ready,
+        --AW Channel
+        AW_ID 		=> mst1_out.aw.id(1 downto 0),
+        AW_ADDR 	=> mst1_out.aw.addr,
+        AW_LEN 		=> mst1_out.aw.len,
+        AW_SIZE 	=> mst1_out.aw.size,
+        AW_BURST 	=> mst1_out.aw.burst,
+        AW_LOCK 	=> mst1_out.aw.lock,
+        AW_PROT 	=> mst1_out.aw.prot,
+        AW_VALID 	=> mst1_out.aw.valid,
+        AW_READY 	=> mst1_in.aw.ready,
+        --W Channel
+        W_DATA 		=> mst1_out.w.data,
+        W_STRB 		=> mst1_out.w.strb,
+        W_LAST 		=> mst1_out.w.last,
+        W_VALID 	=> mst1_out.w.valid,
+        W_READY 	=> mst1_in.w.ready,
+        --B Channel
+        B_ID 		=> mst1_in.b.id(1 downto 0),
+        B_RESP 		=> mst1_in.b.resp,
+        B_VALID 	=> mst1_in.b.valid,
+        B_READY 	=> mst1_out.b.ready,
+        --NoC
+        coherence_req_rdreq 		=> remote_ahbm_rcv_rdreq,
+        coherence_req_data_out 		=> remote_ahbm_rcv_data_out,
+        coherence_req_empty 		=> remote_ahbm_rcv_empty,
+        coherence_rsp_snd_wrreq 	=> remote_ahbm_snd_wrreq,
+        coherence_rsp_snd_data_in 	=> remote_ahbm_snd_data_in,
+        coherence_rsp_snd_full 		=> remote_ahbm_snd_full,
 
+        dma_rcv_rdreq             	=> coherent_dma_rcv_rdreq,
+        dma_rcv_data_out          	=> coherent_dma_rcv_data_out,
+        dma_rcv_empty             	=> coherent_dma_rcv_empty,
+        dma_snd_wrreq             	=> coherent_dma_snd_wrreq,
+        dma_snd_data_in           	=> coherent_dma_snd_data_in,
+        dma_snd_full              	=> coherent_dma_snd_full
+        );
+
+	  -- Tie off mst2 signals (only 2 masters are used)
+      mst2_out <= axi_mosi_none;
+      mst2_in  <= axi_somi_none;
   end generate no_cache_coherence;
 
   with_cache_coherence : if CFG_LLC_ENABLE /= 0 generate
 
     non_coh_dma_proxy_gen: if this_has_ddr /= 0 generate
     -- Handle accelerators non-coherent DMA
-    noc2ahbmst_1 : noc2ahbmst
+
+    noc2aximst_1 : noc2aximst
       generic map (
-        tech                => CFG_FABTECH,
-        hindex              => 0,
-        axitran             => GLOB_CPU_AXI,
-        little_end          => GLOB_CPU_RISCV,
-        eth_dma             => 0,
-        narrow_noc          => 0,
-        cacheline           => CFG_DLINE,
-        l2_cache_en         => CFG_L2_ENABLE,
-        this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
+        tech        		=> CFG_FABTECH,
+        mst_index   		=> 0,
+        axitran     		=> GLOB_CPU_AXI,
+        little_end  		=> GLOB_CPU_RISCV,
+        eth_dma     		=> 0,
+        narrow_noc  		=> 0,
+        cacheline   		=> CFG_DLINE,
+		this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
       port map (
-        rst                       => rst,
-        clk                       => tile_clk,
-        local_y                   => this_local_y,
-        local_x                   => this_local_x,
-        ahbmi                     => ahbmi,
-        ahbmo                     => ahbmo(0),
+        ACLK  		=> tile_clk,
+        ARESETn 	=> rst,
+        local_y 	=> this_local_y,
+        local_x 	=> this_local_x,
+        --AR Channel
+        AR_ID 		=> mst0_out.ar.id(1 downto 0),
+        AR_ADDR 	=> mst0_out.ar.addr,
+        AR_LEN 		=> mst0_out.ar.len,
+        AR_SIZE 	=> mst0_out.ar.size,
+        AR_BURST 	=> mst0_out.ar.burst,
+        AR_LOCK 	=> mst0_out.ar.lock,
+        AR_PROT 	=> mst0_out.ar.prot,
+        AR_VALID 	=> mst0_out.ar.valid,
+        AR_READY 	=> mst0_in.ar.ready,
+        --R Channel
+        R_ID    	=> mst0_in.r.id(1 downto 0),
+        R_DATA  	=> mst0_in.r.data,
+        R_RESP  	=> mst0_in.r.resp,
+        R_LAST  	=> mst0_in.r.last,
+        R_VALID 	=> mst0_in.r.valid,
+        R_READY 	=> mst0_out.r.ready,
+        --AW Channel
+        AW_ID 		=> mst0_out.aw.id(1 downto 0),
+        AW_ADDR 	=> mst0_out.aw.addr,
+        AW_LEN 		=> mst0_out.aw.len,
+        AW_SIZE 	=> mst0_out.aw.size,
+        AW_BURST 	=> mst0_out.aw.burst,
+        AW_LOCK 	=> mst0_out.aw.lock,
+        AW_PROT 	=> mst0_out.aw.prot,
+        AW_VALID 	=> mst0_out.aw.valid,
+        AW_READY 	=> mst0_in.aw.ready,
+        --W Channel
+        W_DATA 		=> mst0_out.w.data,
+        W_STRB 		=> mst0_out.w.strb,
+        W_LAST 		=> mst0_out.w.last,
+        W_VALID 	=> mst0_out.w.valid,
+        W_READY 	=> mst0_in.w.ready,
+        --B Channel
+        B_ID 		=> mst0_in.b.id(1 downto 0),
+        B_RESP 		=> mst0_in.b.resp,
+        B_VALID 	=> mst0_in.b.valid,
+        B_READY 	=> mst0_out.b.ready,
+        --NoC
         coherence_req_rdreq       => open,
         coherence_req_data_out    => (others => '0'),
         coherence_req_empty       => '1',
-        coherence_fwd_wrreq       => open,
-        coherence_fwd_data_in     => open,
-        coherence_fwd_full        => '0',
         coherence_rsp_snd_wrreq   => open,
         coherence_rsp_snd_data_in => open,
         coherence_rsp_snd_full    => '0',
-        dma_rcv_rdreq             => dma_rcv_rdreq,
-        dma_rcv_data_out          => dma_rcv_data_out,
-        dma_rcv_empty             => dma_rcv_empty,
-        dma_snd_wrreq             => dma_snd_wrreq,
-        dma_snd_data_in           => dma_snd_data_in,
-        dma_snd_full              => dma_snd_full,
-        dma_snd_atleast_4slots    => dma_snd_atleast_4slots,
-        dma_snd_exactly_3slots    => dma_snd_exactly_3slots);
+        dma_rcv_rdreq             	=> dma_rcv_rdreq,
+        dma_rcv_data_out          	=> dma_rcv_data_out,
+        dma_rcv_empty             	=> dma_rcv_empty,
+        dma_snd_wrreq             	=> dma_snd_wrreq,
+        dma_snd_data_in           	=> dma_snd_data_in,
+        dma_snd_full              	=> dma_snd_full
+
+      );
+
     end generate non_coh_dma_proxy_gen;
 
     -- Handle CPU coherent requests and accelerators coherent DMA
     llc_rstn <= not srst and rst;
 
-    llc_wrapper_1 : llc_wrapper
+    llc_wrapper_1 : llc_wrapper_axi
       generic map (
         tech          => CFG_FABTECH,
         sets          => CFG_LLC_SETS,
@@ -641,13 +999,50 @@ begin
         cache_y       => cache_y,
         cache_x       => cache_x)
       port map (
-        rst                        => llc_rstn,
-        clk                        => tile_clk,
-        local_y                    => this_local_y,
-        local_x                    => this_local_x,
-        pconfig                    => this_llc_pconfig,
-        ahbmi                      => ahbmi,
-        ahbmo                      => ahbmo(2),
+        rst           => llc_rstn,
+        clk           => tile_clk,
+        local_y       => this_local_y,
+        local_x       => this_local_x,
+        pconfig       => this_llc_pconfig,
+        --AR Channel
+        AR_ID 		=> mst2_out.ar.id(1 downto 0),
+        AR_ADDR 	=> mst2_out.ar.addr,
+        AR_LEN 		=> mst2_out.ar.len,
+        AR_SIZE 	=> mst2_out.ar.size,
+        AR_BURST 	=> mst2_out.ar.burst,
+        AR_LOCK 	=> mst2_out.ar.lock,
+        AR_PROT 	=> mst2_out.ar.prot,
+        AR_VALID 	=> mst2_out.ar.valid,
+        AR_READY 	=> mst2_in.ar.ready,
+        --R Channel
+        R_ID 		=> mst2_in.r.id(1 downto 0),
+        R_DATA 		=> mst2_in.r.data,
+        R_RESP 		=> mst2_in.r.resp,
+        R_LAST 		=> mst2_in.r.last,
+        R_VALID 	=> mst2_in.r.valid,
+        R_READY 	=> mst2_out.r.ready,
+        --AW Channel
+        AW_ID 		=> mst2_out.aw.id(1 downto 0),
+        AW_ADDR 	=> mst2_out.aw.addr,
+        AW_LEN 		=> mst2_out.aw.len,
+        AW_SIZE 	=> mst2_out.aw.size,
+        AW_BURST 	=> mst2_out.aw.burst,
+        AW_LOCK 	=> mst2_out.aw.lock,
+        AW_PROT 	=> mst2_out.aw.prot,
+        AW_VALID 	=> mst2_out.aw.valid,
+        AW_READY 	=> mst2_in.aw.ready,
+        --W Channel
+        W_DATA 		=> mst2_out.w.data,
+        W_STRB 		=> mst2_out.w.strb,
+        W_LAST 		=> mst2_out.w.last,
+        W_VALID 	=> mst2_out.w.valid,
+        W_READY 	=> mst2_in.w.ready,
+        --B Channel
+        B_ID 		=> mst2_in.b.id(1 downto 0),
+        B_RESP 		=> mst2_in.b.resp,
+        B_VALID 	=> mst2_in.b.valid,
+        B_READY 	=> mst2_out.b.ready,
+
         apbi                       => apbi,
         apbo                       => apbo(1),
         -- NoC1->tile
@@ -736,41 +1131,75 @@ begin
 
     esplink_proxy_gen: if this_has_ddr /= 0 generate
     -- Handle JTAG or EDCL requests to memory
-    noc2ahbmst_2 : noc2ahbmst
+    noc2aximst_2 : noc2aximst
       generic map (
-        tech                => CFG_FABTECH,
-        hindex              => 1,
-        axitran             => 0,
-        little_end          => 0,
-        eth_dma             => 0,
-        narrow_noc          => 0,
-        cacheline           => 1,
-        l2_cache_en         => 0,
-        this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
+        tech        => CFG_FABTECH,
+        mst_index   => 1,
+        axitran     => 0,
+        little_end  => 0,
+        eth_dma     => 0,
+        narrow_noc  => 0,
+        cacheline   => 1,
+		this_coh_flit_size  => ARCH_NOC_FLIT_SIZE)
       port map (
-        rst                       => rst,
-        clk                       => tile_clk,
-        local_y                   => this_local_y,
-        local_x                   => this_local_x,
-        ahbmi                     => ahbmi,
-        ahbmo                     => ahbmo(1),
-        coherence_req_rdreq       => remote_ahbm_rcv_rdreq,
-        coherence_req_data_out    => remote_ahbm_rcv_data_out,
-        coherence_req_empty       => remote_ahbm_rcv_empty,
-        coherence_fwd_wrreq       => open,
-        coherence_fwd_data_in     => open,
-        coherence_fwd_full        => '0',
-        coherence_rsp_snd_wrreq   => remote_ahbm_snd_wrreq,
-        coherence_rsp_snd_data_in => remote_ahbm_snd_data_in,
-        coherence_rsp_snd_full    => remote_ahbm_snd_full,
+        ACLK  		=> tile_clk,
+        ARESETn 	=> rst,
+        local_y 	=> this_local_y,
+        local_x 	=> this_local_x,
+        --AR Channel
+        AR_ID 		=> mst1_out.ar.id(1 downto 0),
+        AR_ADDR 	=> mst1_out.ar.addr,
+        AR_LEN 		=> mst1_out.ar.len,
+        AR_SIZE 	=> mst1_out.ar.size,
+        AR_BURST 	=> mst1_out.ar.burst,
+        AR_LOCK 	=> mst1_out.ar.lock,
+        AR_PROT 	=> mst1_out.ar.prot,
+        AR_VALID 	=> mst1_out.ar.valid,
+        AR_READY 	=> mst1_in.ar.ready,
+        --R Channel
+        R_ID 		=> mst1_in.r.id(1 downto 0),
+        R_DATA 		=> mst1_in.r.data,
+        R_RESP 		=> mst1_in.r.resp,
+        R_LAST 		=> mst1_in.r.last,
+        R_VALID 	=> mst1_in.r.valid,
+        R_READY 	=> mst1_out.r.ready,
+        --AW Channel
+        AW_ID 		=> mst1_out.aw.id(1 downto 0),
+        AW_ADDR 	=> mst1_out.aw.addr,
+        AW_LEN 		=> mst1_out.aw.len,
+        AW_SIZE 	=> mst1_out.aw.size,
+        AW_BURST 	=> mst1_out.aw.burst,
+        AW_LOCK 	=> mst1_out.aw.lock,
+        AW_PROT 	=> mst1_out.aw.prot,
+        AW_VALID 	=> mst1_out.aw.valid,
+        AW_READY 	=> mst1_in.aw.ready,
+        --W Channel
+        W_DATA 		=> mst1_out.w.data,
+        W_STRB 		=> mst1_out.w.strb,
+        W_LAST 		=> mst1_out.w.last,
+        W_VALID 	=> mst1_out.w.valid,
+        W_READY 	=> mst1_in.w.ready,
+        --B Channel
+        B_ID 		=> mst1_in.b.id(1 downto 0),
+        B_RESP 		=> mst1_in.b.resp,
+        B_VALID 	=> mst1_in.b.valid,
+        B_READY 	=> mst1_out.b.ready,
+        --NoC
+        coherence_req_rdreq 		=> remote_ahbm_rcv_rdreq,
+        coherence_req_data_out 		=> remote_ahbm_rcv_data_out,
+        coherence_req_empty 		=> remote_ahbm_rcv_empty,
+        coherence_rsp_snd_wrreq 	=> remote_ahbm_snd_wrreq,
+        coherence_rsp_snd_data_in 	=> remote_ahbm_snd_data_in,
+        coherence_rsp_snd_full 		=> remote_ahbm_snd_full,
+
         dma_rcv_rdreq             => open,
         dma_rcv_data_out          => (others => '0'),
         dma_rcv_empty             => '1',
         dma_snd_wrreq             => open,
         dma_snd_data_in           => open,
-        dma_snd_full              => '0',
-        dma_snd_atleast_4slots    => '1',
-        dma_snd_exactly_3slots    => '0');
+        dma_snd_full              => '0'
+        );
+
     end generate esplink_proxy_gen;
 
   end generate with_cache_coherence;

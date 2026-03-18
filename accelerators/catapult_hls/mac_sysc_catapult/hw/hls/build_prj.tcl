@@ -1,4 +1,4 @@
-#Copyright (c) 2011-2024 Columbia University, System Level Design Group
+#Copyright (c) 2011-2025 Columbia University, System Level Design Group
 #SPDX-License-Identifier: Apache-2.0
 
 project new -name $ACCELERATOR\_dma$DMA_WIDTH
@@ -43,8 +43,8 @@ solution file add "../../../common/inc/esp_dma_info_sysc.hpp"
 solution file add "../inc/mac_conf_info.hpp"
 solution file add "../inc/mac.hpp"
 solution file add "../src/mac.cpp"
-solution file add "../inc/mac_specs.hpp"
 solution file add "../inc/mem_wrap.hpp"
+solution file add "../inc/mac_specs.hpp"
 
 solution file set ../inc/mac_specs.hpp -args -DDMA_WIDTH=$DMA_WIDTH
 

@@ -1,1 +1,2 @@
 sim/models/sram.sv
+sim/models/axi_ram_sim.v

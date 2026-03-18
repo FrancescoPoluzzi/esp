@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 library ieee;
@@ -391,6 +391,111 @@ package cachepackage is
       );
   end component;
 
+  component llc_wrapper_axi is
+    generic (
+      tech        : integer                      := virtex7;
+      sets        : integer                      := 256;
+      ways        : integer                      := 16;
+      ahb_if_en   : integer range 0 to 1         := 1;
+      nl2         : integer                      := 4;
+      nllc        : integer                      := 1;
+      noc_xlen    : integer                      := 2;
+      noc_ylen    : integer                      := 2;
+      hindex      : integer range 0 to NAHBSLV - 1 := 4;
+      pindex      : integer range 0 to NAPBSLV - 1 := 5;
+      pirq        : integer                      := 4;
+      cacheline   : integer;
+      little_end  : integer range 0 to 1 := 0;
+      l2_cache_en : integer                      := 0;
+      cache_tile_id : cache_attribute_array;
+      dma_tile_id   : dma_attribute_array;
+      tile_cache_id : attribute_vector(0 to CFG_TILES_NUM - 1);
+      tile_dma_id   : attribute_vector(0 to CFG_TILES_NUM - 1);
+      eth_dma_id    : integer;
+      dma_y         : yx_vec(0 to 2**NLLC_MAX_LOG2 - 1);
+      dma_x         : yx_vec(0 to 2**NLLC_MAX_LOG2 - 1);
+      cache_y       : yx_vec(0 to 2**NL2_MAX_LOG2 - 1);
+      cache_x       : yx_vec(0 to 2**NL2_MAX_LOG2 - 1));
+    port (
+      rst   : in  std_ulogic;
+      clk   : in  std_ulogic;
+
+      local_y : in local_yx;
+      local_x : in local_yx;
+      pconfig : in apb_config_type;
+
+	  AR_ID    : out std_logic_vector(					1 downto 0);
+	  AR_ADDR  : out std_logic_vector(GLOB_PHYS_ADDR_BITS-1 downto 0);
+	  AR_LEN   : out std_logic_vector(					7 downto 0);
+	  AR_SIZE  : out std_logic_vector(					2 downto 0);
+	  AR_BURST : out std_logic_vector(					1 downto 0);
+	  AR_LOCK  : out std_ulogic;
+	  AR_PROT  : out std_logic_vector(					2 downto 0);
+	  AR_VALID : out std_ulogic;
+	  AR_READY : in  std_ulogic;
+	  R_ID     : in  std_logic_vector(					1 downto 0);
+	  R_DATA   : in  std_logic_vector(			  AXIDW-1 downto 0);
+	  R_RESP   : in  std_logic_vector(					1 downto 0);
+	  R_LAST   : in  std_ulogic;
+	  R_VALID  : in  std_ulogic;
+	  R_READY  : out std_ulogic;
+	  AW_ID    : out std_logic_vector(					1 downto 0);
+	  AW_ADDR  : out std_logic_vector(GLOB_PHYS_ADDR_BITS-1 downto 0);
+	  AW_LEN   : out std_logic_vector(					7 downto 0);
+	  AW_SIZE  : out std_logic_vector(					2 downto 0);
+	  AW_BURST : out std_logic_vector(					1 downto 0);
+	  AW_LOCK  : out std_ulogic;
+	  AW_PROT  : out std_logic_vector(					2 downto 0);
+	  AW_VALID : out std_ulogic;
+	  AW_READY : in  std_ulogic;
+	  W_DATA   : out std_logic_vector(			  AXIDW-1 downto 0);
+	  W_STRB   : out std_logic_vector(				 AW-1 downto 0);
+	  W_LAST   : out std_ulogic;
+	  W_VALID  : out std_ulogic;
+	  W_READY  : in  std_ulogic;
+	  B_ID     : in  std_logic_vector(					1 downto 0);
+	  B_RESP   : in  std_logic_vector(					1 downto 0);
+	  B_VALID  : in  std_ulogic;
+	  B_READY  : out std_ulogic;
+
+      apbi  : in  apb_slv_in_type;
+      apbo  : out apb_slv_out_type;
+
+      -- NoC1->tile
+      coherence_req_rdreq        : out std_ulogic;
+      coherence_req_data_out     : in  coh_noc_flit_type;
+      coherence_req_empty        : in  std_ulogic;
+      -- tile->NoC2
+      coherence_fwd_wrreq        : out std_ulogic;
+      coherence_fwd_data_in      : out coh_noc_flit_type;
+      coherence_fwd_full         : in  std_ulogic;
+      -- tile->NoC3
+      coherence_rsp_snd_wrreq    : out std_ulogic;
+      coherence_rsp_snd_data_in  : out coh_noc_flit_type;
+      coherence_rsp_snd_full     : in  std_ulogic;
+      -- NoC3->tile
+      coherence_rsp_rcv_rdreq    : out std_ulogic;
+      coherence_rsp_rcv_data_out : in  coh_noc_flit_type;
+      coherence_rsp_rcv_empty    : in  std_ulogic;
+      -- -- NoC4->tile
+      dma_rcv_rdreq              : out std_ulogic;
+      dma_rcv_data_out       : in  dma_noc_flit_type;
+      dma_rcv_empty          : in  std_ulogic;
+      -- -- tile->NoC4
+      dma_snd_wrreq          : out std_ulogic;
+      dma_snd_data_in        : out dma_noc_flit_type;
+      dma_snd_full           : in  std_ulogic;
+      -- LLC->ext
+      ext_req_ready              : in  std_ulogic;
+      ext_req_valid              : out std_ulogic;
+      ext_req_data               : out std_logic_vector(CFG_MEM_LINK_BITS - 1 downto 0);
+      -- ext->LLC
+      ext_rsp_ready              : out std_ulogic;
+      ext_rsp_valid              : in  std_ulogic;
+      ext_rsp_data               : in  std_logic_vector(CFG_MEM_LINK_BITS- 1 downto 0);
+      mon_cache                  : out monitor_cache_type
+      );
+  end component;
 
   component fifo_custom is
     generic(

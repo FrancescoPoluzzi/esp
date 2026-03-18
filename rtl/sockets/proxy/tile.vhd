@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 library ieee;
@@ -720,6 +720,75 @@ package tile is
       dma_snd_exactly_3slots    : in  std_ulogic);
   end component;
 
+  component noc2aximst is
+      generic (
+        tech                : integer; 
+        mst_index           : integer; 
+        axitran             : integer; 
+        little_end          : integer; 
+        eth_dma             : integer; 
+        narrow_noc          : integer; 
+        cacheline           : integer;
+        this_coh_flit_size  : integer); 
+      port (
+        ACLK        : in std_ulogic;
+        ARESETn     : in std_ulogic;
+        local_y     : in local_yx;
+        local_x     : in local_yx;
+
+        AR_ID       : out std_logic_vector(1 downto 0);
+        AR_ADDR     : out std_logic_vector(GLOB_PHYS_ADDR_BITS-1 downto 0);
+        AR_LEN      : out std_logic_vector(7 downto 0);
+        AR_SIZE     : out std_logic_vector(2 downto 0);
+        AR_BURST    : out std_logic_vector(1 downto 0);
+        AR_LOCK     : out std_logic;
+        AR_PROT     : out std_logic_vector(2 downto 0);
+        AR_VALID    : out std_logic;
+        AR_READY    : in std_logic;
+
+        R_ID        : in std_logic_vector(1 downto 0);
+        R_DATA      : in std_logic_vector(AXIDW-1 downto 0);
+        R_RESP      : in std_logic_vector(1 downto 0);
+        R_LAST      : in std_logic;
+        R_VALID     : in std_logic;
+        R_READY     : out std_logic;
+
+        AW_ID       : out std_logic_vector(1 downto 0);
+        AW_ADDR     : out std_logic_vector(GLOB_PHYS_ADDR_BITS-1 downto 0);
+        AW_LEN      : out std_logic_vector(7 downto 0);
+        AW_SIZE     : out std_logic_vector(2 downto 0);
+        AW_BURST    : out std_logic_vector(1 downto 0);
+        AW_LOCK     : out std_logic;
+        AW_PROT     : out std_logic_vector(2 downto 0);
+        AW_VALID    : out std_logic;
+        AW_READY    : in std_logic;
+
+        W_DATA      : out std_logic_vector(AXIDW-1 downto 0);
+        W_STRB      : out std_logic_vector((AXIDW/8)-1 downto 0);
+        W_LAST      : out std_logic;
+        W_VALID     : out std_logic;
+        W_READY     : in std_logic;
+
+        B_ID        : in std_logic_vector(1 downto 0);
+        B_RESP      : in std_logic_vector(1 downto 0);
+        B_VALID     : in std_logic;
+        B_READY     : out std_logic;
+
+        coherence_req_rdreq         : out std_ulogic;
+        coherence_req_data_out      : in std_logic_vector(this_coh_flit_size-1 downto 0);
+        coherence_req_empty         : in std_ulogic;
+        coherence_rsp_snd_wrreq     : out std_ulogic;
+        coherence_rsp_snd_data_in   : out std_logic_vector(this_coh_flit_size-1 downto 0);
+        coherence_rsp_snd_full      : in std_ulogic;
+
+        dma_rcv_rdreq               : out std_ulogic;
+        dma_rcv_data_out            : in dma_noc_flit_type;
+        dma_rcv_empty               : in std_ulogic;
+        dma_snd_wrreq               : out std_ulogic;
+        dma_snd_data_in             : out dma_noc_flit_type;
+        dma_snd_full                : in std_ulogic);
+  end component;
+
   component esp_acc_dma
     generic (
       tech               : integer;
@@ -791,7 +860,7 @@ package tile is
       dma_snd_full                  : in  std_ulogic;
       interrupt_wrreq               : out std_ulogic;
       interrupt_data_in             : out misc_noc_flit_type;
-	  acc_activity					: out std_ulogic;
+      acc_activity                  : out std_ulogic;
       interrupt_full                : in  std_ulogic);
   end component;
 
@@ -1040,7 +1109,8 @@ package tile is
       is_tile_io        : boolean              := false;
       SIMULATION        : boolean              := false;
       ROUTER_PORTS      : ports_vec            := "11111";
-      HAS_SYNC          : integer range 0 to 1 := 1);
+      HAS_SYNC          : integer range 0 to 1 := 1;
+      is_asic           : boolean              := false);
     port (
       rst                : in  std_ulogic;
       noc_clk_lock       : in  std_ulogic;
@@ -1060,7 +1130,7 @@ package tile is
       dco_clk_sel        : out  std_ulogic;
       dco_en             : out  std_ulogic;
       dco_clk_delay_sel  : out std_logic_vector(11 downto 0);
-      acc_activity	 : in std_ulogic;
+      acc_activity   : in std_ulogic;
       -- pad config
       pad_cfg            : out std_logic_vector(ESP_CSR_PAD_CFG_MSB - ESP_CSR_PAD_CFG_LSB downto 0);
       -- NoC
@@ -1138,7 +1208,7 @@ package tile is
       noc6_stop_out      : out std_logic_vector(3 downto 0);
       -- monitors
       mon_noc            : out monitor_noc_vector(1 to 6);
-      LDOCTRL			 : out std_logic_vector(7 downto 0);
+      LDOCTRL            : out std_logic_vector(7 downto 0);
       -- synchronizers out to tile
       noc1_output_port_tile   : out coh_noc_flit_type;
       noc1_data_void_out_tile : out std_ulogic;

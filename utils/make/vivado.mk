@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024 Columbia University, System Level Design Group
+# Copyright (c) 2011-2025 Columbia University, System Level Design Group
 # SPDX-License-Identifier: Apache-2.0
 
 ### Constaints ###
@@ -19,10 +19,15 @@ ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 
 ACC_TECH_DIR   = $(ESP_ROOT)/tech/$(TECHLIB)/acc
 ACC_TECH_PRESENT = $(filter-out common,$(filter $(notdir $(wildcard $(ACC_TECH_DIR)/*)),$(RTL_ACC)))
+THIRDPARTY_LIBS = $(THIRDPARTY_ACC)
 ACC_VHDL_SRCS  = $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VHDL_SRCS))
 ACC_VLOG_SRCS  = $(filter $(foreach acc,$(ACC_TECH_PRESENT),$(ACC_TECH_DIR)/$(acc)/%),$(VLOG_SRCS))
-BASE_VHDL_SRCS = $(filter-out $(ACC_VHDL_SRCS),$(VHDL_SRCS))
-BASE_VLOG_SRCS = $(filter-out $(ACC_VLOG_SRCS),$(VLOG_SRCS))
+THIRDPARTY_VHDL_PKGS_SRCS = $(filter $(THIRDPARTY_PATH)/%,$(VHDL_PKGS))
+THIRDPARTY_VHDL_SRCS = $(filter $(THIRDPARTY_PATH)/%,$(VHDL_SRCS))
+THIRDPARTY_VLOG_SRCS = $(filter $(THIRDPARTY_PATH)/%,$(VLOG_SRCS))
+BASE_VHDL_PKGS = $(filter-out $(THIRDPARTY_VHDL_PKGS_SRCS),$(VHDL_PKGS))
+BASE_VHDL_SRCS = $(filter-out $(ACC_VHDL_SRCS) $(THIRDPARTY_VHDL_SRCS),$(VHDL_SRCS))
+BASE_VLOG_SRCS = $(filter-out $(ACC_VLOG_SRCS) $(THIRDPARTY_VLOG_SRCS),$(VLOG_SRCS))
 
 XDC   = $(ESP_ROOT)/constraints/$(BOARD)/$(BOARD)$(XDC_SUFFIX).xdc
 XDC  += $(ESP_ROOT)/constraints/$(BOARD)/$(BOARD)$(XDC_SUFFIX)-mig-pins.xdc
@@ -54,7 +59,7 @@ vivado: $(VIVADO_LOGS)
 
 ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 
-vivado/srcs.tcl: vivado $(RTL_CFG_BUILD)/check_all_rtl_srcs.old
+vivado/srcs.tcl: vivado check_all_rtl_srcs $(RTL_CFG_BUILD)/check_all_rtl_srcs.old
 	$(QUIET_INFO)echo "generating source list for Vivado"
 	@$(RM) $@
 ifneq ($(findstring profpga, $(BOARD)),)
@@ -67,12 +72,20 @@ ifneq ($(findstring profpga, $(BOARD)),)
 		echo "read_verilog -library profpga -sv $$rtl" >> $@; \
 	done;
 endif
-	@for rtl in $(VHDL_PKGS); do \
+	@for rtl in $(BASE_VHDL_PKGS); do \
 		echo "read_vhdl $$rtl" >> $@; \
 	done;
 	@for rtl in $(BASE_VHDL_SRCS); do \
+		case "$$rtl" in \
+			$(DESIGN_PATH)/socketgen/noc_*.vhd) continue ;; \
+		esac; \
 		echo "read_vhdl $$rtl" >> $@; \
 	done;
+	@if test -d $(DESIGN_PATH)/socketgen; then \
+		for rtl in `find $(DESIGN_PATH)/socketgen -maxdepth 1 -type f -name "noc_*.vhd" | sort`; do \
+			echo "read_vhdl $$rtl" >> $@; \
+		done; \
+	fi;
 	@for rtl in $(BASE_VLOG_SRCS); do \
 		case "$$rtl" in \
 			$(ACC_TECH_DIR)/*) \
@@ -154,6 +167,62 @@ endif
 					echo "read_verilog -library $$acclib -sv $$rtl" >> $@; \
 				done; \
 			fi; \
+			done; \
+		fi;
+	@if test -d $(THIRDPARTY_PATH); then \
+		for acc in $(THIRDPARTY_LIBS); do \
+			accsrc="$(THIRDPARTY_PATH)/$$acc"; \
+			acclib=$$acc; \
+			echo "# Third-party accelerator $$acc (library $$acclib)" >> $@; \
+			if test -d "$$accsrc/vlog_incdir"; then \
+				incdirs=`find "$$accsrc/vlog_incdir" -type d`; \
+				echo "set_property include_dirs [concat {$$incdirs} [get_property include_dirs [get_filesets sources_1]]] [get_filesets sources_1]" >> $@; \
+				echo "set_property include_dirs [concat {$$incdirs} [get_property include_dirs [get_filesets sim_1]]] [get_filesets sim_1]" >> $@; \
+			fi; \
+			for vhdf in "$$accsrc/$$acc.pkgs" "$$accsrc/$$acc.vhdl"; do \
+				if test -f "$$vhdf"; then \
+					while IFS= read -r p; do \
+						p=`printf "%s" "$$p" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$$//'`; \
+						case "$$p" in ""|\#*|//*|--*) continue ;; esac; \
+						case "$$p" in /*) f="$$p" ;; *) f="$$accsrc/out/$$p" ;; esac; \
+						if test -f "$$f"; then \
+							echo "read_vhdl -library $$acclib $$f" >> $@; \
+						else \
+							echo "ERROR missing third-party VHDL source $$f (from $$vhdf)" 1>&2; \
+							exit 1; \
+						fi; \
+					done < "$$vhdf"; \
+				fi; \
+			done; \
+			if test -f "$$accsrc/$${acc}_wrapper.v"; then \
+				echo "read_verilog -library $$acclib -sv $$accsrc/$${acc}_wrapper.v" >> $@; \
+			fi; \
+			for fl in "$$accsrc/$$acc.verilog" "$$accsrc/$$acc.sverilog"; do \
+				if test -f "$$fl"; then \
+					svopt=""; \
+					case "$$fl" in *.sverilog) svopt="-sv" ;; esac; \
+					while IFS= read -r p; do \
+						p=`printf "%s" "$$p" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$$//'`; \
+						case "$$p" in ""|\#*|//*|--*) continue ;; esac; \
+						case "$$p" in +incdir+*) \
+							dirs=`printf "%s" "$$p" | sed 's/^+incdir+//; s/+/ /g'`; \
+							for d in $$dirs; do \
+								case "$$d" in /*) idir="$$d" ;; *) idir="$$accsrc/out/$$d" ;; esac; \
+								echo "set_property include_dirs [concat {$$idir} [get_property include_dirs [get_filesets sources_1]]] [get_filesets sources_1]" >> $@; \
+								echo "set_property include_dirs [concat {$$idir} [get_property include_dirs [get_filesets sim_1]]] [get_filesets sim_1]" >> $@; \
+							done; \
+							continue ;; \
+						esac; \
+						case "$$p" in /*) f="$$p" ;; *) f="$$accsrc/out/$$p" ;; esac; \
+						if test -f "$$f"; then \
+							echo "read_verilog -library $$acclib $$svopt $$f" >> $@; \
+						else \
+							echo "ERROR missing third-party Verilog source $$f (from $$fl)" 1>&2; \
+							exit 1; \
+						fi; \
+					done < "$$fl"; \
+				fi; \
+			done; \
 		done; \
 	fi;
 	@for dat in $(DAT_SRCS); do \
@@ -182,19 +251,20 @@ ifneq ($(IP_XCI_SRCS),)
 	done;
 	@echo "upgrade_ip [get_ips -all]" >> $@
 endif
-	@if test -r $(ESP_ROOT)/constraints/$(BOARD)/mig.xci; then \
+	@if test -r $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig.xci; then \
 		echo $(SPACES)"INFO including MIG IP"; \
 		mkdir -p vivado/mig; \
-		cp $(ESP_ROOT)/constraints/$(BOARD)/mig.xci ./vivado/mig; \
-		if test -r $(ESP_ROOT)/constraints/$(BOARD)/mig.prj; then \
-			cp $(ESP_ROOT)/constraints/$(BOARD)/mig.prj ./vivado/mig; \
-		fi; \
+        cp $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig.xci ./vivado/mig; \
+        if test -r $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig_a.prj; then \
+            cp $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig_a.prj ./vivado/mig; \
+            cp $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig_b.prj ./vivado/mig; \
+        fi; \
 		echo "import_ip -files ./mig/mig.xci" >> $@; \
 		echo "generate_target  all [get_ips mig] -force " >> $@; \
-	elif test -r $(ESP_ROOT)/constraints/$(BOARD)/mig.tcl; then \
+	elif test -r $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig.tcl; then \
 		echo $(SPACES)"INFO including MIG IP"; \
 		mkdir -p vivado/mig; \
-		cp $(ESP_ROOT)/constraints/$(BOARD)/mig.tcl ./vivado/mig; \
+		cp $(ESP_ROOT)/constraints/$(BOARD)/$(CPU_ARCH)/mig.tcl ./vivado/mig; \
 		if test -r $(ESP_ROOT)/constraints/$(BOARD)/mig.csv; then \
 			cp $(ESP_ROOT)/constraints/$(BOARD)/mig.csv ./vivado/mig; \
 		fi; \
@@ -292,23 +362,12 @@ vivado/syn.tcl: vivado
 #	@echo "synth_design -resource_sharing off -keep_equivalent_registers -no_lc -rtl -name rtl_1" >> $@
 	@echo "launch_runs synth_1 -jobs 12" >> $@
 	@echo "get_ips" >> $@
-	@echo "wait_on_run -timeout 360 synth_1" >> $@
+	@echo "wait_on_run -timeout 720 synth_1" >> $@
 	@echo "set_msg_config -suppress -id {Drc 23-20}" >> $@
-	@echo "set_property STEPS.OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
-	@echo "set_property STEPS.PLACE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
-	@echo "set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
-	@echo "set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]" >> $@
-	@echo "launch_runs impl_1 -to_step route_design -jobs 12" >> $@
-	@echo "wait_on_run -timeout 360 impl_1" >> $@
-	@echo "open_run impl_1" >> $@
-	@echo "report_methodology -checks [get_methodology_checks {TIMING-* XDC*}] -file methodology_impl.rpt" >> $@
-	@echo "check_timing -file check_timing_impl.rpt" >> $@
-	@echo "report_timing_summary -file timing_summary_impl.rpt" >> $@
-	@echo "report_timing -delay_type min -sort_by slack -max_paths 200 -path_type full_clock -file hold_200_pre_holdfix.rpt" >> $@
-	@echo "phys_opt_design -hold_fix" >> $@
-	@echo "report_timing -delay_type min -sort_by slack -max_paths 200 -path_type full_clock -file hold_200_post_holdfix.rpt" >> $@
-	@echo "report_timing -delay_type max -sort_by slack -max_paths 50 -path_type full_clock -file setup_50_post_holdfix.rpt" >> $@
-	@echo "write_bitstream -force [get_property DIRECTORY [get_runs impl_1]]/top.bit" >> $@
+	@echo "launch_runs impl_1 -jobs 12" >> $@
+	@echo "wait_on_run -timeout 720 impl_1" >> $@
+	@echo "launch_runs impl_1 -to_step write_bitstream" >> $@
+	@echo "wait_on_run -timeout 60 impl_1" >> $@
 
 vivado/syn_emu.tcl: vivado
 	$(QUIET_INFO)echo "generating synthesis script for Vivado"
@@ -323,10 +382,10 @@ vivado/syn_emu.tcl: vivado
 #	@echo "synth_design -resource_sharing off -keep_equivalent_registers -no_lc -rtl -name rtl_1" >> $@
 	@echo "launch_runs synth_1 -jobs 12" >> $@
 	@echo "get_ips" >> $@
-	@echo "wait_on_run -timeout 360 synth_1" >> $@
+	@echo "wait_on_run -timeout 720 synth_1" >> $@
 	@echo "set_msg_config -suppress -id {Drc 23-20}" >> $@
 	@echo "launch_runs impl_1 -jobs 12" >> $@
-	@echo "wait_on_run -timeout 360 impl_1" >> $@
+	@echo "wait_on_run -timeout 720 impl_1" >> $@
 	@echo "launch_runs impl_1 -to_step write_bitstream" >> $@
 	@echo "wait_on_run -timeout 60 impl_1" >> $@
 

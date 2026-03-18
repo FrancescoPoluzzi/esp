@@ -621,8 +621,38 @@ package sim is
   );
   end component ;
 
-  
+  component axi_ram_sim
+  generic (
+    kbytes      : integer := 1;
+    DATA_WIDTH  : integer := 64;
+    ADDR_WIDTH  : integer := 32;
+    STRB_WIDTH  : integer := 8;
+    ID_WIDTH    : integer := 8;
+    PIPELINE_OUTPUT : integer := 0
+  );
+  port (
+    rst     : in  std_ulogic;
+    clk     : in  std_ulogic;
+    ddr_axi_si  : in axi_mosi_type;
+    ddr_axi_so   : out axi_somi_type
+  );
+  end component axi_ram_sim;
+
+  component edcl_ahbmst_emu
+    generic (
+      hindex     : integer := 0
+    );
+    port (
+      clk    :  in  std_ulogic;
+      reset  :  in  std_ulogic;
+      ahbmo  :  out ahb_mst_out_type;
+      ahbmi  :  in  ahb_mst_in_type;
+      edcl_oen_ctrl  : out std_logic
+    );
+  end component edcl_ahbmst_emu;
+
 end;
+
 
 package body sim is
 

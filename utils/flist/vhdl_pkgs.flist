@@ -57,3 +57,4 @@ peripherals/ddr/ahb2mig_7series_pkg.vhd
 peripherals/ethernet/net.vhd
 peripherals/ethernet/ethernet_mac.vhd
 peripherals/ethernet/greth_pkg.vhd
+peripherals/ddr/axi2mig_pkg.vhd

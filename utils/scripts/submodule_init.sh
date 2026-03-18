@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2011-2024 Columbia University, System Level Design Group
+# Copyright (c) 2011-2025 Columbia University, System Level Design Group
 # SPDX-License-Identifier: Apache-2.0
 
 set -e
@@ -117,7 +117,7 @@ if [ ${INSTALL_STRATUS_INC} == 1 ]; then
 fi
 
 if [ ${INSTALL_MATCHLIB} == 1 ]; then
-    git submodule update --init --recursive accelerators/catapult_hls/common/matchlib_toolkit
+    git submodule update --init --recursive --remote accelerators/catapult_hls/common/matchlib_toolkit
 fi
 
 if [ ${INSTALL_CHISEL} == 1 ]; then

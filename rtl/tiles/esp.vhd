@@ -1,4 +1,4 @@
--- Copyright (c) 2011-2024 Columbia University, System Level Design Group
+-- Copyright (c) 2011-2025 Columbia University, System Level Design Group
 -- SPDX-License-Identifier: Apache-2.0
 
 library ieee;
@@ -40,8 +40,8 @@ entity esp is
     uart_ctsn         : in    std_logic;  -- UART1_RTSN (u1i.ctsn)
     uart_rtsn         : out   std_logic;  -- UART1_RTSN (u1o.rtsn)
     cpuerr            : out   std_logic;
-    ddr_ahbsi         : out ahb_slv_in_vector_type(0 to MEM_ID_RANGE_MSB);
-    ddr_ahbso         : in  ahb_slv_out_vector_type(0 to MEM_ID_RANGE_MSB);
+    ddr_axi_si        : out   axi_mosi_vector(0 to MEM_ID_RANGE_MSB);
+    ddr_axi_so        : in    axi_somi_vector(0 to MEM_ID_RANGE_MSB);
     eth0_apbi         : out apb_slv_in_type;
     eth0_apbo         : in  apb_slv_out_type;
     sgmii0_apbi       : out apb_slv_in_type;
@@ -571,7 +571,7 @@ begin
       port map (
         rst                => rst_int,
         clk                => sys_clk_int(0),
-	noc_clk            => sys_clk_int(0),
+        noc_clk            => sys_clk_int(0),
         tile_clk           => tile_clk(i),
         tile_rstn          => open,
         -- Test interface
@@ -624,7 +624,7 @@ begin
         noc5_output_port_tile   => noc5_data_l_out(i),
         noc6_output_port_tile   => noc6_data_l_out(i),
         mon_noc            => mon_noc_s(i),
-	mon_dvfs_out       => mon_dvfs_out(i));
+        mon_dvfs_out       => mon_dvfs_out(i));
     end generate empty_tile;
 
 
@@ -785,9 +785,9 @@ begin
         ROUTER_PORTS => set_router_ports(CFG_FABTECH, CFG_XLEN, CFG_YLEN, tile_x(i), tile_y(i)),
         HAS_SYNC     => CFG_HAS_SYNC)
       port map (
-	rst                => rst_int,
-	clk                => refclk,
-	noc_clk            => sys_clk_int(0),
+        rst                => rst_int,
+        clk                => refclk,
+        noc_clk            => sys_clk_int(0),
         tile_clk           => tile_clk(i),
         tile_rstn          => open,
         -- Test interface
@@ -796,21 +796,21 @@ begin
         tms                => '0',
         tclk               => '0',
         -- I/O bus interfaces
-	eth0_apbi          => eth0_apbi,
-	eth0_apbo          => eth0_apbo,
-	sgmii0_apbi        => sgmii0_apbi,
-	sgmii0_apbo        => sgmii0_apbo,
-	eth0_ahbmi         => eth0_ahbmi,
-	eth0_ahbmo         => eth0_ahbmo,
-	edcl_ahbmo         => edcl_ahbmo,
-	dvi_apbi           => dvi_apbi,
-	dvi_apbo           => dvi_apbo,
-	dvi_ahbmi          => dvi_ahbmi,
-	dvi_ahbmo          => dvi_ahbmo,
-	uart_rxd           => uart_rxd,
-	uart_txd           => uart_txd,
-	uart_ctsn          => uart_ctsn,
-	uart_rtsn          => uart_rtsn,
+        eth0_apbi          => eth0_apbi,
+        eth0_apbo          => eth0_apbo,
+        sgmii0_apbi        => sgmii0_apbi,
+        sgmii0_apbo        => sgmii0_apbo,
+        eth0_ahbmi         => eth0_ahbmi,
+        eth0_ahbmo         => eth0_ahbmo,
+        edcl_ahbmo         => edcl_ahbmo,
+        dvi_apbi           => dvi_apbi,
+        dvi_apbo           => dvi_apbo,
+        dvi_ahbmi          => dvi_ahbmi,
+        dvi_ahbmo          => dvi_ahbmo,
+        uart_rxd           => uart_rxd,
+        uart_txd           => uart_txd,
+        uart_ctsn          => uart_ctsn,
+        uart_rtsn          => uart_rtsn,
         -- DCO config
         dco_freq_sel            => dco_freq_sel(i),
         dco_div_sel             => dco_div_sel(i),
@@ -818,7 +818,7 @@ begin
         dco_cc_sel              => dco_cc_sel(i),
         dco_clk_sel             => dco_clk_sel(i),
         dco_en                  => dco_en(i),
-	-- NOC
+        -- NOC
         noc1_stop_in_tile       => noc1_stop_in_tile(i),
         noc1_stop_out_tile      => noc1_stop_out_tile(i),
         noc1_data_void_in_tile  => noc1_data_void_in_tile(i),
@@ -856,7 +856,7 @@ begin
         noc5_output_port_tile   => noc5_data_l_out(i),
         noc6_output_port_tile   => noc6_data_l_out(i),
         mon_noc            => mon_noc_s(i),
-	mon_dvfs           => mon_dvfs_out(i));
+        mon_dvfs           => mon_dvfs_out(i));
     end generate io_tile;
 
 
@@ -866,15 +866,15 @@ begin
         ROUTER_PORTS => set_router_ports(CFG_FABTECH, CFG_XLEN, CFG_YLEN, tile_x(i), tile_y(i)),
         HAS_SYNC     => CFG_HAS_SYNC)
       port map (
-	rst                => rst_int,
-	clk                => sys_clk_int(tile_mem_id(i)),
-	noc_clk            => sys_clk_int(0),
+        rst                => rst_int,
+        clk                => sys_clk_int(tile_mem_id(i)),
+        noc_clk            => sys_clk_int(0),
         tile_clk           => tile_clk(i),
         tile_rstn          => open,
         -- DDR controller ports (this_has_ddr -> 1)
-	ddr_ahbsi          => ddr_ahbsi(tile_mem_id(i)),
-	ddr_ahbso          => ddr_ahbso(tile_mem_id(i)),
-                -- Test interface
+        ddr_axi_si         => ddr_axi_si(tile_mem_id(i)),
+        ddr_axi_so         => ddr_axi_so(tile_mem_id(i)),
+        -- Test interface
         tdi                => '0',
         tdo                => open,
         tms                => '0',
@@ -886,7 +886,7 @@ begin
         dco_cc_sel              => dco_cc_sel(i),
         dco_clk_sel             => dco_clk_sel(i),
         dco_en                  => dco_en(i),
-	-- NOC
+        -- NOC
         noc1_stop_in_tile       => noc1_stop_in_tile(i),
         noc1_stop_out_tile      => noc1_stop_out_tile(i),
         noc1_data_void_in_tile  => noc1_data_void_in_tile(i),
@@ -924,9 +924,9 @@ begin
         noc5_output_port_tile   => noc5_data_l_out(i),
         noc6_output_port_tile   => noc6_data_l_out(i),
         mon_noc            => mon_noc_s(i),
-	mon_mem            => mon_mem(tile_mem_id(i)),
-	mon_cache          => mon_llc_int(i),
-	mon_dvfs           => mon_dvfs_out(i));
+        mon_mem            => mon_mem(tile_mem_id(i)),
+        mon_cache          => mon_llc_int(i),
+        mon_dvfs           => mon_dvfs_out(i));
     end generate mem_tile;
 
     slm_tile: if tile_type(i) = 5 generate
@@ -1000,9 +1000,9 @@ begin
 
   end generate tiles_gen;
 
-  no_mem_tile_gen: if CFG_NMEM_TILE = 0 generate
-    ddr_ahbsi(0) <= ahbs_in_none;
-  end generate no_mem_tile_gen;
+--  no_mem_tile_gen: if CFG_NMEM_TILE = 0 generate
+--    ddr_ahbsi(0) <= ahbs_in_none;
+--  end generate no_mem_tile_gen;
 
   monitor_noc_gen: for i in 1 to nocs_num generate
     monitor_noc_tiles_gen: for j in 0 to CFG_TILES_NUM-1 generate
