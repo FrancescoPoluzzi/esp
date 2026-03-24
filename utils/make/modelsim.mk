@@ -14,6 +14,7 @@ VLOGOPT += -suppress vlog-2577
 VLOGOPT += -suppress vlog-2720
 VLOGOPT += -suppress vlog-12003
 VLOGOPT += -suppress vsim-3584
+VLOGOPT += -suppress vlog-7061
 ifneq ($(filter $(TECHLIB),$(FPGALIBS)),)
 VLOGOPT += +define+XILINX_FPGA
 endif
