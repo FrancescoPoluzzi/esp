@@ -2,6 +2,7 @@ ACCEL_NAME := xheep
 
 # Set QUADRILATERO=1 to enable Quadrilatero matrix extension support
 QUADRILATERO ?= 0
+FPU ?= 0
 
 .PHONY: hw sw mcu-gen questa vivado-setup $(ACCEL_NAME)-vivado update-$(ACCEL_NAME)-filelists clean
 
@@ -15,8 +16,12 @@ QUADRILATERO_APP_FLAGS := COMPILER_FLAGS=-menable-experimental-extensions ARCH=r
 QUADRILATERO_FUSESOC_FLAGS := FUSESOC_PARAM="--COMMON_CELLS_ASSERTS_OFF"
 else
 QUADRILATERO_MCU_FLAGS := 
+ifeq ($(FPU),1)
+QUADRILATERO_APP_FLAGS := ARCH=rv32imfc
+else
 QUADRILATERO_APP_FLAGS := ARCH=rv32imc
-QUADRILATERO_FUSESOC_FLAGS := FUSESOC_PARAM="--COMMON_CELLS_ASSERTS_OFF"
+endif
+QUADRILATERO_FUSESOC_FLAGS :=
 endif
 
 COREV_VERSION ?= 1.0.4
@@ -33,7 +38,7 @@ $(info [$(ACCEL_NAME)] VLOG_FILELIST=$(VLOG_FILELIST))
 $(info [$(ACCEL_NAME)] VLOG_INCDIRS=$(VLOG_INCDIRS))
 
 X_HEEP_CFG ?= configs/esp_heep.hjson
-PYTHON_X_HEEP_CFG ?= configs/esp_heep.py
+PYTHON_X_HEEP_CFG ?=
 XHEEP_FPGA_BOARD ?= nexys-a7-100t
 MODELSIM_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/sim-modelsim
 VIVADO_FILELIST := build/openhwgroup.org_systems_core-v-mini-mcu_$(COREV_VERSION)/$(XHEEP_FPGA_BOARD)-vivado
