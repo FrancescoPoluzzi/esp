@@ -4,11 +4,9 @@
 #include <stdbool.h>
 
 #include "transformer.h"
-#include "data_cpp/signal_fft.h"
 #include "data_cpp/signal.h"
 #include "weightsAndBiasesC.h"
 #include "transformerBlockC.h"
-#include "SYLT-FFT/fft.h"
 
 #include "esp_accelerator.h"
 #include "esp_probe.h"
@@ -111,26 +109,21 @@ uintptr_t handle_trap(uintptr_t cause, uintptr_t epc, uintptr_t regs[32])
 #define XHEEP_RAW_SIGNAL_CH_SAMPLES  3072u
 #define XHEEP_RAW_SIGNAL_TOTAL_SAMPLES (XHEEP_STFT_CHANNELS * XHEEP_RAW_SIGNAL_CH_SAMPLES)
 
-#define XHEEP_D_EMBEDDING            400u
-#define XHEEP_D_MODEL                16u
-#define XHEEP_D_SEQ                  120u
-#define XHEEP_D_SEQ_WITH_CLS         (XHEEP_D_SEQ + 1u)
-
 #define XHEEP_PRE_RAW_ELEMS           XHEEP_RAW_SIGNAL_TOTAL_SAMPLES
-#define XHEEP_PRE_NORM1_WEIGHT_ELEMS  XHEEP_D_EMBEDDING
-#define XHEEP_PRE_NORM1_BIAS_ELEMS    XHEEP_D_EMBEDDING
-#define XHEEP_PRE_DENSE_WEIGHT_ELEMS  (XHEEP_D_EMBEDDING * XHEEP_D_MODEL)
-#define XHEEP_PRE_DENSE_BIAS_ELEMS    XHEEP_D_MODEL
-#define XHEEP_PRE_NORM2_WEIGHT_ELEMS  XHEEP_D_MODEL
-#define XHEEP_PRE_NORM2_BIAS_ELEMS    XHEEP_D_MODEL
-#define XHEEP_PRE_CLS_ELEMS           XHEEP_D_MODEL
-#define XHEEP_PRE_POS_ELEMS           (XHEEP_D_SEQ_WITH_CLS * XHEEP_D_MODEL)
+#define XHEEP_PRE_NORM1_WEIGHT_ELEMS  D_EMBEDDING
+#define XHEEP_PRE_NORM1_BIAS_ELEMS    D_EMBEDDING
+#define XHEEP_PRE_DENSE_WEIGHT_ELEMS  (D_EMBEDDING * D_MODEL)
+#define XHEEP_PRE_DENSE_BIAS_ELEMS    D_MODEL
+#define XHEEP_PRE_NORM2_WEIGHT_ELEMS  D_MODEL
+#define XHEEP_PRE_NORM2_BIAS_ELEMS    D_MODEL
+#define XHEEP_PRE_CLS_ELEMS           D_MODEL
+#define XHEEP_PRE_POS_ELEMS           (XHEEP_LAYER_SEQ_LEN * D_MODEL)
 
 #define XHEEP_LAYER_IN_ELEMS (XHEEP_PRE_RAW_ELEMS + XHEEP_PRE_NORM1_WEIGHT_ELEMS + XHEEP_PRE_NORM1_BIAS_ELEMS + \
                               XHEEP_PRE_DENSE_WEIGHT_ELEMS + XHEEP_PRE_DENSE_BIAS_ELEMS + XHEEP_PRE_NORM2_WEIGHT_ELEMS + \
                               XHEEP_PRE_NORM2_BIAS_ELEMS + XHEEP_PRE_CLS_ELEMS + XHEEP_PRE_POS_ELEMS)
 #define XHEEP_LAYER_IN_BYTES          (XHEEP_LAYER_IN_ELEMS * sizeof(quant_bit_width))
-#define XHEEP_LAYER_OUT_ELEMS         (XHEEP_D_SEQ_WITH_CLS * XHEEP_D_MODEL)
+#define XHEEP_LAYER_OUT_ELEMS         XHEEP_LAYER_ELEMS
 #define XHEEP_LAYER_OUT_BYTES         (XHEEP_LAYER_OUT_ELEMS * sizeof(quant_bit_width))
 #define XHEEP_LAYER_SHARED_BYTES      ((XHEEP_LAYER_IN_BYTES > XHEEP_LAYER_OUT_BYTES) ? XHEEP_LAYER_IN_BYTES : XHEEP_LAYER_OUT_BYTES)
 #define XHEEP_FFT_DONE_OFFSET         (XHEEP_SHARED_IO_OFFSET + XHEEP_LAYER_SHARED_BYTES)
@@ -154,23 +147,15 @@ uintptr_t handle_trap(uintptr_t cause, uintptr_t epc, uintptr_t regs[32])
 #define XHEEP_FFT_P2P_SRC_SLOT1 2u
 #define XHEEP_FFT_P2P_NSRCS     3u
 
-typedef struct {
-    esp_acc_stats_t acc;
-    uint32_t noc_injects[NOC_PLANES];
-    uint32_t noc_backpressure[NOC_PLANES][NOC_QUEUES];
-} mon_profile_t;
+#include "espheep_tranformer_profiling_helpers.h"
 
-typedef struct {
-    unsigned cpu_index;
-    unsigned tile_index;
-    uint32_t ddr_accesses[SOC_NMEM];
-    esp_mem_reqs_t mem_reqs[SOC_NMEM];
-    esp_cache_stats_t host_l2;
-    esp_cache_stats_t llc_stats[SOC_NMEM];
-    uint32_t dvfs_op[DVFS_OP_POINTS];
-    uint32_t noc_injects[NOC_PLANES];
-    uint32_t noc_backpressure[NOC_PLANES][NOC_QUEUES];
-} host_mon_profile_t;
+#define ESPHEEP_TRANSFORMER_FFT_HELPERS_IMPL
+#include "espheep_transformer_fft_helpers.h"
+#undef ESPHEEP_TRANSFORMER_FFT_HELPERS_IMPL
+
+#define ESPHEEP_TRANSFORMER_LAYER_HELPERS_IMPL
+#include "espheep_transformer_layer_helpers.h"
+#undef ESPHEEP_TRANSFORMER_LAYER_HELPERS_IMPL
 
 typedef struct {
     struct esp_device *dev;
@@ -190,6 +175,44 @@ typedef struct {
 
 static uintptr_t g_acc_mem_next = ~(uintptr_t)0;
 static uintptr_t g_acc_pt_next = ~(uintptr_t)0;
+static const char *const k_quad_fw_fetch_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "quad_l0_fw_fetch",
+    "quad_l1_fw_fetch",
+    "quad_l2_fw_fetch",
+    "quad_l3_fw_fetch"
+};
+static const char *const k_quad_run_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "quad_l0_run",
+    "quad_l1_run",
+    "quad_l2_run",
+    "quad_l3_run"
+};
+static const char *const k_quad_input_move_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "quad_layer0_input_move",
+    "quad_layer1_input_move",
+    "quad_layer2_input_move",
+    "quad_layer3_input_move"
+};
+static const char *const k_quad_output_move_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "quad_layer0_output_move",
+    "quad_layer1_output_move",
+    "quad_layer2_output_move",
+    "quad_layer3_output_move"
+};
+static const char *const k_cpu_layer_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "cpu_layer0",
+    "cpu_layer1",
+    "cpu_layer2",
+    "cpu_layer3"
+};
+#if !USE_P2P
+static const char *const k_layer_compare_labels[NUM_TRANSFORMER_LAYERS_OFFLOADED] = {
+    "layer0",
+    "layer1",
+    "layer2",
+    "layer3"
+};
+#endif
 
 static inline uintptr_t align_up_uintptr(uintptr_t value, uintptr_t align)
 {
@@ -238,372 +261,12 @@ static uintptr_t acc_pt_cursor_runtime(void)
     return g_acc_pt_next;
 }
 
-static inline uint64_t host_cycles(void)
+static const char *label_from_table(const char *const *labels,
+                                    size_t count,
+                                    unsigned index,
+                                    const char *fallback)
 {
-#ifdef __riscv
-#if __riscv_xlen == 32
-    uint32_t hi0 = 0, hi1 = 0, lo = 0;
-    asm volatile("csrr %0, mcycleh" : "=r"(hi0));
-    asm volatile("csrr %0, mcycle" : "=r"(lo));
-    asm volatile("csrr %0, mcycleh" : "=r"(hi1));
-    if (hi0 != hi1) {
-        asm volatile("csrr %0, mcycle" : "=r"(lo));
-        hi0 = hi1;
-    }
-    return ((uint64_t)hi0 << 32) | lo;
-#else
-    uint64_t v = 0;
-    asm volatile("csrr %0, mcycle" : "=r"(v));
-    return v;
-#endif
-#else
-    return 0;
-#endif
-}
-
-static inline uint64_t host_cycles_diff(uint64_t start, uint64_t end)
-{
-    if (end >= start) return end - start;
-    return (UINT64_MAX - start + 1u) + end;
-}
-
-static inline unsigned tile_index_from_dev(struct esp_device *dev)
-{
-    return esp_get_y(dev) * SOC_COLS + esp_get_x(dev);
-}
-
-static inline unsigned read_mon_tile(unsigned tile_index, unsigned mon_index)
-{
-    esp_monitor_args_t mon_args = {0};
-    mon_args.read_mode = ESP_MON_READ_SINGLE;
-    mon_args.tile_index = tile_index;
-    mon_args.mon_index = mon_index;
-    return esp_monitor(mon_args, NULL);
-}
-
-static inline unsigned host_cpu_index(void)
-{
-    int pid = get_pid();
-    if (pid < 0 || pid >= SOC_NCPU) return 0u;
-    return (unsigned)pid;
-}
-
-static inline unsigned tile_index_from_loc(soc_loc_t loc)
-{
-    return loc.row * SOC_COLS + loc.col;
-}
-
-static inline unsigned percent_u64(uint64_t part, uint64_t total)
-{
-    if (total == 0u) return 0u;
-    return (unsigned)((100u * part + (total / 2u)) / total);
-}
-
-static void read_mon_profile(struct esp_device *dev, mon_profile_t *profile)
-{
-    unsigned t = tile_index_from_dev(dev);
-    profile->acc.acc_tlb         = read_mon_tile(t, MON_ACC_TLB_INDEX);
-    profile->acc.acc_mem_lo      = read_mon_tile(t, MON_ACC_MEM_LO_INDEX);
-    profile->acc.acc_mem_hi      = read_mon_tile(t, MON_ACC_MEM_HI_INDEX);
-    profile->acc.acc_tot_lo      = read_mon_tile(t, MON_ACC_TOT_LO_INDEX);
-    profile->acc.acc_tot_hi      = read_mon_tile(t, MON_ACC_TOT_HI_INDEX);
-    profile->acc.acc_invocations = read_mon_tile(t, MON_ACC_INVOCATIONS);
-    for (unsigned p = 0; p < NOC_PLANES; ++p) {
-        profile->noc_injects[p] = read_mon_tile(t, MON_NOC_TILE_INJECT_BASE_INDEX + p);
-    }
-    for (unsigned q = 0; q < NOC_QUEUES; ++q) {
-        for (unsigned p = 0; p < NOC_PLANES; ++p) {
-            profile->noc_backpressure[p][q] =
-                read_mon_tile(t, MON_NOC_QUEUES_FULL_BASE_INDEX + p * NOC_QUEUES + q);
-        }
-    }
-}
-
-static void read_host_mon_profile(host_mon_profile_t *profile)
-{
-#if HOST_PROFILE
-    memset(profile, 0, sizeof(*profile));
-
-    profile->cpu_index = host_cpu_index();
-    profile->tile_index = tile_index_from_loc(cpu_locs[profile->cpu_index]);
-
-    const unsigned host_tile = profile->tile_index;
-    profile->host_l2.hits = read_mon_tile(host_tile, MON_L2_HIT_INDEX);
-    profile->host_l2.misses = read_mon_tile(host_tile, MON_L2_MISS_INDEX);
-
-    for (unsigned p = 0; p < DVFS_OP_POINTS; ++p) {
-        profile->dvfs_op[p] = read_mon_tile(host_tile, MON_DVFS_BASE_INDEX + p);
-    }
-    for (unsigned p = 0; p < NOC_PLANES; ++p) {
-        profile->noc_injects[p] = read_mon_tile(host_tile, MON_NOC_TILE_INJECT_BASE_INDEX + p);
-        for (unsigned q = 0; q < NOC_QUEUES; ++q) {
-            profile->noc_backpressure[p][q] =
-                read_mon_tile(host_tile, MON_NOC_QUEUES_FULL_BASE_INDEX + p * NOC_QUEUES + q);
-        }
-    }
-
-    for (unsigned m = 0; m < SOC_NMEM; ++m) {
-        const unsigned mem_tile = tile_index_from_loc(mem_locs[m]);
-        profile->ddr_accesses[m] = read_mon_tile(mem_tile, MON_DDR_WORD_TRANSFER_INDEX);
-        profile->mem_reqs[m].coh_reqs = read_mon_tile(mem_tile, MON_MEM_COH_REQ_INDEX);
-        profile->mem_reqs[m].coh_fwds = read_mon_tile(mem_tile, MON_MEM_COH_FWD_INDEX);
-        profile->mem_reqs[m].coh_rsps_rcv = read_mon_tile(mem_tile, MON_MEM_COH_RSP_RCV_INDEX);
-        profile->mem_reqs[m].coh_rsps_snd = read_mon_tile(mem_tile, MON_MEM_COH_RSP_SND_INDEX);
-        profile->mem_reqs[m].dma_reqs = read_mon_tile(mem_tile, MON_MEM_DMA_REQ_INDEX);
-        profile->mem_reqs[m].dma_rsps = read_mon_tile(mem_tile, MON_MEM_DMA_RSP_INDEX);
-        profile->mem_reqs[m].coh_dma_reqs = read_mon_tile(mem_tile, MON_MEM_COH_DMA_REQ_INDEX);
-        profile->mem_reqs[m].coh_dma_rsps = read_mon_tile(mem_tile, MON_MEM_COH_DMA_RSP_INDEX);
-        profile->llc_stats[m].hits = read_mon_tile(mem_tile, MON_LLC_HIT_INDEX);
-        profile->llc_stats[m].misses = read_mon_tile(mem_tile, MON_LLC_MISS_INDEX);
-    }
-#else
-    memset(profile, 0, sizeof(*profile));
-#endif
-}
-
-static void print_mon_profile_diff(const char *label,
-                                   struct esp_device *dev,
-                                   const mon_profile_t *start,
-                                   const mon_profile_t *end)
-{
-    uint64_t mem_start = ((uint64_t)start->acc.acc_mem_hi << 32) | start->acc.acc_mem_lo;
-    uint64_t mem_end   = ((uint64_t)end->acc.acc_mem_hi << 32) | end->acc.acc_mem_lo;
-    uint64_t tot_start = ((uint64_t)start->acc.acc_tot_hi << 32) | start->acc.acc_tot_lo;
-    uint64_t tot_end   = ((uint64_t)end->acc.acc_tot_hi << 32) | end->acc.acc_tot_lo;
-
-    uint64_t mem_cycles = host_cycles_diff(mem_start, mem_end);
-    uint64_t tot_cycles = host_cycles_diff(tot_start, tot_end);
-    uint64_t compute_cycles = (tot_cycles >= mem_cycles) ? (tot_cycles - mem_cycles) : 0;
-    uint32_t tlb_cycles = sub_monitor_vals(start->acc.acc_tlb, end->acc.acc_tlb);
-    uint32_t invocations = sub_monitor_vals(start->acc.acc_invocations, end->acc.acc_invocations);
-    uint64_t noc_injects_total = 0;
-    uint64_t noc_backpressure_total = 0;
-    uint64_t max_plane_injects = 0;
-    uint32_t max_backpressure = 0;
-    unsigned busiest_plane = 0u;
-    unsigned busiest_bp_plane = 0u;
-    unsigned busiest_bp_queue = 0u;
-
-    for (unsigned p = 0; p < NOC_PLANES; ++p) {
-        uint64_t plane_injects = sub_monitor_vals(start->noc_injects[p], end->noc_injects[p]);
-        noc_injects_total += plane_injects;
-        if (plane_injects > max_plane_injects) {
-            max_plane_injects = plane_injects;
-            busiest_plane = p;
-        }
-        for (unsigned q = 0; q < NOC_QUEUES; ++q) {
-            uint32_t bp = sub_monitor_vals(start->noc_backpressure[p][q], end->noc_backpressure[p][q]);
-            noc_backpressure_total += bp;
-            if (bp > max_backpressure) {
-                max_backpressure = bp;
-                busiest_bp_plane = p;
-                busiest_bp_queue = q;
-            }
-        }
-    }
-
-    printf("[PROFILE][MON] %s tile=(y=%u x=%u): total=%llu mem=%llu(%u%%) compute=%llu(%u%%) tlb=%u invocations=%u noc_injects=%llu busiest_plane=%u(%llu) noc_backpressure=%llu busiest_bp=(plane=%u queue=%u cycles=%u)\n",
-           label,
-           esp_get_y(dev), esp_get_x(dev),
-           (unsigned long long)tot_cycles,
-           (unsigned long long)mem_cycles,
-           percent_u64(mem_cycles, tot_cycles),
-           (unsigned long long)compute_cycles,
-           percent_u64(compute_cycles, tot_cycles),
-           tlb_cycles, invocations,
-           (unsigned long long)noc_injects_total,
-           busiest_plane,
-           (unsigned long long)max_plane_injects,
-           (unsigned long long)noc_backpressure_total,
-           busiest_bp_plane, busiest_bp_queue, max_backpressure);
-}
-
-static void print_host_mon_profile_diff(const char *label,
-                                        const host_mon_profile_t *start,
-                                        const host_mon_profile_t *end)
-{
-#if HOST_PROFILE
-    uint64_t l2_hits = sub_monitor_vals(start->host_l2.hits, end->host_l2.hits);
-    uint64_t l2_misses = sub_monitor_vals(start->host_l2.misses, end->host_l2.misses);
-    uint64_t l2_total = l2_hits + l2_misses;
-
-    uint64_t ddr_words = 0;
-    uint64_t llc_hits = 0;
-    uint64_t llc_misses = 0;
-    uint64_t coh_reqs = 0;
-    uint64_t coh_fwds = 0;
-    uint64_t coh_rsps_rcv = 0;
-    uint64_t coh_rsps_snd = 0;
-    uint64_t dma_reqs = 0;
-    uint64_t dma_rsps = 0;
-    uint64_t coh_dma_reqs = 0;
-    uint64_t coh_dma_rsps = 0;
-    uint64_t mem_ddr_words[SOC_NMEM] = {0};
-    uint64_t mem_llc_hits[SOC_NMEM] = {0};
-    uint64_t mem_llc_misses[SOC_NMEM] = {0};
-    uint64_t mem_dma_req_counts[SOC_NMEM] = {0};
-    uint64_t mem_coh_req_counts[SOC_NMEM] = {0};
-    uint64_t mem_coh_dma_req_counts[SOC_NMEM] = {0};
-
-    uint64_t noc_injects_total = 0;
-    uint64_t max_plane_injects = 0;
-    uint64_t noc_backpressure_total = 0;
-    uint64_t plane_injects[NOC_PLANES] = {0};
-    uint64_t plane_backpressure[NOC_PLANES] = {0};
-    uint32_t max_backpressure = 0;
-    unsigned busiest_plane = 0u;
-    unsigned busiest_bp_plane = 0u;
-    unsigned busiest_bp_queue = 0u;
-    uint32_t dvfs_diff[DVFS_OP_POINTS] = {0};
-    uint64_t max_ddr_words = 0;
-    uint64_t max_dma_reqs = 0;
-    uint64_t max_llc_traffic = 0;
-    unsigned busiest_mem_ddr = 0u;
-    unsigned busiest_mem_dma = 0u;
-    unsigned busiest_mem_llc = 0u;
-    uint32_t active_dvfs_cycles = 0u;
-    unsigned active_dvfs_op = 0u;
-
-    for (unsigned m = 0; m < SOC_NMEM; ++m) {
-        mem_ddr_words[m] = sub_monitor_vals(start->ddr_accesses[m], end->ddr_accesses[m]);
-        mem_coh_req_counts[m] = sub_monitor_vals(start->mem_reqs[m].coh_reqs, end->mem_reqs[m].coh_reqs);
-        mem_dma_req_counts[m] = sub_monitor_vals(start->mem_reqs[m].dma_reqs, end->mem_reqs[m].dma_reqs);
-        mem_coh_dma_req_counts[m] =
-            sub_monitor_vals(start->mem_reqs[m].coh_dma_reqs, end->mem_reqs[m].coh_dma_reqs);
-        mem_llc_hits[m] = sub_monitor_vals(start->llc_stats[m].hits, end->llc_stats[m].hits);
-        mem_llc_misses[m] = sub_monitor_vals(start->llc_stats[m].misses, end->llc_stats[m].misses);
-
-        ddr_words += mem_ddr_words[m];
-        coh_reqs += mem_coh_req_counts[m];
-        coh_fwds += sub_monitor_vals(start->mem_reqs[m].coh_fwds, end->mem_reqs[m].coh_fwds);
-        coh_rsps_rcv += sub_monitor_vals(start->mem_reqs[m].coh_rsps_rcv, end->mem_reqs[m].coh_rsps_rcv);
-        coh_rsps_snd += sub_monitor_vals(start->mem_reqs[m].coh_rsps_snd, end->mem_reqs[m].coh_rsps_snd);
-        dma_reqs += mem_dma_req_counts[m];
-        dma_rsps += sub_monitor_vals(start->mem_reqs[m].dma_rsps, end->mem_reqs[m].dma_rsps);
-        coh_dma_reqs += mem_coh_dma_req_counts[m];
-        coh_dma_rsps += sub_monitor_vals(start->mem_reqs[m].coh_dma_rsps, end->mem_reqs[m].coh_dma_rsps);
-        llc_hits += mem_llc_hits[m];
-        llc_misses += mem_llc_misses[m];
-
-        if (mem_ddr_words[m] > max_ddr_words) {
-            max_ddr_words = mem_ddr_words[m];
-            busiest_mem_ddr = m;
-        }
-        if (mem_dma_req_counts[m] > max_dma_reqs) {
-            max_dma_reqs = mem_dma_req_counts[m];
-            busiest_mem_dma = m;
-        }
-        if ((mem_llc_hits[m] + mem_llc_misses[m]) > max_llc_traffic) {
-            max_llc_traffic = mem_llc_hits[m] + mem_llc_misses[m];
-            busiest_mem_llc = m;
-        }
-    }
-
-    for (unsigned p = 0; p < DVFS_OP_POINTS; ++p) {
-        dvfs_diff[p] = sub_monitor_vals(start->dvfs_op[p], end->dvfs_op[p]);
-        if (dvfs_diff[p] > active_dvfs_cycles) {
-            active_dvfs_cycles = dvfs_diff[p];
-            active_dvfs_op = p;
-        }
-    }
-    for (unsigned p = 0; p < NOC_PLANES; ++p) {
-        plane_injects[p] = sub_monitor_vals(start->noc_injects[p], end->noc_injects[p]);
-        noc_injects_total += plane_injects[p];
-        if (plane_injects[p] > max_plane_injects) {
-            max_plane_injects = plane_injects[p];
-            busiest_plane = p;
-        }
-        for (unsigned q = 0; q < NOC_QUEUES; ++q) {
-            uint32_t bp = sub_monitor_vals(start->noc_backpressure[p][q], end->noc_backpressure[p][q]);
-            noc_backpressure_total += bp;
-            plane_backpressure[p] += bp;
-            if (bp > max_backpressure) {
-                max_backpressure = bp;
-                busiest_bp_plane = p;
-                busiest_bp_queue = q;
-            }
-        }
-    }
-
-    const soc_loc_t host_loc = cpu_locs[end->cpu_index];
-    const uint64_t llc_total = llc_hits + llc_misses;
-
-    printf("[PROFILE][HOST][MON] %s cpu=%u tile=(y=%u x=%u): l2_hits=%llu l2_misses=%llu l2_hit_rate=%u%% ddr_words=%llu llc_hits=%llu llc_misses=%llu llc_hit_rate=%u%% noc_injects=%llu busiest_plane=%u(%llu) noc_backpressure=%llu busiest_bp=(plane=%u queue=%u cycles=%u)\n",
-           label,
-           end->cpu_index,
-           host_loc.row, host_loc.col,
-           (unsigned long long)l2_hits,
-           (unsigned long long)l2_misses,
-           percent_u64(l2_hits, l2_total),
-           (unsigned long long)ddr_words,
-           (unsigned long long)llc_hits,
-           (unsigned long long)llc_misses,
-           percent_u64(llc_hits, llc_total),
-           (unsigned long long)noc_injects_total,
-           busiest_plane,
-           (unsigned long long)max_plane_injects,
-           (unsigned long long)noc_backpressure_total,
-           busiest_bp_plane, busiest_bp_queue, max_backpressure);
-    printf("[PROFILE][HOST][MON] %s mem_reqs: coh=%llu/%llu/%llu/%llu dma=%llu/%llu coh_dma=%llu/%llu dvfs=[%u,%u,%u,%u]\n",
-           label,
-           (unsigned long long)coh_reqs,
-           (unsigned long long)coh_fwds,
-           (unsigned long long)coh_rsps_rcv,
-           (unsigned long long)coh_rsps_snd,
-           (unsigned long long)dma_reqs,
-           (unsigned long long)dma_rsps,
-           (unsigned long long)coh_dma_reqs,
-           (unsigned long long)coh_dma_rsps,
-           dvfs_diff[0], dvfs_diff[1], dvfs_diff[2], dvfs_diff[3]);
-    printf("[PROFILE][HOST][MON] %s peaks: active_dvfs=%u(%u cycles) mem_ddr=mem%u(%llu words) mem_dma=mem%u(%llu reqs) mem_llc=mem%u(hit_rate=%u%% total=%llu)\n",
-           label,
-           active_dvfs_op,
-           active_dvfs_cycles,
-           busiest_mem_ddr,
-           (unsigned long long)max_ddr_words,
-           busiest_mem_dma,
-           (unsigned long long)max_dma_reqs,
-           busiest_mem_llc,
-           percent_u64(mem_llc_hits[busiest_mem_llc], mem_llc_hits[busiest_mem_llc] + mem_llc_misses[busiest_mem_llc]),
-           (unsigned long long)max_llc_traffic);
-
-    for (unsigned m = 0; m < SOC_NMEM; ++m) {
-        const soc_loc_t mem_loc = mem_locs[m];
-        const uint64_t mem_llc_total = mem_llc_hits[m] + mem_llc_misses[m];
-        if (mem_ddr_words[m] == 0u &&
-            mem_coh_req_counts[m] == 0u &&
-            mem_dma_req_counts[m] == 0u &&
-            mem_coh_dma_req_counts[m] == 0u &&
-            mem_llc_total == 0u) {
-            continue;
-        }
-        printf("[PROFILE][HOST][MEM] %s mem%u tile=(y=%u x=%u): ddr_words=%llu llc_hits=%llu llc_misses=%llu llc_hit_rate=%u%% coh_reqs=%llu dma_reqs=%llu coh_dma_reqs=%llu\n",
-               label,
-               m,
-               mem_loc.row, mem_loc.col,
-               (unsigned long long)mem_ddr_words[m],
-               (unsigned long long)mem_llc_hits[m],
-               (unsigned long long)mem_llc_misses[m],
-               percent_u64(mem_llc_hits[m], mem_llc_total),
-               (unsigned long long)mem_coh_req_counts[m],
-               (unsigned long long)mem_dma_req_counts[m],
-               (unsigned long long)mem_coh_dma_req_counts[m]);
-    }
-
-    for (unsigned p = 0; p < NOC_PLANES; ++p) {
-        if (plane_injects[p] == 0u && plane_backpressure[p] == 0u) continue;
-        printf("[PROFILE][HOST][NOC] %s tile=(y=%u x=%u) plane=%u injects=%llu backpressure=%llu\n",
-               label,
-               host_loc.row, host_loc.col,
-               p,
-               (unsigned long long)plane_injects[p],
-               (unsigned long long)plane_backpressure[p]);
-    }
-#else
-    (void)label;
-    (void)start;
-    (void)end;
-#endif
+    return (index < count) ? labels[index] : fallback;
 }
 
 static int reserve_acc_chunks(unsigned nchunk_fw,
@@ -729,69 +392,51 @@ static struct esp_device *find_any_other_device(struct esp_device *devs,
 
 static const char *quad_fw_fetch_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "quad_l0_fw_fetch";
-    case 1: return "quad_l1_fw_fetch";
-    case 2: return "quad_l2_fw_fetch";
-    case 3: return "quad_l3_fw_fetch";
-    default: return "quad_l?_fw_fetch";
-    }
+    return label_from_table(k_quad_fw_fetch_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "quad_l?_fw_fetch");
 }
 
 static const char *quad_run_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "quad_l0_run";
-    case 1: return "quad_l1_run";
-    case 2: return "quad_l2_run";
-    case 3: return "quad_l3_run";
-    default: return "quad_l?_run";
-    }
+    return label_from_table(k_quad_run_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "quad_l?_run");
 }
 
 static const char *quad_input_move_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "quad_layer0_input_move";
-    case 1: return "quad_layer1_input_move";
-    case 2: return "quad_layer2_input_move";
-    case 3: return "quad_layer3_input_move";
-    default: return "quad_layer?_input_move";
-    }
+    return label_from_table(k_quad_input_move_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "quad_layer?_input_move");
 }
 
 static const char *quad_output_move_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "quad_layer0_output_move";
-    case 1: return "quad_layer1_output_move";
-    case 2: return "quad_layer2_output_move";
-    case 3: return "quad_layer3_output_move";
-    default: return "quad_layer?_output_move";
-    }
+    return label_from_table(k_quad_output_move_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "quad_layer?_output_move");
 }
 
 static const char *cpu_layer_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "cpu_layer0";
-    case 1: return "cpu_layer1";
-    case 2: return "cpu_layer2";
-    case 3: return "cpu_layer3";
-    default: return "cpu_layer?";
-    }
+    return label_from_table(k_cpu_layer_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "cpu_layer?");
 }
 
 #if !USE_P2P
 static const char *layer_compare_label(unsigned layer_id)
 {
-    switch (layer_id) {
-    case 0: return "layer0";
-    case 1: return "layer1";
-    case 2: return "layer2";
-    case 3: return "layer3";
-    default: return "layer?";
-    }
+    return label_from_table(k_layer_compare_labels,
+                            NUM_TRANSFORMER_LAYERS_OFFLOADED,
+                            layer_id,
+                            "layer?");
 }
 #endif
 
@@ -1006,9 +651,9 @@ static int fill_fpu_fft_fw_sections(fpu_fft_fw_kind_t fw_kind,
     }
 }
 
-static void configure_fpu_data_pt(struct esp_device *dev,
-                                  uint32_t *ptable_data,
-                                  unsigned nchunk_data)
+static void configure_data_pt(struct esp_device *dev,
+                              uint32_t *ptable_data,
+                              unsigned nchunk_data)
 {
     iowrite32(dev, PT_ADDRESS_REG, (uint32_t)(uintptr_t)ptable_data);
     iowrite32(dev, PT_NCHUNK_REG, nchunk_data);
@@ -1093,7 +738,7 @@ static int init_fpu_fft_ctx(fpu_fft_ctx_t *ctx, struct esp_device *dev, fpu_fft_
     print_host_mon_profile_diff("fpu_fft_firmware_fetch", &fw_host_mon_start, &fw_host_mon_end);
 #endif
 
-    configure_fpu_data_pt(dev, ptable_data, nchunk_data);
+    configure_data_pt(dev, ptable_data, nchunk_data);
 
     ctx->dev = dev;
     ctx->data_buffer = data_buffer;
@@ -1174,12 +819,7 @@ static int init_quad_layer_ctx(quad_layer_ctx_t *ctx, struct esp_device *dev, un
     print_host_mon_profile_diff(quad_fw_fetch_label(layer_id), &fw_host_mon_start, &fw_host_mon_end);
 #endif
 
-    iowrite32(dev, PT_ADDRESS_REG, (uint32_t)(uintptr_t)ptable_data);
-    iowrite32(dev, PT_NCHUNK_REG, nchunk_data);
-    iowrite32(dev, PT_SHIFT_REG, CHUNK_SHIFT);
-    iowrite32(dev, SRC_OFFSET_REG, 0);
-    iowrite32(dev, DST_OFFSET_REG, 0);
-    esp_flush(ACC_COH_NONE);
+    configure_data_pt(dev, ptable_data, nchunk_data);
 
     ctx->dev = dev;
     ctx->data_buffer = data_buffer;
@@ -1189,50 +829,6 @@ static int init_quad_layer_ctx(quad_layer_ctx_t *ctx, struct esp_device *dev, un
     printf("[XHEEP][LAYER%u] tile=(y=%u x=%u) data_buffer=%p size=%u\n",
            layer_id, esp_get_y(dev), esp_get_x(dev), (void *)data_buffer, (unsigned)data_buffer_size);
     return 0;
-}
-
-static void pack_fft_input(const quant_bit_width *raw_input, quant_bit_width *packed_input)
-{
-    quant_bit_width *weightVec[TRANSFORMER_WEIGHT_VEC_LEN];
-    quant_bit_width *biasVec[TRANSFORMER_WEIGHT_VEC_LEN];
-    quant_bit_width *clsToken = getClassToken();
-    quant_bit_width *posMatrix = getPosEmbedding();
-
-    getWeights(weightVec);
-    getBiases(biasVec);
-
-    size_t off = 0;
-    memcpy(&packed_input[off], raw_input, XHEEP_PRE_RAW_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_RAW_ELEMS;
-
-    memcpy(&packed_input[off], weightVec[0], XHEEP_PRE_NORM1_WEIGHT_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_NORM1_WEIGHT_ELEMS;
-
-    memcpy(&packed_input[off], biasVec[0], XHEEP_PRE_NORM1_BIAS_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_NORM1_BIAS_ELEMS;
-
-    memcpy(&packed_input[off], weightVec[1], XHEEP_PRE_DENSE_WEIGHT_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_DENSE_WEIGHT_ELEMS;
-
-    memcpy(&packed_input[off], biasVec[1], XHEEP_PRE_DENSE_BIAS_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_DENSE_BIAS_ELEMS;
-
-    memcpy(&packed_input[off], weightVec[2], XHEEP_PRE_NORM2_WEIGHT_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_NORM2_WEIGHT_ELEMS;
-
-    memcpy(&packed_input[off], biasVec[2], XHEEP_PRE_NORM2_BIAS_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_NORM2_BIAS_ELEMS;
-
-    memcpy(&packed_input[off], clsToken, XHEEP_PRE_CLS_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_CLS_ELEMS;
-
-    memcpy(&packed_input[off], posMatrix, XHEEP_PRE_POS_ELEMS * sizeof(quant_bit_width));
-    off += XHEEP_PRE_POS_ELEMS;
-
-    if (off != XHEEP_LAYER_IN_ELEMS) {
-        printf("Error: fft input pack size mismatch packed=%u expected=%u\n",
-               (unsigned)off, (unsigned)XHEEP_LAYER_IN_ELEMS);
-    }
 }
 
 static int run_fpu_fft_split_parallel(const fpu_fft_ctx_t *ctx0,
@@ -1960,185 +1556,6 @@ int run_quad_pipeline_p2p(const quad_layer_ctx_t *ctx,
 }
 #endif
 
-static inline uint32_t ilog2_u64_floor(uint64_t x)
-{
-    uint32_t n = 0;
-    while (x >>= 1) n++;
-    return n;
-}
-
-quant_bit_width compute_log_amp(int32_t real, int32_t imag)
-{
-    int32_t rs = (MUL_HQ(real, 25) >> 9);
-    int32_t is = (MUL_HQ(imag, 25) >> 9);
-    int64_t e = ((int64_t)rs * (int64_t)rs) + ((int64_t)is * (int64_t)is);
-
-    if (e <= 0) return (quant_bit_width)-23;
-
-    uint64_t eu = (uint64_t)e;
-    uint32_t msb = ilog2_u64_floor(eu);
-    uint64_t base = (uint64_t)1u << msb;
-    uint32_t frac_q10 = (uint32_t)(((eu - base) << 10) / base);
-    int32_t f = (int32_t)frac_q10;
-    int32_t ln1pf_q10 = f - (int32_t)(((int64_t)f * f) >> 11);
-    int32_t ln_e_q10 = (int32_t)(msb * 709) + ln1pf_q10;
-    int32_t ln_amp_q10 = ln_e_q10 >> 1;
-    return (quant_bit_width)(ln_amp_q10 >> 10);
-}
-
-static void initialize_stft(fft_complex_t *data, const quant_bit_width *raw_input_signal)
-{
-    for (int i = 0; i < 256; i++) {
-        data[i].r = MUL_HQ(raw_input_signal[i], hanning[i]);
-        data[i].i = 0;
-    }
-    for (int i = 256; i < 512; i++) {
-        data[i].r = 0;
-        data[i].i = 0;
-    }
-}
-
-static void stft_rearrange_cpu(quant_bit_width *rawInputSignal,
-                               quant_bit_width *stftVec,
-                               size_t patchHeight,
-                               size_t patchWidth)
-{
-    fft_complex_t data[512];
-    int overlap = 64;
-
-    for (int ch = 0; ch < 20; ch++) {
-        for (int time_step = 0; time_step < 15; time_step++) {
-            quant_bit_width *rawSignalPtr = rawInputSignal + ch * 3072 + (256 - overlap) * time_step;
-            initialize_stft(data, rawSignalPtr);
-            fft_fft(data, 9);
-
-            quant_bit_width *stftVecPtr = stftVec +
-                ch * 15 * 160 +
-                (time_step / patchWidth) * patchWidth * patchHeight +
-                (time_step % patchWidth);
-
-            for (int index = 0; index < (int)patchHeight; index++) {
-                *stftVecPtr = compute_log_amp(data[index].r, data[index].i);
-                stftVecPtr += patchWidth;
-            }
-            stftVecPtr += patchHeight * patchWidth * 2;
-            for (int index = (int)patchHeight; index < (int)(2 * patchHeight); index++) {
-                *stftVecPtr = compute_log_amp(data[index].r, data[index].i);
-                stftVecPtr += patchWidth;
-            }
-        }
-    }
-}
-
-static void prelayer_reference_cpu(const quant_bit_width *raw_input, quant_bit_width *prelayer_out)
-{
-    static quant_bit_width stftVec[D_EMBEDDING * D_SEQ];
-    static quant_bit_width patchOut[D_SEQ * D_MODEL];
-
-    quant_bit_width *weightVec[TRANSFORMER_WEIGHT_VEC_LEN];
-    quant_bit_width *biasVec[TRANSFORMER_WEIGHT_VEC_LEN];
-    quant_bit_width *clsToken = getClassToken();
-    quant_bit_width *posMatrix = getPosEmbedding();
-
-    getWeights(weightVec);
-    getBiases(biasVec);
-
-    TransformerBlock *tb = createTransformerBlock(D_SEQ, D_MODEL, D_Q, NUM_HEAD, D_FF,
-                                                  weightVec, biasVec, clsToken, posMatrix);
-
-    stft_rearrange_cpu((quant_bit_width *)raw_input, stftVec, 80, 5);
-    normalize(&tb->addNorm, stftVec, stftVec);
-    computeDense(tb->patchEmbedding, D_SEQ, stftVec, patchOut);
-    normalize(&tb->addNorm2, patchOut, patchOut);
-    clsConcatenate(tb->token, patchOut, prelayer_out);
-    posEmbedding(tb->token, prelayer_out);
-}
-
-static void run_cpu_layer(TransformerBlock *tb,
-                          int layer_idx,
-                          quant_bit_width *state,
-                          quant_bit_width *output,
-                          quant_bit_width *input_normalized,
-                          quant_bit_width *qkv,
-                          quant_bit_width *intermediate)
-{
-    const size_t seq_len = XHEEP_LAYER_SEQ_LEN;
-
-    normalize(&tb->transformer_layer_0_addNorm[layer_idx], state, input_normalized);
-    for (int n = 0; n < NUM_HEAD; n++) {
-        compute_SingleHeadSelfAttn(tb->selfatten[layer_idx * NUM_HEAD + n],
-                                   input_normalized,
-                                   output + n * (seq_len * tb->head_hidden_size_),
-                                   qkv, intermediate);
-    }
-
-    multihead_transpose(output, intermediate, seq_len, tb->head_hidden_size_, tb->num_heads_);
-    computeDense(tb->condense[layer_idx], seq_len, intermediate, output);
-    add(state, output, seq_len, tb->input_dim_);
-
-    normalize(&tb->transformer_layer_1_addNorm[layer_idx], state, input_normalized);
-    computeDense(tb->feedForward0[layer_idx], seq_len, input_normalized, intermediate);
-    activation(tb->feedForward0[layer_idx], seq_len * tb->ff_size_, intermediate, intermediate);
-    computeDense(tb->feedForward1[layer_idx], seq_len, intermediate, output);
-    add(state, output, seq_len, tb->input_dim_);
-}
-
-static int compare_buffers(const char *label,
-                           const quant_bit_width *a,
-                           const quant_bit_width *b,
-                           size_t elems)
-{
-    size_t mismatch_count = 0;
-    size_t first_idx = elems;
-
-    for (size_t i = 0; i < elems; ++i) {
-        if (a[i] != b[i]) {
-            mismatch_count++;
-            if (first_idx == elems) first_idx = i;
-        }
-    }
-
-    if (mismatch_count == 0) {
-        printf("[CHECK] %s PASSED (%u elements equal)\n", label, (unsigned)elems);
-        return 0;
-    }
-
-    printf("[CHECK] %s FAILED mismatches=%u/%u first_idx=%u a=%d b=%d\n",
-           label,
-           (unsigned)mismatch_count,
-           (unsigned)elems,
-           (unsigned)first_idx,
-           (int)a[first_idx], (int)b[first_idx]);
-
-    size_t printed = 0;
-    for (size_t i = 0; i < elems && printed < 8; ++i) {
-        if (a[i] != b[i]) {
-            printf("[CHECK] %s mismatch[%u]: a=%d b=%d\n",
-                   label, (unsigned)i, (int)a[i], (int)b[i]);
-            printed++;
-        }
-    }
-
-    return -1;
-}
-
-void prototype_distances(quant_bit_width *prototypeVec,
-                         const quant_bit_width *modelOutput,
-                         int32_t *distVec,
-                         size_t prototypeLength,
-                         int prototypeNums)
-{
-    for (int p = 0; p < prototypeNums; p++) {
-        long dist = 0;
-        quant_bit_width *prototypePtr = prototypeVec + (p * prototypeLength);
-        for (size_t i = 0; i < prototypeLength; i++) {
-            dist += MUL_HQ(prototypePtr[i] - modelOutput[i], prototypePtr[i] - modelOutput[i]);
-        }
-        dist = (dist >> NUM_FRACTION_BITS);
-        distVec[p] = (int32_t)dist;
-    }
-}
-
 int main(void)
 {
     printf("Full X-HEEP transformer offload\n");
@@ -2239,7 +1656,7 @@ int main(void)
     }
 
     /* Both split kernels must share one external data aperture. */
-    configure_fpu_data_pt(fpu_ctx[1].dev, fpu_ctx[0].ptable_data, fpu_ctx[0].nchunk_data);
+    configure_data_pt(fpu_ctx[1].dev, fpu_ctx[0].ptable_data, fpu_ctx[0].nchunk_data);
     fpu_ctx[1].data_buffer = fpu_ctx[0].data_buffer;
     fpu_ctx[1].data_buffer_size = fpu_ctx[0].data_buffer_size;
     fpu_ctx[1].ptable_data = fpu_ctx[0].ptable_data;

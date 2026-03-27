@@ -1,0 +1,151 @@
+App sizes summary:
+  D_SEQ=120, D_MODEL=16, D_Q=4, NUM_HEAD=4, D_FF=4, NUM_LAYERS=4
+  STFT channels=20, time_steps=15, patchHeight=80, patchWidth=5
+Start
+STFT rearrange:
+  channels=20, time_steps=15, fft_size=512, overlap=64
+  rawInputSignal len per channel=3072, stft patchHeight=80, patchWidth=5
+Transformer inference sizes:
+  D_SEQ=120, D_MODEL=16, D_Q=4, NUM_HEAD=4, D_FF=4, NUM_LAYERS=4
+  transformerInput len=1920, transformerOutput len=1920
+Transformer Block created
+computeFixedPoint sizes:
+  seq_len=120, input_dim=16, head_hidden=4, num_heads=4, ff_size=4
+  input buffer=1920, output buffer=1920, intermediate buffer=1920, qkv buffer=1920
+  addNorm0: input/output=120 x 16
+    weights=1 x 400, bias=1 x 400
+  patchEmbedding (Dense): input=120 x 400, weight=400 x 16, output=120 x 16
+    bias=1 x 16
+  addNorm1: input/output=120 x 16
+    weights=1 x 16, bias=1 x 16
+  clsConcatenate: input seq_len=120 -> seq_len=121, embed_dim=16
+    weights/bias: n/a
+  posEmbedding: seq_len=121, embed_dim=16
+    weights/bias: n/a
+  layer 0 addNorm0: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+    layer 0 head 0 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 0 head 1 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 0 head 2 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 0 head 3 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+  layer 0 multihead_transpose: input=4 x 121 x 4 -> output=121 x 16
+    weights/bias: n/a
+  layer 0 condense (Dense): input=121 x 16, weight=16 x 16, output=121 x 16
+    bias=1 x 16
+  layer 0 add0: input/output=121 x 16
+    weights/bias: n/a
+  layer 0 addNorm1: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+  layer 0 FF0 (Dense): input=121 x 16, weight=16 x 4, output=121 x 4
+    bias=1 x 4
+  layer 0 FF0 activation: length=484
+    weights/bias: n/a
+  layer 0 FF1 (Dense): input=121 x 4, weight=4 x 16, output=121 x 16
+    bias=1 x 16
+  layer 0 add1: input/output=121 x 16
+    weights/bias: n/a
+  layer 1 addNorm0: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+    layer 1 head 0 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 1 head 1 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 1 head 2 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 1 head 3 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+  layer 1 multihead_transpose: input=4 x 121 x 4 -> output=121 x 16
+    weights/bias: n/a
+  layer 1 condense (Dense): input=121 x 16, weight=16 x 16, output=121 x 16
+    bias=1 x 16
+  layer 1 add0: input/output=121 x 16
+    weights/bias: n/a
+  layer 1 addNorm1: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+  layer 1 FF0 (Dense): input=121 x 16, weight=16 x 4, output=121 x 4
+    bias=1 x 4
+  layer 1 FF0 activation: length=484
+    weights/bias: n/a
+  layer 1 FF1 (Dense): input=121 x 4, weight=4 x 16, output=121 x 16
+    bias=1 x 16
+  layer 1 add1: input/output=121 x 16
+    weights/bias: n/a
+  layer 2 addNorm0: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+    layer 2 head 0 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 2 head 1 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 2 head 2 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 2 head 3 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+  layer 2 multihead_transpose: input=4 x 121 x 4 -> output=121 x 16
+    weights/bias: n/a
+  layer 2 condense (Dense): input=121 x 16, weight=16 x 16, output=121 x 16
+    bias=1 x 16
+  layer 2 add0: input/output=121 x 16
+    weights/bias: n/a
+  layer 2 addNorm1: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+  layer 2 FF0 (Dense): input=121 x 16, weight=16 x 4, output=121 x 4
+    bias=1 x 4
+  layer 2 FF0 activation: length=484
+    weights/bias: n/a
+  layer 2 FF1 (Dense): input=121 x 4, weight=4 x 16, output=121 x 16
+    bias=1 x 16
+  layer 2 add1: input/output=121 x 16
+    weights/bias: n/a
+  layer 3 addNorm0: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+    layer 3 head 0 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 3 head 1 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 3 head 2 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+    layer 3 head 3 self-attn:
+      input=121 x 16, Q/K/V weight=16 x 4, output=121 x 4
+      Q/K/V bias=1 x 4
+  layer 3 multihead_transpose: input=4 x 121 x 4 -> output=121 x 16
+    weights/bias: n/a
+  layer 3 condense (Dense): input=121 x 16, weight=16 x 16, output=121 x 16
+    bias=1 x 16
+  layer 3 add0: input/output=121 x 16
+    weights/bias: n/a
+  layer 3 addNorm1: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+  layer 3 FF0 (Dense): input=121 x 16, weight=16 x 4, output=121 x 4
+    bias=1 x 4
+  layer 3 FF0 activation: length=484
+    weights/bias: n/a
+  layer 3 FF1 (Dense): input=121 x 4, weight=4 x 16, output=121 x 16
+    bias=1 x 16
+  layer 3 add1: input/output=121 x 16
+    weights/bias: n/a
+  mlp_head_norm: input/output=121 x 16
+    weights=1 x 16, bias=1 x 16
+  mlp_head_linear (Dense): input=1 x 16, weight=16 x 16, output=1 x 16
+    bias=1 x 16
+Distances : 
+From the prototype of class 0 = 24108613
+From the prototype of class 1 = -455702829
