@@ -56,13 +56,13 @@ XHEEP_APPS ?=
 
 # Run the X-HEEP generator, then update filelists
 hw: mcu-gen questa
-	@rm -rf "$(XHEEP_ROOT)/vlog_incdir"/*
+	@rm -rf "$(XHEEP_ROOT)/vlog_incdir"
 	$(MAKE) update-$(ACCEL_NAME)-filelists FLOW=modelsim
 
 $(ACCEL_NAME)-vivado:
 	$(MAKE) mcu-gen
 	$(MAKE) vivado-setup
-	@rm -rf "$(XHEEP_ROOT)/vlog_incdir"/*
+	@rm -rf "$(XHEEP_ROOT)/vlog_incdir"
 	$(MAKE) update-$(ACCEL_NAME)-filelists FLOW=vivado
 	$(MAKE) sw
 
@@ -77,6 +77,14 @@ vivado-setup:
 
 update-$(ACCEL_NAME)-filelists:
 	@set -e; \
+	link_path() { \
+		src="$$1"; dst="$$2"; \
+		dst_dir="$$(dirname "$$dst")"; \
+		rel_src="$$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$$src" "$$dst_dir")"; \
+		mkdir -p "$$dst_dir"; \
+		rm -rf "$$dst"; \
+		ln -s "$$rel_src" "$$dst"; \
+	}; \
 	FLOW="$(FLOW)"; \
 	case "$$FLOW" in \
 		""|modelsim) FLOW=modelsim ;; \
@@ -132,7 +140,7 @@ update-$(ACCEL_NAME)-filelists:
 		fi; \
 		dst="$(XHEEP_ROOT)/vlog_incdir/$$rel"; \
 		mkdir -p "$$(dirname "$$dst")"; \
-		if [ -f "$$src" ]; then cp -f -p "$$src" "$$dst"; fi; \
+		if [ -f "$$src" ]; then link_path "$$src" "$$dst"; fi; \
 	done < "$$tinc"; \
 	awk -v genpref="x-heep/$$FILELIST_DIR/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t_sv" > "$$t_sv2"; \
 	awk -v genpref="x-heep/$$FILELIST_DIR/" '{ p=$$0; if (p ~ /^generated\//) { p = genpref p } else if (p ~ /^(\.\.\/){3}/) { sub(/^(\.\.\/){3}/, "", p); p = "x-heep/" p } else { p = "x-heep/" p } print p }' "$$t_v" > "$$t_v2"; \
@@ -148,6 +156,22 @@ update-$(ACCEL_NAME)-filelists:
 sw:
 	rm -rf $(XH_ROOT)/sw/build
 	@for app_cur in $(XHEEP_APPS); do \
+		link_path() { \
+			src="$$1"; dst="$$2"; \
+			dst_dir="$$(dirname "$$dst")"; \
+			rel_src="$$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$$src" "$$dst_dir")"; \
+			mkdir -p "$$dst_dir"; \
+			rm -rf "$$dst"; \
+			ln -s "$$rel_src" "$$dst"; \
+		}; \
+		link_dir_entries() { \
+			src_dir="$$1"; dst_dir="$$2"; \
+			mkdir -p "$$dst_dir"; \
+			for item in "$$src_dir"/* "$$src_dir"/.[!.]* "$$src_dir"/..?*; do \
+				[ -e "$$item" ] || continue; \
+				link_path "$$item" "$$dst_dir/$$(basename "$$item")"; \
+			done; \
+		}; \
 		echo "[$(ACCEL_NAME)] Building X-HEEP app $$app_cur"; \
 		$(MAKE) -C $(XH_ROOT) RISCV_XHEEP=$(RISCV_XHEEP) app PROJECT=$$app_cur LINKER=on_chip TARGET=sim  $(QUADRILATERO_APP_FLAGS) COMPILER_FLAGS+=" -I$(XH_ROOT)/sw/vendor/esp_common" || exit $$?; \
 		header="$(ACCEL_NAME)_fw_$${app_cur}.h"; \
@@ -159,21 +183,26 @@ sw:
 			--name $$fw_symbol || exit $$?; \
 		if [ -n "$(ESP_BAREMETAL_APP)" ]; then \
 			mkdir -p $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp $(XH_ROOT)/sw/generated/$$header $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp -r $(XH_ROOT)/sw/applications/$${app_cur}/common/. $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common; \
-			cp -r $(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP) $(ESP_TOP)/soft/common/apps/baremetal; \
-			cp -r $(XHEEP_ROOT)/sw/baremetal/include $(ESP_TOP)/soft/common/apps/baremetal/$(ESP_BAREMETAL_APP); \
+			link_path "$(XH_ROOT)/sw/generated/$$header" "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common/$$header"; \
+			link_path "$(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h" "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common/core_v_mini_mcu.h"; \
+			link_path "$(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h" "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common/power_manager_regs.h"; \
+			link_path "$(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h" "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common/soc_ctrl_regs.h"; \
+			if [ -d "$(XH_ROOT)/sw/applications/$${app_cur}/common" ]; then \
+				link_dir_entries "$(XH_ROOT)/sw/applications/$${app_cur}/common" "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)/common"; \
+			fi; \
+			mkdir -p "$(ESP_TOP)/soft/common/apps/baremetal/$(ESP_BAREMETAL_APP)"; \
+			link_dir_entries "$(XHEEP_ROOT)/sw/baremetal/app/$(ESP_BAREMETAL_APP)" "$(ESP_TOP)/soft/common/apps/baremetal/$(ESP_BAREMETAL_APP)"; \
+			link_path "$(XHEEP_ROOT)/sw/baremetal/include" "$(ESP_TOP)/soft/common/apps/baremetal/$(ESP_BAREMETAL_APP)/include"; \
 		fi; \
 		if [ -n "$(ESP_LINUX_APP)" ]; then \
 			mkdir -p $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
-			cp $(XH_ROOT)/sw/generated/$$header $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
-			cp $(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
-			cp -r $(XH_ROOT)/sw/applications/$${app_cur}/common/. $(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common; \
+			link_path "$(XH_ROOT)/sw/generated/$$header" "$(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common/$$header"; \
+			link_path "$(XH_ROOT)/sw/device/lib/runtime/core_v_mini_mcu.h" "$(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common/core_v_mini_mcu.h"; \
+			link_path "$(XH_ROOT)/sw/device/lib/drivers/power_manager/power_manager_regs.h" "$(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common/power_manager_regs.h"; \
+			link_path "$(XH_ROOT)/sw/device/lib/drivers/soc_ctrl/soc_ctrl_regs.h" "$(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common/soc_ctrl_regs.h"; \
+			if [ -d "$(XH_ROOT)/sw/applications/$${app_cur}/common" ]; then \
+				link_dir_entries "$(XH_ROOT)/sw/applications/$${app_cur}/common" "$(XHEEP_ROOT)/sw/linux/app/$(ESP_LINUX_APP)/common"; \
+			fi; \
 		fi; \
 	done
 
